@@ -1,21 +1,33 @@
-import { Navbar } from "@/components/Navbar";
-import { HeroSection } from "@/components/HeroSection";
-import { ProductsSection } from "@/components/ProductsSection";
-import { PremiumSection } from "@/components/PremiumSection";
-import { ProductDetailSection } from "@/components/ProductDetailSection";
-import { SpecificationSection } from "@/components/SpecificationSection";
+import ProductSection from "@/components/ProductsSection";
+import BenefitsSection from "@/components/BenefitsSection";
+import FeaturesSection from "@/components/FeaturesSection";
+import ProductDetailingSection from "@/components/ProductDetailSection";
+import HeroSection from "@/components/HeroSection";
+import ProductSpecSection from "@/components/SpecificationSection";
+import ProductShowcaseSection from "@/components/ProductShowcaseSection";
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 
 const Index = () => {
   return (
-    <div className="min-h-screen">
+    <div
+      className="min-h-screen"
+      style={{
+        background:
+          "linear-gradient(to bottom, #FDFDEA 0%, #FDFDEA 50%, #FEFEF5 65%, #FFFFFF 80%)",
+      }}
+    >
       <Navbar />
       <main>
         <HeroSection />
-        <ProductsSection />
-        <PremiumSection />
-        <ProductDetailSection />
-        <SpecificationSection />
+        <ProductSection />
+        <BenefitsSection />
+        <FeaturesSection />
+        <ProductDetailingSection />
+        <ProductSpecSection />
+        <ProductShowcaseSection />
       </main>
+      <Footer />
     </div>
   );
 };

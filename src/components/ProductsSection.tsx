@@ -1,199 +1,191 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { FaStar, FaShoppingCart } from "react-icons/fa";
-import { Product, ProductGallery } from "@/types";
-import mainProductImage from "@/assets/main-product.jpg";
-import product1 from "@/assets/product-1.jpg";
-import product2 from "@/assets/product-2.jpg";
-import product3 from "@/assets/product-3.jpg";
+"use client";
+import React, { useState } from "react";
+// import Image from "next/image";
+import { IoIosStar } from "react-icons/io";
+import { Plus, Minus } from "lucide-react";
+import Button from "./Button/Button";
+// import Button from "../Button";
 
-const productData: Product = {
-  id: "eco-brush-set",
-  name: "Premium Bamboo Toothbrush Set",
-  price: 24.99,
-  originalPrice: 34.99,
-  description: "A complete set of eco-friendly bamboo toothbrushes with natural bristles. Perfect for the whole family.",
-  image: mainProductImage,
-  features: [
-    "100% Biodegradable bamboo handle",
-    "Soft natural bristles",
-    "Ergonomic design",
-    "Antimicrobial properties"
-  ],
-  specifications: [
-    { label: "Material", value: "Sustainable Bamboo" },
-    { label: "Bristles", value: "Natural Soft Bristles" },
-    { label: "Length", value: "19cm" },
-    { label: "Weight", value: "15g" }
-  ]
-};
+const ProductSection: React.FC = () => {
+  const [quantity, setQuantity] = useState(1);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-const thumbnails = [
-  { id: "natural", image: product1, color: "Natural Bamboo" },
-  { id: "mint", image: product2, color: "Mint Green" },
-  { id: "charcoal", image: product3, color: "Charcoal Black" },
-];
+  // Product Images (can be dynamic)
+  const productImages = [
+    "/images/brush.png",
+    "/images/brush_on_hand.png",
+    "/images/brush_set.png",
+    "/images/brush_w_human.png",
+  ];
 
-export const ProductsSection = () => {
-  const [selectedImage, setSelectedImage] = useState(mainProductImage);
-  const [selectedColor, setSelectedColor] = useState("Complete Set");
+  const incrementQuantity = () => setQuantity((prev) => prev + 1);
+  const decrementQuantity = () => setQuantity((prev) => Math.max(1, prev - 1));
 
   return (
-    <section className="py-20 bg-background-cream" id="products">
-      <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ y: 50, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl font-bold text-foreground-eco mb-4">
-            Our Eco-Friendly Collection
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Discover our range of sustainable bamboo toothbrushes designed for superior oral care and environmental protection.
-          </p>
-        </motion.div>
-
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Image Gallery */}
-          <motion.div
-            initial={{ x: -100, opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="space-y-6"
-          >
-            {/* Main Image */}
-            <div className="relative overflow-hidden rounded-2xl bg-background shadow-soft">
-              <AnimatePresence mode="wait">
-                <motion.img
-                  key={selectedImage}
-                  src={selectedImage}
-                  alt="Product"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.3 }}
-                  className="w-full h-96 object-cover"
+    <main className="container mx-auto">
+      <section className="py-8 sm:py-12 lg:py-16 sm:mx-4 lg:mx-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-start">
+          <div className="mx-auto w-4/5">
+            <div className="sm:hidden bg-[#F3F7DE] rounded-2xl flex items-center justify-center h-[280px] mb-4">
+              <div className="relative w-full h-full">
+                <img
+                  src={productImages[selectedImageIndex]}
+                  alt="Bamboo Toothbrush"
+                  width={1000}
+                  height={1000}
+                  className="object-contain w-full h-full"
                 />
-              </AnimatePresence>
+              </div>
             </div>
 
-            {/* Thumbnails */}
-            <div className="flex gap-4 justify-center">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => {
-                  setSelectedImage(mainProductImage);
-                  setSelectedColor("Complete Set");
-                }}
-                className={`relative overflow-hidden rounded-lg border-2 transition-all duration-300 ${
-                  selectedImage === mainProductImage
-                    ? "border-primary shadow-glow"
-                    : "border-border hover:border-primary/50"
-                }`}
-              >
-                <img
-                  src={mainProductImage}
-                  alt="Complete Set"
-                  className="w-20 h-20 object-cover"
-                />
-              </motion.button>
-
-              {thumbnails.map((thumb) => (
-                <motion.button
-                  key={thumb.id}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => {
-                    setSelectedImage(thumb.image);
-                    setSelectedColor(thumb.color);
-                  }}
-                  className={`relative overflow-hidden rounded-lg border-2 transition-all duration-300 ${
-                    selectedImage === thumb.image
-                      ? "border-primary shadow-glow"
-                      : "border-border hover:border-primary/50"
+            <div className="flex sm:hidden gap-2 overflow-x-auto pb-2">
+              {productImages.map((src, index) => (
+                <div
+                  key={index}
+                  onClick={() => setSelectedImageIndex(index)}
+                  className={`flex-shrink-0 w-16 h-20 rounded-lg border-2 overflow-hidden cursor-pointer transition-colors ${
+                    selectedImageIndex === index
+                      ? "border-eco-green"
+                      : "border-gray-200 hover:border-eco-green"
                   }`}
                 >
                   <img
-                    src={thumb.image}
-                    alt={thumb.color}
-                    className="w-20 h-20 object-cover"
+                    src={src}
+                    alt={`Toothbrush view ${index + 1}`}
+                    width={1000}
+                    height={1000}
+                    className="w-full h-full object-cover"
                   />
-                </motion.button>
+                </div>
               ))}
             </div>
-          </motion.div>
 
-          {/* Product Details */}
-          <motion.div
-            initial={{ x: 100, opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="space-y-6"
-          >
-            <div>
-              <motion.p
-                key={selectedColor}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-primary font-semibold mb-2"
-              >
-                {selectedColor}
-              </motion.p>
-              <h3 className="text-3xl font-bold text-foreground-eco mb-4">
-                {productData.name}
-              </h3>
-              <div className="flex items-center gap-4 mb-4">
-                <span className="text-3xl font-bold text-primary">
-                  ${productData.price}
-                </span>
-                {productData.originalPrice && (
-                  <span className="text-xl text-muted-foreground line-through">
-                    ${productData.originalPrice}
-                  </span>
-                )}
-                <div className="flex items-center gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <FaStar key={i} className="text-yellow-400 text-sm" />
-                  ))}
-                  <span className="text-muted-foreground text-sm ml-2">(128 reviews)</span>
+            <div className="hidden sm:flex gap-3 md:gap-4 w-full max-w-2xl mx-auto lg:max-w-none">
+              <div className="flex flex-col gap-3 md:gap-4">
+                {productImages.map((src, index) => (
+                  <div
+                    key={index}
+                    onClick={() => setSelectedImageIndex(index)}
+                    className={`w-16 h-20 md:w-20 md:h-24 rounded-lg border-2 overflow-hidden cursor-pointer transition-colors ${
+                      selectedImageIndex === index
+                        ? "border-eco-green"
+                        : "border-gray-200 hover:border-eco-green"
+                    }`}
+                  >
+                    <img
+                      src={src}
+                      alt={`Toothbrush view ${index + 1}`}
+                      width={1000}
+                      height={1000}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex-1 bg-[#F3F7DE] rounded-2xl flex items-center justify-center h-[300px] sm:h-[350px] md:h-[400px] lg:h-[430px]">
+                <div className="relative w-full h-full">
+                  <img
+                    src={productImages[selectedImageIndex]}
+                    alt="Bamboo Toothbrush"
+                    width={1000}
+                    height={1000}
+                    className="object-contain w-full h-full"
+                  />
                 </div>
               </div>
-              <p className="text-muted-foreground leading-relaxed mb-6">
-                {productData.description}
+            </div>
+          </div>
+
+          <div className="space-y-3 sm:space-y-4 lg:space-y-3 w-full max-w-2xl mx-auto lg:max-w-none">
+            <h1 className="text-xl sm:text-2xl font-eurotypo font-bold text-[#005655] leading-tight">
+              Bamboo Toothbrushes – 10 Pack | Eco-Friendly, Biodegradable, Soft
+              BPA-Free Bristles
+            </h1>
+
+            <div className="flex items-center gap-2 flex-wrap">
+              <div className="flex items-center gap-1">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <IoIosStar
+                    key={star}
+                    className="w-4 h-4 sm:w-5 sm:h-5 fill-yellow-400 text-yellow-400"
+                  />
+                ))}
+              </div>
+              <span className="text-xs text-eco-charcoal font-semibold">
+                1,100+ Reviews
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-4xl font-bold text-[#005655]">$14.99</span>
+              <span className="text-xl text-gray-500 line-through font-semibold">
+                $19.99
+              </span>
+              <span className="text-xs sm:text-sm text-gray-500">
+                (Pack of 10)
+              </span>
+            </div>
+
+            <p className="text-xs sm:text-sm text-gray-500">
+              (Free Shipping over $25 orders)
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-2 items-stretch sm:items-center">
+              <div className="flex items-center">
+                <div className="flex items-center border-2 border-[#005655] rounded-full">
+                  <button
+                    onClick={decrementQuantity}
+                    disabled={quantity <= 1}
+                    className="p-1.5 sm:p-2 text-eco-charcoal cursor-pointer disabled:opacity-50"
+                  >
+                    <Minus className="size-5" />
+                  </button>
+                  <span className="px-3 sm:px-4 py-1.5 sm:py-2 min-w-[2.5rem] sm:min-w-[3rem] text-center font-semibold text-eco-charcoal text-sm sm:text-base">
+                    {quantity}
+                  </span>
+                  <button
+                    onClick={incrementQuantity}
+                    className="p-1.5 sm:p-2 text-eco-charcoal cursor-pointer"
+                  >
+                    <Plus className="size-5" />
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex flex-row gap-2">
+                <div>
+                  <Button
+                    variant="solid"
+                    size="xs"
+                    className="w-full sm:w-auto text-sm sm:text-base py-2 sm:py-1.5"
+                  >
+                    Add to Cart
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-2 sm:pt-3">
+              <h3 className="text-base sm:text-lg font-bold text-eco-charcoal mb-2">
+                Description
+              </h3>
+              <p className="text-sm sm:text-base text-eco-charcoal/80 leading-relaxed">
+                Switch to a toothbrush that&apos;s good for you and the planet.
+                Our Bamboo Toothbrushes 10-Pack is crafted from sustainably
+                harvested bamboo with ultra-soft, BPA-free nylon bristles
+                infused with charcoal for a deeper clean. Designed with a
+                smooth, ergonomic grip and packaged in plastic-free materials,
+                these brushes are the perfect sustainable choice for families,
+                travelers, and anyone looking to reduce plastic waste without
+                compromising on oral care quality.
               </p>
             </div>
-
-            <div className="space-y-4">
-              <h4 className="font-semibold text-foreground-eco">Key Features:</h4>
-              <ul className="space-y-2">
-                {productData.features.map((feature, index) => (
-                  <li key={index} className="flex items-center gap-2 text-muted-foreground">
-                    <div className="w-2 h-2 bg-primary rounded-full" />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="flex gap-4 pt-6">
-              <Button variant="hero" size="lg" className="flex-1">
-                <FaShoppingCart className="mr-2" />
-                Add to Cart
-              </Button>
-              <Button variant="eco-outline" size="lg">
-                Learn More
-              </Button>
-            </div>
-          </motion.div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </main>
   );
 };
+
+export default ProductSection;

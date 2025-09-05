@@ -1,110 +1,65 @@
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { FaLeaf, FaRecycle, FaHeart } from "react-icons/fa";
-import heroImage from "@/assets/hero-toothbrush.jpg";
+"use client";
 
-export const HeroSection = () => {
+import React from "react";
+import { Play } from "lucide-react";
+
+const HeroSection: React.FC = () => {
   return (
-    <section className="min-h-screen bg-gradient-subtle pt-20 px-4">
-      <div className="container mx-auto">
-        <div className="grid lg:grid-cols-3 gap-8 items-center min-h-[80vh]">
-          {/* Left Text */}
-          <motion.div
-            initial={{ x: -100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            className="space-y-6"
-          >
-            <div className="flex items-center gap-2 text-primary">
-              <FaLeaf className="text-xl" />
-              <span className="font-semibold">100% Natural</span>
-            </div>
-            <h2 className="text-2xl font-bold text-foreground-eco">
-              Sustainable Oral Care for a Better Tomorrow
-            </h2>
-            <p className="text-muted-foreground leading-relaxed">
-              Made from sustainably sourced bamboo, our toothbrushes provide superior cleaning while protecting the environment.
+    <section
+      id="home"
+      className="relative min-h-screen flex items-center overflow-hidden pt-10"
+    >
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-16 grid grid-cols-1 lg:grid-cols-12 gap-10">
+        {/* Left Content */}
+        <div className="lg:col-span-5 flex flex-col justify-center text-center lg:text-left">
+          <div>
+            <span className="inline-block bg-[#E7F0CE] text-eco-green text-sm sm:text-base font-semibold px-4 py-1.5 rounded-full shadow-sm animate-bounce">
+              100% Plastic-Free Packaging
+            </span>
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-notulen font-black text-[#005655] leading-tight animate-fade-in">
+            Ecofriendly
+          </h1>
+          <h2 className="text-4xl font-eurotypo italic text-eco-charcoal animate-fade-in-delayed">
+            Bamboo Toothbrushes
+          </h2>
+
+          <p className="text-base sm:text-lg text-eco-charcoal leading-relaxed  max-w-md mx-auto lg:mx-0 mt-2">
+            Soft BPA-free bristles, sustainable bamboo handles, and packaging
+            that’s kind to our planet. A better smile starts here.
+          </p>
+        </div>
+
+        {/* Center Image */}
+        <div className="lg:col-span-4 flex justify-center relative">
+          <div className="relative w-72 sm:w-80 lg:w-[22rem]">
+            <div className="absolute inset-0 bg-eco-green rounded-3xl rotate-6 shadow-xl border-4 border-[#A0C474] bg-[#A0C474]"></div>
+            <img
+              src="/images/hero_image.png"
+              alt="Ecofriendly Bamboo Toothbrush"
+              width={800}
+              height={800}
+              className="relative rounded-2xl shadow-2xl object-cover z-10 bg-[#E7F0CE]"
+            />
+          </div>
+        </div>
+
+        {/* Right Side Info */}
+        <div className="lg:col-span-3 flex flex-col justify-center gap-6 text-center lg:text-right">
+          <div className="bg-[#E7F0CE] p-6 rounded-2xl shadow-md">
+            <h3 className="text-eco-dark font-eurotypo font-black text-xl sm:text-2xl mb-2">
+              Why Bamboo?
+            </h3>
+            <p className="text-sm sm:text-base text-eco-charcoal leading-relaxed">
+              Bamboo grows quickly, requires no pesticides, and naturally
+              biodegrades. It’s nature’s gift to a greener tomorrow.
             </p>
-            <div className="flex items-center gap-2 text-primary">
-              <FaRecycle className="text-lg" />
-              <span className="text-sm">Biodegradable Handle</span>
-            </div>
-          </motion.div>
-
-          {/* Center Image */}
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 1, delay: 0.2 }}
-            className="relative"
-          >
-            <div className="relative z-10">
-              <img
-                src={heroImage}
-                alt="Premium Eco-friendly Toothbrush"
-                className="w-full h-auto object-contain drop-shadow-2xl"
-              />
-            </div>
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              className="absolute -top-10 -right-10 w-20 h-20 border border-primary/20 rounded-full opacity-30"
-            />
-            <motion.div
-              animate={{ rotate: -360 }}
-              transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-              className="absolute -bottom-5 -left-5 w-16 h-16 border border-primary/20 rounded-full opacity-20"
-            />
-          </motion.div>
-
-          {/* Right Text */}
-          <motion.div
-            initial={{ x: 100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="space-y-6"
-          >
-            <div className="text-center lg:text-left">
-              <motion.h1
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-                className="text-4xl lg:text-5xl font-bold text-foreground-eco mb-4"
-              >
-                Clean
-                <span className="text-primary"> Smile</span>
-                <br />
-                Clean
-                <span className="text-primary"> Planet</span>
-              </motion.h1>
-              
-              <motion.p
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.8 }}
-                className="text-lg text-muted-foreground mb-8 leading-relaxed"
-              >
-                Experience premium oral care with our eco-friendly bamboo toothbrushes. Every purchase helps reduce plastic waste.
-              </motion.p>
-
-              <motion.div
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6, delay: 1 }}
-                className="space-y-4"
-              >
-                <Button variant="hero" size="lg" className="w-full lg:w-auto">
-                  Shop Now
-                </Button>
-                <div className="flex items-center justify-center lg:justify-start gap-2 text-primary">
-                  <FaHeart className="text-lg" />
-                  <span className="text-sm">Loved by 10,000+ customers</span>
-                </div>
-              </motion.div>
-            </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
   );
 };
+
+export default HeroSection;

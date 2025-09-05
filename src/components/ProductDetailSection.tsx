@@ -1,158 +1,153 @@
+import React from "react";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { FaLeaf, FaRecycle, FaCheck, FaHeart, FaStar, FaShoppingCart } from "react-icons/fa";
-import ecoLeavesImage from "@/assets/eco-leaves.jpg";
-import heroToothbrush from "@/assets/hero-toothbrush.jpg";
 
-const productFeatures = [
-  {
-    icon: FaLeaf,
-    title: "100% Natural Bamboo",
-    description: "Sustainably sourced bamboo handle that's completely biodegradable"
-  },
-  {
-    icon: FaRecycle,
-    title: "Eco-Friendly",
-    description: "Reduces plastic waste by 95% compared to traditional toothbrushes"
-  },
-  {
-    icon: FaCheck,
-    title: "Antimicrobial",
-    description: "Natural antimicrobial properties keep your toothbrush hygienic"
-  },
-  {
-    icon: FaHeart,
-    title: "Gentle on Gums",
-    description: "Soft natural bristles provide effective cleaning without irritation"
-  }
-];
+const ProductDetailingSection: React.FC = () => {
+  const features = [
+    {
+      title: "Soft & BPA-Free Bristles",
+      description: "Gentle on gums while providing effective cleaning",
+      position: "top-left",
+    },
+    {
+      title: "Charcoal-Infused Bristles",
+      description: "Deep cleaning power with natural whitening",
+      position: "top-right",
+    },
+    {
+      title: "Ergonomic Handle",
+      description: "Comfortable grip for better control",
+      position: "bottom-left",
+    },
+    {
+      title: "Eco-Friendly & Biodegradable",
+      description: "100% sustainable bamboo material",
+      position: "center-right",
+    },
+    {
+      title: "Lightweight",
+      description: "Perfect for travel and daily use",
+      position: "bottom-right",
+    },
+  ];
 
-export const ProductDetailSection = () => {
   return (
-    <section className="py-20 bg-gradient-cream">
-      <div className="container mx-auto px-4">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Product Image */}
-          <motion.div
-            initial={{ x: -100, opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="relative"
-          >
-            <div className="relative overflow-hidden rounded-3xl shadow-eco">
-              <img
-                src={heroToothbrush}
-                alt="Premium Eco-Friendly Toothbrush Detail"
-                className="w-full h-auto object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent" />
-            </div>
-            
-            {/* Floating eco elements */}
-            <motion.div
-              animate={{ y: [-10, 10, -10] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-8 -right-8 w-24 h-24 opacity-20"
-            >
-              <img src={ecoLeavesImage} alt="Eco leaves" className="w-full h-full object-cover rounded-full" />
-            </motion.div>
-          </motion.div>
+    <section className="py-16 sm:py-20 px-4 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto">
+        {/* Section Header */}
+        <motion.div
+          initial={{ y: 50, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="text-center relative z-10"
+        >
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-notulen font-black text-gray-900 mb-4">
+            Product Detailing
+          </h2>
+          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto font-eurotypo">
+            Discover the premium features that make our bamboo toothbrush
+            exceptional
+          </p>
+        </motion.div>
 
-          {/* Product Details */}
-          <motion.div
-            initial={{ x: 100, opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="space-y-8"
-          >
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <FaLeaf className="text-primary text-xl" />
-                <span className="text-primary font-semibold">Eco-Friendly Choice</span>
-              </div>
-              
-              <h2 className="text-4xl font-bold text-foreground-eco mb-4">
-                The Future of
-                <span className="text-primary"> Oral Care</span>
-              </h2>
-              
-              <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                Our premium bamboo toothbrush combines traditional craftsmanship with modern oral care technology. 
-                Each brush is carefully designed to provide superior cleaning while minimizing environmental impact.
-              </p>
-
-              <div className="flex items-center gap-4 mb-6">
-                <div className="flex items-center gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <FaStar key={i} className="text-yellow-400" />
-                  ))}
-                </div>
-                <span className="text-muted-foreground">4.9/5 from 2,847 reviews</span>
-              </div>
-            </div>
-
-            {/* Features Grid */}
-            <div className="grid sm:grid-cols-2 gap-6">
-              {productFeatures.map((feature, index) => (
+        {/* Main Content - Desktop Layout */}
+        <div className="hidden lg:block">
+          <div className="flex items-center justify-center">
+            {/* Left Side Cards */}
+            <div className="flex flex-col gap-5">
+              {features.slice(0, 3).map((feature, index) => (
                 <motion.div
                   key={index}
-                  initial={{ y: 30, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  initial={{ x: -50, opacity: 0 }}
+                  whileInView={{ x: 0, opacity: 1 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
                   viewport={{ once: true }}
+                  className="bg-[#E7F0CE] rounded-md p-2 shadow-md hover:shadow-lg transition-shadow duration-300 max-w-xs"
                 >
-                  <Card className="p-4 h-full bg-background/80 border-primary/10 hover:shadow-soft transition-all duration-300">
-                    <div className="flex items-start gap-3">
-                      <div className="p-2 bg-primary/10 rounded-lg">
-                        <feature.icon className="text-primary text-lg" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-foreground-eco mb-1">
-                          {feature.title}
-                        </h4>
-                        <p className="text-sm text-muted-foreground">
-                          {feature.description}
-                        </p>
-                      </div>
-                    </div>
-                  </Card>
+                  <h3 className="font-semibold text-gray-900 text-xs text-center">
+                    {feature.title}
+                  </h3>
                 </motion.div>
               ))}
             </div>
 
-            {/* CTA Section */}
+            {/* Central Product Image */}
             <motion.div
-              initial={{ y: 30, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
+              initial={{ scale: 0.8, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 1 }}
               viewport={{ once: true }}
-              className="flex flex-col sm:flex-row gap-4 pt-6"
+              className="flex-shrink-0"
             >
-              <Button variant="hero" size="lg" className="flex-1">
-                <FaShoppingCart className="mr-2" />
-                Order Now - $24.99
-              </Button>
-              <Button variant="eco-outline" size="lg">
-                Learn More
-              </Button>
+              <div className="w-[700px] h-[700px] relative">
+                <img
+                  src="/images/brush_rock.png"
+                  alt="Bamboo toothbrush with rock formation"
+                  className="w-full h-full object-contain"
+                />
+              </div>
             </motion.div>
 
-            <div className="flex items-center gap-4 text-sm text-muted-foreground pt-4">
-              <div className="flex items-center gap-1">
-                <FaCheck className="text-primary" />
-                <span>30-day guarantee</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <FaRecycle className="text-primary" />
-                <span>Free shipping</span>
-              </div>
+            {/* Right Side Cards */}
+            <div className="flex flex-col gap-6">
+              {features.slice(3).map((feature, index) => (
+                <motion.div
+                  key={index + 3}
+                  initial={{ x: 50, opacity: 0 }}
+                  whileInView={{ x: 0, opacity: 1 }}
+                  transition={{ duration: 0.6, delay: (index + 3) * 0.1 }}
+                  viewport={{ once: true }}
+                  className="bg-[#E7F0CE] rounded-md p-2 shadow-md hover:shadow-lg transition-shadow duration-300 max-w-xs"
+                >
+                  <h3 className="font-semibold text-gray-900 text-xs text-center">
+                    {feature.title}
+                  </h3>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile/Tablet Layout */}
+        <div className="lg:hidden">
+          {/* Product Image */}
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 1 }}
+            viewport={{ once: true }}
+            className="flex justify-center mb-12"
+          >
+            <div className="w-80 sm:w-96 md:w-[400px] h-80 sm:h-96 md:h-[400px]">
+              <img
+                src="/images/brush_rock.png"
+                alt="Bamboo toothbrush with rock formation"
+                className="w-full h-full object-contain"
+              />
             </div>
           </motion.div>
+
+          {/* Features Grid Below Image */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {features.map((feature, index) => (
+              <motion.div
+                key={index}
+                initial={{ y: 30, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-white rounded-xl p-4 shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-300"
+              >
+                <h3 className="font-semibold text-gray-900 text-sm text-center">
+                  {feature.title}
+                </h3>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
   );
 };
+
+export default ProductDetailingSection;
