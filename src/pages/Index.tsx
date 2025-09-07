@@ -8,6 +8,7 @@ import ProductShowcaseSection from "@/components/ProductShowcaseSection";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import NewsLetter from "@/components/NewsLetter";
+import StickyBottomBar from "@/components/StickyBottomBar";
 
 const Index = () => {
   return (
@@ -30,6 +31,7 @@ const Index = () => {
         <NewsLetter />
       </main>
       <Footer />
+      <StickyBottomBar />
     </div>
   );
 };

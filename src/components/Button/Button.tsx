@@ -2,7 +2,7 @@ import React from "react";
 
 interface ButtonProps {
   children: React.ReactNode;
-  variant?: "solid" | "outline";
+  variant?: "solid" | "outline" | "white";
   size?: "xs" | "sm" | "md" | "lg";
   onClick?: () => void;
   disabled?: boolean;
@@ -27,6 +27,8 @@ const Button: React.FC<ButtonProps> = ({
       "bg-[#005655] text-white hover:bg-eco-green/90 focus:ring-eco-green/50",
     outline:
       "border-2 border-eco-green text-eco-green bg-transparent hover:bg-eco-green hover:text-white focus:ring-eco-green/50",
+    white:
+      "bg-white text-[#005655] hover:bg-gray-100 focus:ring-[#005655]/50 border-white",
   };
 
   const sizeStyles = {
