@@ -1,144 +1,187 @@
 "use client";
 
-import React, { useState } from "react";
-import { Menu, X, ShoppingBag, User } from "lucide-react";
-// import Image from "next/image";
-import { FaUserAlt } from "react-icons/fa";
-import { MdShoppingCart } from "react-icons/md";
-import { motion } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const navItems = [
-  { label: "Home", id: "home" },
-  { label: "Benefits", id: "benefits" },
-  { label: "Features", id: "features" },
-  { label: "FAQ", id: "faq" },
+  { label: "Home", href: "home" },
+  { label: "Benefits", href: "benefits" },
+  { label: "Features", href: "features" },
+  { label: "Products", href: "products" },
+  { label: "FAQ", href: "faq" },
 ];
 
 const Navbar: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
+      setIsOpen(false);
     }
-    setIsMenuOpen(false);
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      setIsScrolled(scrollPosition > 50);
+
+      const sections = navItems.map((item) => item.href);
+      const currentSection = sections.find((section) => {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          return rect.top <= 100 && rect.bottom >= 100;
+        }
+        return false;
+      });
+      if (currentSection) {
+        setActiveSection(currentSection);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-eco-cream backdrop-blur-sm">
-      <div className="mx-10 px-0 pt-1">
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        isScrolled || isOpen
+          ? "bg-[#E7F0CE]/60 backdrop-blur-md shadow-lg"
+          : "bg-transparent"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="w-44">
+          <div className="w-40 h-20 flex items-center justify-center">
             <img
               src="/images/ecofriendly_dark.png"
-              alt="EcoFriendly Logo"
-              width={1000}
-              height={1000}
-              // className="h-10 w-auto"
+              alt="EcoFriendly"
+              className="h-8 w-auto"
             />
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline gap-8">
-              {navItems.map((item) => (
-                <div key={item.id} className="relative group">
-                  <button
-                    onClick={() => scrollToSection(item.id)}
-                    className="text-[#1E1E1E] px-3 py-2 text-xs transition-all duration-200 cursor-pointer tracking-wider font-medium hover:bg-eco-green/10 hover:text-eco-green rounded-lg"
-                  >
+          <div className="hidden md:flex items-center space-x-2">
+            {navItems.map((item, index) => (
+              <motion.div
+                key={item.href}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1, duration: 0.6 }}
+              >
+                <button
+                  onClick={() => scrollToSection(item.href)}
+                  className="relative px-4 py-2 font-medium text-[#005655] transition-all duration-300 hover:scale-105"
+                >
+                  <span className="relative inline-block text-center">
                     {item.label}
-                  </button>
-                  {/* Animated underline using Framer Motion */}
-                  <motion.div
-                    className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-[#1E1E1E] rounded-full"
-                    initial={{ scaleX: 0, opacity: 0 }}
-                    animate={{
-                      scaleX: item.id === "home" ? 1 : 0,
-                      opacity: item.id === "home" ? 1 : 0,
-                    }}
-                    whileHover={{
-                      scaleX: 1,
-                      opacity: 1,
-                    }}
-                    transition={{
-                      duration: 0.2,
-                      ease: "easeInOut",
-                    }}
-                  />
-                </div>
-              ))}
-            </div>
+                    {activeSection === item.href && (
+                      <motion.span
+                        layoutId="activeIndicator"
+                        className="block h-0.5 bg-[#005655] rounded mt-1 w-1/2 mx-auto"
+                        transition={{
+                          type: "spring",
+                          bounce: 0.25,
+                          duration: 0.6,
+                        }}
+                      />
+                    )}
+                  </span>
+                </button>
+              </motion.div>
+            ))}
           </div>
 
-          {/* Icons - Desktop */}
-          <div className="hidden md:flex items-center gap-1">
-            <button className="text-eco-green hover:text-eco-dark p-2 transition-colors duration-200 cursor-pointer">
-              <FaUserAlt size={15} />
-            </button>
-            <button className="text-eco-green hover:text-eco-dark p-2 transition-colors duration-200 cursor-pointer">
-              <MdShoppingCart size={20} />
-            </button>
-          </div>
-
-          {/* Mobile menu button */}
+          {/* Mobile Menu Button */}
           <div className="md:hidden">
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-website-dark hover:text-eco-green p-2"
+            <div
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-[#005655] transition-all duration-300 hover:scale-110 cursor-pointer"
             >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+              <motion.div
+                animate={{ rotate: isOpen ? 90 : 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {isOpen ? (
+                  <X className="w-7 h-7" />
+                ) : (
+                  <Menu className="w-7 h-7" />
+                )}
+              </motion.div>
+            </div>
           </div>
         </div>
+      </div>
 
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-eco-cream border-t border-eco-green/10">
-              {navItems.map((item) => (
-                <div key={item.id} className="relative group">
-                  <button
-                    onClick={() => scrollToSection(item.id)}
-                    className="text-[#1E1E1E] hover:text-eco-green hover:bg-eco-green/10 block px-3 py-2 text-base w-full text-left transition-all duration-200 cursor-pointer font-medium rounded-lg"
-                  >
-                    {item.label}
-                  </button>
-                  {/* Animated underline using Framer Motion */}
-                  <motion.div
-                    className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#1E1E1E] rounded-full"
-                    initial={{ scaleX: 0, opacity: 0 }}
-                    animate={{
-                      scaleX: item.id === "home" ? 1 : 0,
-                      opacity: item.id === "home" ? 1 : 0,
-                    }}
-                    whileHover={{
-                      scaleX: 1,
-                      opacity: 1,
-                    }}
-                    transition={{
-                      duration: 0.2,
-                      ease: "easeInOut",
-                    }}
-                  />
-                </div>
-              ))}
-              {/* Mobile Icons */}
-              <div className="flex items-center space-x-4 pt-4 px-3">
-                <button className="text-eco-green hover:text-eco-dark p-2 transition-colors duration-200 cursor-pointer">
-                  <FaUserAlt size={15} />
-                </button>
-                <button className="text-eco-green hover:text-eco-dark p-2 transition-colors duration-200 cursor-pointer">
-                  <MdShoppingCart size={20} />
+      {/* Mobile Fullscreen Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.6 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 bg-black z-40"
+              onClick={() => setIsOpen(false)}
+            />
+
+            {/* Slide-in menu */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="fixed top-0 right-0 w-3/4 sm:w-1/2 h-screen bg-[#005655] z-50 shadow-xl flex flex-col"
+            >
+              <div className="flex justify-between items-center p-5 border-b border-white/20">
+                <img
+                  src="/images/ecofriendly_light.png"
+                  alt="Logo"
+                  className="h-6"
+                />
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="text-white hover:text-gray-300 transition-colors"
+                >
+                  <X className="w-7 h-7" />
                 </button>
               </div>
-            </div>
-          </div>
+
+              <div className="bg-[#005655] flex-1 flex flex-col items-start justify-start px-6 py-8 space-y-6">
+                {navItems.map((item, index) => (
+                  <motion.button
+                    key={item.href}
+                    onClick={() => scrollToSection(item.href)}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className={`text-xl font-semibold tracking-wide text-white w-full text-left transition-colors duration-300 ${
+                      activeSection === item.href
+                        ? "underline underline-offset-4"
+                        : "hover:text-[#A0C474]"
+                    }`}
+                  >
+                    {item.label}
+                  </motion.button>
+                ))}
+              </div>
+            </motion.div>
+          </>
         )}
-      </div>
-    </nav>
+      </AnimatePresence>
+    </motion.nav>
   );
 };
 
