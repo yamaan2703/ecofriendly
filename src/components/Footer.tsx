@@ -6,12 +6,12 @@ const Footer: React.FC = () => {
     <footer className="bg-[#FDFDEA] py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto text-center">
         {/* Customer Service Text */}
-        <p className="text-gray-700 text-sm mb-2 font-eurotypo">
+        <p className="text-gray-700 text-sm mb-2">
           Have questions? Contact our customer service team
         </p>
 
         {/* Contact Information */}
-        <div className="text-eco-green font-eurotypo text-sm">
+        <div className="text-eco-green text-sm">
           <a
             href="mailto:support@ecobamboobrush.com"
             className="hover:underline mr-4"

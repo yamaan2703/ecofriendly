@@ -7,6 +7,7 @@ import ProductSpecSection from "@/components/SpecificationSection";
 import ProductShowcaseSection from "@/components/ProductShowcaseSection";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import NewsLetter from "@/components/NewsLetter";
 
 const Index = () => {
   return (
@@ -14,7 +15,7 @@ const Index = () => {
       className="min-h-screen"
       style={{
         background:
-          "linear-gradient(to bottom, #FDFDEA 0%, #FDFDEA 50%, #FEFEF5 65%, #FFFFFF 80%)",
+          "linear-gradient(to bottom, #FDFDEA 0%, #FDFDEA 60%, #FEFEF5 75%, #FFFFFF 80%)",
       }}
     >
       <Navbar />
@@ -26,6 +27,7 @@ const Index = () => {
         <ProductDetailingSection />
         <ProductSpecSection />
         <ProductShowcaseSection />
+        <NewsLetter />
       </main>
       <Footer />
     </div>

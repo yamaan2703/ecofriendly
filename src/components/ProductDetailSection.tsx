@@ -31,27 +31,46 @@ const ProductDetailingSection: React.FC = () => {
   ];
 
   return (
-    <section className="py-16 sm:py-20 px-4 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        {/* Section Header */}
+    <section className=" px-4 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto ">
         <motion.div
-          initial={{ y: 50, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center relative z-10"
+          transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-notulen font-black text-gray-900 mb-4">
-            Product Detailing
-          </h2>
-          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto font-eurotypo">
+          <motion.h2
+            className="text-4xl sm:text-5xl lg:text-6xl font-black text-eco-charcoal font-eurotypo mb-6 leading-tight"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            Product{" "}
+            <motion.span
+              className="relative inline-block ml-4 text-[#005655] italic"
+              whileHover={{ scale: 1.05, color: "#A0C474" }}
+              transition={{ duration: 0.3 }}
+            >
+              Detailing
+            </motion.span>
+          </motion.h2>
+
+          <motion.p
+            className="text-xl text-eco-charcoal opacity-70 max-w-2xl mx-auto leading-relaxed"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
             Discover the premium features that make our bamboo toothbrush
             exceptional
-          </p>
+          </motion.p>
         </motion.div>
 
         {/* Main Content - Desktop Layout */}
-        <div className="hidden lg:block">
+        <div className="hidden lg:block ">
           <div className="flex items-center justify-center">
             {/* Left Side Cards */}
             <div className="flex flex-col gap-5">
@@ -79,7 +98,7 @@ const ProductDetailingSection: React.FC = () => {
               viewport={{ once: true }}
               className="flex-shrink-0"
             >
-              <div className="w-[700px] h-[700px] relative">
+              <div className="w-[700px] relative">
                 <img
                   src="/images/brush_rock.png"
                   alt="Bamboo toothbrush with rock formation"
@@ -118,7 +137,7 @@ const ProductDetailingSection: React.FC = () => {
             viewport={{ once: true }}
             className="flex justify-center mb-12"
           >
-            <div className="w-80 sm:w-96 md:w-[400px] h-80 sm:h-96 md:h-[400px]">
+            <div className="w-80 sm:w-96 md:w-[400px] ">
               <img
                 src="/images/brush_rock.png"
                 alt="Bamboo toothbrush with rock formation"

@@ -1,5 +1,5 @@
 import React from "react";
-import { Leaf, Users, Shield, Recycle } from "lucide-react";
+import { Leaf, Users, Shield, Recycle, Check } from "lucide-react";
 
 const BenefitsSection: React.FC = () => {
   const benefits = [
@@ -40,6 +40,14 @@ const BenefitsSection: React.FC = () => {
         />
       </div>
 
+      <div className="absolute right-0 top-0 w-48 h-48 sm:w-64 sm:h-64 lg:w-96 lg:h-96 z-0 pointer-events-none">
+        <img
+          src="/images/leaf_2.png"
+          alt="Decorative leaves"
+          className="w-full h-full object-contain object-right"
+        />
+      </div>
+
       <div className="container mx-auto px-4 relative z-10">
         <div className="z-10 mb-16">
           <div className="text-center px-2">
@@ -71,7 +79,7 @@ const BenefitsSection: React.FC = () => {
           {benefits.map((benefit, index) => (
             <div
               key={index}
-              className="group bg-transparent hover:bg-[#99BB6F] hover:text-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-500 ease-in-out transform hover:scale-105 cursor-pointer"
+              className="group bg-transparent hover:bg-[#E7F0CE] rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-500 ease-in-out transform hover:scale-105 cursor-pointer"
             >
               <div className="flex flex-col items-start gap-4">
                 {/* Icon */}
@@ -81,13 +89,13 @@ const BenefitsSection: React.FC = () => {
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-xl font-eurotypo font-bold text-[#005655] group-hover:text-white leading-tight transition-colors duration-500 ease-in-out">
+                  <h3 className="text-xl font-eurotypo font-bold text-[#005655]  leading-tight transition-colors duration-500 ease-in-out">
                     {benefit.title}
                   </h3>
                 </div>
 
                 {/* Description */}
-                <p className="leading-relaxed font-eurotypo text-sm text-gray-600 group-hover:text-white transition-colors duration-500 ease-in-out">
+                <p className="leading-relaxed font-eurotypo text-sm text-gray-600  transition-colors duration-500 ease-in-out">
                   {benefit.description}
                 </p>
               </div>
@@ -97,7 +105,7 @@ const BenefitsSection: React.FC = () => {
 
         {/* Simple CTA */}
         <div className="text-center mt-12">
-          <div className="bg-[#F3F7DE] rounded-2xl p-8 shadow-sm max-w-2xl mx-auto">
+          <div className="bg-[#E7F0CE] border border-[#005655] rounded-2xl p-8 shadow-sm max-w-2xl mx-auto">
             <h3 className="text-2xl font-eurotypo font-bold text-[#005655] mb-4">
               Ready to Make the Switch?
             </h3>
@@ -107,9 +115,15 @@ const BenefitsSection: React.FC = () => {
             </p>
 
             <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-600">
-              <span>✓ 30-day money back guarantee</span>
-              <span>✓ Free shipping</span>
-              <span>✓ Eco-certified materials</span>
+              <span className="flex items-center gap-2">
+                <Check color="#005655" /> 30-day money back guarantee
+              </span>
+              <span className="flex items-center gap-2">
+                <Check color="#005655" /> Free shipping
+              </span>
+              <span className="flex items-center gap-2">
+                <Check color="#005655" /> Eco-certified materials
+              </span>
             </div>
           </div>
         </div>
