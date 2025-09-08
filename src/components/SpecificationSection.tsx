@@ -1,9 +1,10 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { specifications } from "@/data/data";
+import { useContent } from "@/contexts/ContentContext";
 
 const ProductSpecSection: React.FC = () => {
+  const { content } = useContent();
   return (
     <section className="p-4 sm:p-6 lg:p-10">
       <div className="max-w-7xl mx-auto border rounded-lg sm:rounded-xl lg:rounded-2xl p-4 sm:p-6 lg:p-8">
@@ -21,13 +22,13 @@ const ProductSpecSection: React.FC = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            Product{" "}
+            {content.specificationsSection.title}{" "}
             <motion.span
               className="relative inline-block ml-4 text-[#005655] italic"
               whileHover={{ scale: 1.05, color: "#A0C474" }}
               transition={{ duration: 0.3 }}
             >
-              Specification
+              {content.specificationsSection.subtitle}
             </motion.span>
           </motion.h2>
         </motion.div>
@@ -41,7 +42,7 @@ const ProductSpecSection: React.FC = () => {
           transition={{ duration: 0.6, delay: 0.3 }}
         >
           <div className="divide-y divide-gray-100">
-            {specifications.map((spec, index) => (
+            {content.specifications.map((spec, index) => (
               <motion.div
                 key={index}
                 className="flex flex-col sm:flex-row py-3 sm:py-4 gap-2 sm:gap-4 hover:bg-gray-50/50 transition-all duration-300 rounded-lg px-2 cursor-pointer group"

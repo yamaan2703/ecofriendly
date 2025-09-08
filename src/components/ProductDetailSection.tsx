@@ -1,8 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { features2 } from "@/data/data";
+import { useContent } from "@/contexts/ContentContext";
 
 const ProductDetailingSection: React.FC = () => {
+  const { content } = useContent();
   return (
     <section id="products" className=" px-4 relative overflow-hidden">
       <div className="max-w-7xl mx-auto ">
@@ -47,7 +48,7 @@ const ProductDetailingSection: React.FC = () => {
           <div className="flex items-center justify-center">
             {/* Left Side Cards */}
             <div className="flex flex-col gap-5">
-              {features2.slice(0, 3).map((feature, index) => (
+              {content.features2.slice(0, 3).map((feature, index) => (
                 <motion.div
                   key={index}
                   initial={{ x: -50, opacity: 0 }}
@@ -82,7 +83,7 @@ const ProductDetailingSection: React.FC = () => {
 
             {/* Right Side Cards */}
             <div className="flex flex-col gap-6">
-              {features2.slice(3).map((feature, index) => (
+              {content.features2.slice(3).map((feature, index) => (
                 <motion.div
                   key={index + 3}
                   initial={{ x: 50, opacity: 0 }}
@@ -121,7 +122,7 @@ const ProductDetailingSection: React.FC = () => {
 
           {/* Features Grid Below Image */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {features2.map((feature, index) => (
+            {content.features2.map((feature, index) => (
               <motion.div
                 key={index}
                 initial={{ y: 30, opacity: 0 }}

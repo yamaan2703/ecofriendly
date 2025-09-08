@@ -203,6 +203,7 @@ export const home2Content = {
     title: "Luxury Wellness",
     subtitle: "Premium Collection",
     description: "Experience the pinnacle of bamboo toothbrush craftsmanship with our luxury wellness line, featuring diamond-infused bristles and hand-polished handles.",
+    detailedDescription: "Elevate your oral care routine with our luxury bamboo toothbrush collection. Each brush is individually handcrafted by skilled artisans using premium sustainably-sourced bamboo and features diamond-infused bristles for superior cleaning and natural whitening. The ergonomically curved handles are hand-polished to perfection and come in beautiful gift-ready packaging. Perfect for discerning customers who value both luxury and environmental responsibility.",
     mainImage: "/images/brush_w_human.png"
   },
 
@@ -215,5 +216,47 @@ export const home2Content = {
       "/images/brush.png",
       "/images/Artboard_2.png"
     ]
+  },
+
+  // Product images for gallery
+  productImages: [
+    "/images/brush_rock.png",
+    "/images/right_brush.png", 
+    "/images/brush_set.png",
+    "/images/brush_w_human.png",
+  ],
+
+  // Reviews and ratings
+  reviews: {
+    rating: 5,
+    count: "850+ Premium Reviews"
+  },
+
+  // Pricing info
+  pricing: {
+    freeShipping: "Free Premium Shipping over $25 orders",
+    packInfo: "Premium Collection"
+  },
+
+  // Specifications section
+  specificationsSection: {
+    title: "Premium",
+    subtitle: "Specifications"
+  },
+
+  // Newsletter section
+  newsletter: {
+    title: "Join Our Exclusive",
+    subtitle: "Luxury Circle",
+    description: "Get exclusive access to premium collections, luxury wellness tips, and VIP member benefits.",
+    highlight: "Join 5,000+ luxury wellness enthusiasts!",
+    placeholder: "Enter your email for exclusive access",
+    buttonText: "Join VIP"
+  },
+
+  // Sticky bottom bar
+  stickyBar: {
+    productName: "Luxury Bamboo Collection",
+    buyNowText: "Buy Premium"
   }
 };

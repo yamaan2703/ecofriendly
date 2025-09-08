@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Star, Minus, Plus, ShoppingCart } from "lucide-react";
 import Button from "./Button/Button";
+import { useContent } from "@/contexts/ContentContext";
 
 const StickyBottomBar: React.FC = () => {
+  const { content } = useContent();
   const [isVisible, setIsVisible] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
@@ -57,12 +59,14 @@ const StickyBottomBar: React.FC = () => {
 
                 <div className="flex flex-col">
                   <h3 className="text-white font-semibold text-base leading-tight">
-                    Bamboo Toothbrushes
+                    {content.stickyBar.productName}
                   </h3>
                   <div className="flex items-baseline space-x-2">
-                    <span className="text-lg font-bold text-white">$14.99</span>
+                    <span className="text-lg font-bold text-white">
+                      {content.products.price}
+                    </span>
                     <span className="text-white/60 line-through text-sm">
-                      $19.99
+                      {content.products.originalPrice}
                     </span>
                   </div>
                 </div>
@@ -93,7 +97,7 @@ const StickyBottomBar: React.FC = () => {
                   </motion.button>
                 </div>
                 <Button variant="white" size="xs" className="">
-                  Buy Now
+                  {content.stickyBar.buyNowText}
                 </Button>
               </div>
             </div>
@@ -113,14 +117,14 @@ const StickyBottomBar: React.FC = () => {
 
                   <div className="flex flex-col">
                     <h3 className="text-white font-semibold text-sm leading-tight">
-                      Bamboo Toothbrushes
+                      {content.stickyBar.productName}
                     </h3>
                     <div className="flex items-baseline space-x-2 mt-1">
                       <span className="text-lg font-bold text-white">
-                        $14.99
+                        {content.products.price}
                       </span>
                       <span className="text-white/60 line-through text-xs">
-                        $19.99
+                        {content.products.originalPrice}
                       </span>
                     </div>
                   </div>
@@ -153,7 +157,7 @@ const StickyBottomBar: React.FC = () => {
                 </div>
 
                 <Button variant="white" size="sm" className="ml-4">
-                  Buy Now
+                  {content.stickyBar.buyNowText}
                 </Button>
               </div>
             </div>

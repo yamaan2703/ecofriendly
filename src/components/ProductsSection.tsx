@@ -4,19 +4,16 @@ import React, { useState } from "react";
 import { IoIosStar } from "react-icons/io";
 import { Plus, Minus } from "lucide-react";
 import Button from "./Button/Button";
+import { useContent } from "@/contexts/ContentContext";
 // import Button from "../Button";
 
 const ProductSection: React.FC = () => {
+  const { content } = useContent();
   const [quantity, setQuantity] = useState(1);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-  // Product Images (can be dynamic)
-  const productImages = [
-    "/images/brush.png",
-    "/images/brush_on_hand.png",
-    "/images/brush_set.png",
-    "/images/brush_w_human.png",
-  ];
+  // Product Images from content
+  const productImages = content.productImages;
 
   const incrementQuantity = () => setQuantity((prev) => prev + 1);
   const decrementQuantity = () => setQuantity((prev) => Math.max(1, prev - 1));
@@ -99,8 +96,7 @@ const ProductSection: React.FC = () => {
 
           <div className="space-y-3 sm:space-y-4 lg:space-y-3 w-full max-w-2xl mx-auto lg:max-w-none">
             <h1 className="text-xl sm:text-2xl font-eurotypo font-bold text-[#005655] leading-tight">
-              Bamboo Toothbrushes – 10 Pack | Eco-Friendly, Biodegradable, Soft
-              BPA-Free Bristles
+              {content.products.title} | {content.products.description}
             </h1>
 
             <div className="flex items-center gap-2 flex-wrap">
@@ -113,22 +109,24 @@ const ProductSection: React.FC = () => {
                 ))}
               </div>
               <span className="text-xs text-eco-charcoal font-semibold">
-                1,100+ Reviews
+                {content.reviews.count}
               </span>
             </div>
 
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-4xl font-bold text-[#005655]">$14.99</span>
+              <span className="text-4xl font-bold text-[#005655]">
+                {content.products.price}
+              </span>
               <span className="text-xl text-gray-500 line-through font-semibold">
-                $19.99
+                {content.products.originalPrice}
               </span>
               <span className="text-xs sm:text-sm text-gray-500">
-                (Pack of 10)
+                ({content.pricing.packInfo})
               </span>
             </div>
 
             <p className="text-xs sm:text-sm text-gray-500">
-              (Free Shipping over $25 orders)
+              ({content.pricing.freeShipping})
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-2 items-stretch sm:items-center">
@@ -171,14 +169,7 @@ const ProductSection: React.FC = () => {
                 Description
               </h3>
               <p className="text-sm sm:text-base text-eco-charcoal/80 leading-relaxed">
-                Switch to a toothbrush that&apos;s good for you and the planet.
-                Our Bamboo Toothbrushes 10-Pack is crafted from sustainably
-                harvested bamboo with ultra-soft, BPA-free nylon bristles
-                infused with charcoal for a deeper clean. Designed with a
-                smooth, ergonomic grip and packaged in plastic-free materials,
-                these brushes are the perfect sustainable choice for families,
-                travelers, and anyone looking to reduce plastic waste without
-                compromising on oral care quality.
+                {content.productDetails.detailedDescription}
               </p>
             </div>
           </div>

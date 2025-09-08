@@ -203,6 +203,7 @@ export const home1Content = {
     title: "Premium Quality",
     subtitle: "Bamboo Toothbrushes",
     description: "Made from the finest bamboo with ultra-soft bristles for superior oral care.",
+    detailedDescription: "Switch to a toothbrush that's good for you and the planet. Our Bamboo Toothbrushes 10-Pack is crafted from sustainably harvested bamboo with ultra-soft, BPA-free nylon bristles infused with charcoal for a deeper clean. Designed with a smooth, ergonomic grip and packaged in plastic-free materials, these brushes are the perfect sustainable choice for families, travelers, and anyone looking to reduce plastic waste without compromising on oral care quality.",
     mainImage: "/images/brush.png"
   },
 
@@ -215,5 +216,47 @@ export const home1Content = {
       "/images/brush_rock.png",
       "/images/right_brush.png"
     ]
+  },
+
+  // Product images for gallery
+  productImages: [
+    "/images/brush.png",
+    "/images/brush_on_hand.png",
+    "/images/brush_set.png",
+    "/images/brush_w_human.png",
+  ],
+
+  // Reviews and ratings
+  reviews: {
+    rating: 5,
+    count: "1,100+ Reviews"
+  },
+
+  // Pricing info
+  pricing: {
+    freeShipping: "Free Shipping over $25 orders",
+    packInfo: "Pack of 10"
+  },
+
+  // Specifications section
+  specificationsSection: {
+    title: "Product",
+    subtitle: "Specification"
+  },
+
+  // Newsletter section
+  newsletter: {
+    title: "Subscribe Our",
+    subtitle: "Newsletter",
+    description: "Be the first to know about new arrivals, exclusive deals, and sustainable living tips.",
+    highlight: "Join 10,000+ eco-warriors!",
+    placeholder: "Enter your email address",
+    buttonText: "Subscribe"
+  },
+
+  // Sticky bottom bar
+  stickyBar: {
+    productName: "Bamboo Toothbrushes",
+    buyNowText: "Buy Now"
   }
 };

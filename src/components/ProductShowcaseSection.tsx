@@ -3,9 +3,10 @@ import { motion } from "framer-motion";
 import { Star, ShoppingCart, CheckCircle, Mail, Gift } from "lucide-react";
 import Button from "./Button/Button";
 import { IoIosStar } from "react-icons/io";
-import { features3 } from "@/data/data";
+import { useContent } from "@/contexts/ContentContext";
 
 const ProductShowcaseSection: React.FC = () => {
+  const { content } = useContent();
   const [email, setEmail] = useState("");
 
   const handleSubscribe = (e: React.FormEvent) => {
@@ -195,7 +196,7 @@ const ProductShowcaseSection: React.FC = () => {
           viewport={{ once: true }}
         >
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {features3.map((feature, index) => (
+            {content.features3.map((feature, index) => (
               <motion.div
                 key={index}
                 className="group bg-transparent hover:bg-[#E7F0CE] rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-500 ease-in-out transform hover:scale-105 cursor-pointer"
