@@ -87,7 +87,7 @@ const FeaturesSection: React.FC = () => {
                 key={index}
                 className={`group cursor-pointer p-6 rounded-2xl border-2 transition-all duration-300 ${
                   activeFeature === index
-                    ? "border-[#A0C474] bg-white shadow-xl scale-105"
+                    ? "border-[#A0C474] bg-[#FDFDEA] shadow-xl scale-105"
                     : "border-transparent hover:border-[#A0C474]/30 hover:bg-[#E7F0CE]/30"
                 }`}
                 onClick={() => setActiveFeature(index)}
