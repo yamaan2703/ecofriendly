@@ -1,8 +1,9 @@
 import React from "react";
-import { Leaf, Users, Shield, Recycle, Check } from "lucide-react";
-import { benefits } from "@/data/data";
+import { Check } from "lucide-react";
+import { useContent } from "@/contexts/ContentContext";
 
 const BenefitsSection: React.FC = () => {
+  const { content } = useContent();
   return (
     <section id="benefits" className="py-16 relative overflow-hidden px-10">
       {/* Decorative Leaves - Left Side */}
@@ -27,7 +28,7 @@ const BenefitsSection: React.FC = () => {
           <div className="text-center px-2">
             <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2 text-lg sm:text-2xl lg:text-3xl xl:text-4xl font-eurotypo-bold">
               <span className="text-eco-charcoal font-eurotypo font-bold ">
-                Why Choose Our
+                {content.benefits.title}
               </span>
               <div className="w-12 h-6 sm:w-16 sm:h-7 lg:w-20 lg:h-8 mx-1 mt-1 sm:mt-2 relative overflow-hidden rounded-full">
                 <img
@@ -39,10 +40,7 @@ const BenefitsSection: React.FC = () => {
                 />
               </div>
               <span className="text-[#005655] font-bold font-eurotypo italic">
-                Bamboo
-              </span>
-              <span className="text-eco-charcoal font-eurotypo  font-bold">
-                Toothbrushes?
+                {content.benefits.subtitle}
               </span>
             </div>
           </div>
@@ -50,7 +48,7 @@ const BenefitsSection: React.FC = () => {
 
         {/* Benefits Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {benefits.map((benefit, index) => (
+          {content.benefits.items.map((benefit, index) => (
             <div
               key={index}
               className="group bg-transparent hover:bg-[#E7F0CE] rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-500 ease-in-out transform hover:scale-105 cursor-pointer"
@@ -59,7 +57,11 @@ const BenefitsSection: React.FC = () => {
                 {/* Icon */}
                 <div className="flex items-center gap-2">
                   <div className="w-12 h-12 bg-[#005655] group-hover:bg-white rounded-lg flex items-center justify-center transition-all duration-500 ease-in-out">
-                    <benefit.icon className="w-6 h-6 text-white group-hover:text-[#005655] transition-colors duration-500 ease-in-out" />
+                    <img 
+                      src={benefit.icon} 
+                      alt={benefit.title}
+                      className="w-6 h-6 object-contain"
+                    />
                   </div>
 
                   {/* Title */}

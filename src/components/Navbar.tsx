@@ -3,18 +3,40 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { navItems } from "@/data/data";
+import { useContent } from "@/contexts/ContentContext";
+
+const navItems = [
+  { label: "Home 1", action: "home1", type: "page" },
+  { label: "Home 2", action: "home2", type: "page" },
+  { label: "Benefits", action: "benefits", type: "scroll" },
+  { label: "Features", action: "features", type: "scroll" },
+  { label: "Products", action: "products", type: "scroll" },
+  { label: "FAQ", action: "faq", type: "scroll" },
+];
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [isScrolled, setIsScrolled] = useState(false);
+  const { currentPage, switchToHome1, switchToHome2 } = useContent();
+
+  const handleNavigation = (item: (typeof navItems)[0]) => {
+    if (item.type === "page") {
+      if (item.action === "home1") {
+        switchToHome1();
+      } else if (item.action === "home2") {
+        switchToHome2();
+      }
+    } else {
+      scrollToSection(item.action);
+    }
+    setIsOpen(false);
+  };
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
-      setIsOpen(false);
     }
   };
 
@@ -23,8 +45,10 @@ const Navbar: React.FC = () => {
       const scrollPosition = window.scrollY;
       setIsScrolled(scrollPosition > 50);
 
-      const sections = navItems.map((item) => item.href);
-      const currentSection = sections.find((section) => {
+      const scrollSections = navItems
+        .filter((item) => item.type === "scroll")
+        .map((item) => item.action);
+      const currentSection = scrollSections.find((section) => {
         const element = document.getElementById(section);
         if (element) {
           const rect = element.getBoundingClientRect();
@@ -67,18 +91,21 @@ const Navbar: React.FC = () => {
           <div className="hidden md:flex items-center space-x-2">
             {navItems.map((item, index) => (
               <motion.div
-                key={item.href}
+                key={item.action}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1, duration: 0.6 }}
               >
                 <button
-                  onClick={() => scrollToSection(item.href)}
+                  onClick={() => handleNavigation(item)}
                   className="relative px-4 py-2 font-medium text-[#005655] transition-all duration-300 hover:scale-105"
                 >
                   <span className="relative inline-block text-center">
                     {item.label}
-                    {activeSection === item.href && (
+                    {((item.type === "scroll" &&
+                      activeSection === item.action) ||
+                      (item.type === "page" &&
+                        currentPage === item.action)) && (
                       <motion.span
                         layoutId="activeIndicator"
                         className="block h-0.5 bg-[#005655] rounded mt-1 w-1/2 mx-auto"
@@ -155,13 +182,15 @@ const Navbar: React.FC = () => {
               <div className="bg-[#005655] flex-1 flex flex-col items-start justify-start px-6 py-8 space-y-6">
                 {navItems.map((item, index) => (
                   <motion.button
-                    key={item.href}
-                    onClick={() => scrollToSection(item.href)}
+                    key={item.action}
+                    onClick={() => handleNavigation(item)}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
                     className={`text-xl font-semibold tracking-wide text-white w-full text-left transition-colors duration-300 ${
-                      activeSection === item.href
+                      (item.type === "scroll" &&
+                        activeSection === item.action) ||
+                      (item.type === "page" && currentPage === item.action)
                         ? "underline underline-offset-4"
                         : "hover:text-[#A0C474]"
                     }`}

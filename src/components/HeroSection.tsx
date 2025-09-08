@@ -3,8 +3,10 @@
 import React from "react";
 import { Play } from "lucide-react";
 import { motion } from "framer-motion";
+import { useContent } from "@/contexts/ContentContext";
 
 const HeroSection: React.FC = () => {
+  const { content } = useContent();
   return (
     <section
       id="home"
@@ -24,7 +26,7 @@ const HeroSection: React.FC = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
           >
             <span className="inline-block bg-[#E7F0CE] text-eco-green text-sm sm:text-base font-semibold px-4 py-1.5 rounded-full shadow-sm animate-bounce">
-              100% Plastic-Free Packaging
+              {content.hero.badge}
             </span>
           </motion.div>
 
@@ -34,7 +36,7 @@ const HeroSection: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.5 }}
             className="text-4xl sm:text-5xl lg:text-6xl font-notulen font-black text-[#005655] leading-tight"
           >
-            Ecofriendly
+            {content.hero.title}
           </motion.h1>
 
           <motion.h2
@@ -43,7 +45,7 @@ const HeroSection: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.7 }}
             className="text-4xl font-eurotypo italic text-eco-charcoal"
           >
-            Bamboo Toothbrushes
+            {content.hero.subtitle}
           </motion.h2>
 
           <motion.p
@@ -52,8 +54,7 @@ const HeroSection: React.FC = () => {
             transition={{ duration: 0.6, delay: 0.9 }}
             className="text-base sm:text-lg text-eco-charcoal leading-relaxed max-w-md mx-auto lg:mx-0 mt-2"
           >
-            Soft BPA-free bristles, sustainable bamboo handles, and packaging
-            that's kind to our planet. A better smile starts here.
+            {content.hero.description}
           </motion.p>
         </motion.div>
 
@@ -83,8 +84,8 @@ const HeroSection: React.FC = () => {
             ></motion.div>
 
             <motion.img
-              src="/images/hero_image.png"
-              alt="Ecofriendly Bamboo Toothbrush"
+              src={content.hero.heroImage}
+              alt={`${content.hero.title} ${content.hero.subtitle}`}
               width={800}
               height={800}
               className="relative rounded-2xl shadow-2xl object-cover z-10 bg-[#E7F0CE]"
