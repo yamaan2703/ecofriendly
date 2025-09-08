@@ -1,18 +1,34 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import {
+  CheckCircle,
+  ArrowRight,
+  Star,
   Sparkles,
   Shield,
   Feather,
   Package,
-  CheckCircle,
-  ArrowRight,
-  Star,
+  Gem,
+  Crown,
+  Gift,
+  Award,
 } from "lucide-react";
-import { features } from "@/data/data";
+import { useContent } from "@/contexts/ContentContext";
+
+const iconMap = {
+  Sparkles,
+  Shield,
+  Feather,
+  Package,
+  Gem,
+  Crown,
+  Gift,
+  Award,
+};
 
 const FeaturesSection: React.FC = () => {
   const [activeFeature, setActiveFeature] = useState(0);
+  const { content } = useContent();
 
   return (
     <section id="features" className="py-20 relative overflow-hidden">
@@ -34,13 +50,13 @@ const FeaturesSection: React.FC = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            Why Choose Our
+            {content.features.title}
             <motion.span
               className="relative inline-block ml-4 text-[#005655] italic"
               whileHover={{ scale: 1.05, color: "#A0C474" }}
               transition={{ duration: 0.3 }}
             >
-              Bamboo Brush
+              {content.features.subtitle}
             </motion.span>
           </motion.h2>
 
@@ -66,7 +82,7 @@ const FeaturesSection: React.FC = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            {features.map((feature, index) => (
+            {content.features.items.map((feature, index) => (
               <motion.div
                 key={index}
                 className={`group cursor-pointer p-6 rounded-2xl border-2 transition-all duration-300 ${
@@ -99,7 +115,17 @@ const FeaturesSection: React.FC = () => {
                     whileTap={{ scale: 0.95 }}
                     transition={{ duration: 0.2 }}
                   >
-                    {feature.icon}
+                    {typeof feature.icon === "string"
+                      ? (() => {
+                          const IconComponent =
+                            iconMap[feature.icon as keyof typeof iconMap];
+                          return IconComponent ? (
+                            <IconComponent className="size-4" />
+                          ) : (
+                            <Star className="size-4" />
+                          );
+                        })()
+                      : feature.icon}
                   </motion.div>
 
                   <div className="flex-1">
@@ -198,8 +224,8 @@ const FeaturesSection: React.FC = () => {
                 ></motion.div>
 
                 <motion.img
-                  src={features[activeFeature].image}
-                  alt={features[activeFeature].title}
+                  src={content.features.mainImage}
+                  alt={`${content.features.title} ${content.features.subtitle}`}
                   width={800}
                   height={800}
                   className="relative rounded-2xl shadow-2xl object-cover z-10 bg-[#E7F0CE]"

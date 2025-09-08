@@ -57,11 +57,15 @@ const BenefitsSection: React.FC = () => {
                 {/* Icon */}
                 <div className="flex items-center gap-2">
                   <div className="w-12 h-12 bg-[#005655] group-hover:bg-white rounded-lg flex items-center justify-center transition-all duration-500 ease-in-out">
-                    <img 
-                      src={benefit.icon} 
-                      alt={benefit.title}
-                      className="w-6 h-6 object-contain"
-                    />
+                    {typeof benefit.icon === "string" ? (
+                      <img
+                        src={benefit.icon}
+                        alt={benefit.title}
+                        className="w-6 h-6 object-contain"
+                      />
+                    ) : (
+                      <benefit.icon className="w-6 h-6 text-white group-hover:text-[#005655] transition-colors duration-500 ease-in-out" />
+                    )}
                   </div>
 
                   {/* Title */}

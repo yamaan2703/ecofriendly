@@ -1,73 +1,203 @@
 
-// Home 1 Content - Original Eco-Friendly Theme
+// Home 1 Content - All data from data.tsx (Original content)
+import {
+  Feather,
+  Leaf,
+  Package,
+  Recycle,
+  Shield,
+  Sparkles,
+  Users,
+} from "lucide-react";
+
 export const home1Content = {
   hero: {
     badge: "100% Plastic-Free Packaging",
     title: "Ecofriendly",
     subtitle: "Bamboo Toothbrushes",
-    description: "Experience the perfect blend of sustainability and oral care with our premium bamboo toothbrushes. Crafted from 100% biodegradable bamboo handles and ultra-soft bristles.",
+    description: "Soft BPA-free bristles, sustainable bamboo handles, and packaging that's kind to our planet. A better smile starts here.",
     heroImage: "/images/hero_image.png",
     ctaText: "Shop Now - $12.99",
     videoText: "Watch Our Story"
   },
   
   products: {
-    title: "Premium Bamboo Collection",
-    description: "Discover our range of eco-friendly bamboo toothbrushes designed for the whole family.",
+    title: "Bamboo Toothbrushes – 10 Pack",
+    description: "Eco-Friendly, Biodegradable, Soft BPA-Free Bristles",
     mainImage: "/images/brush_set.png",
     price: "$12.99",
     originalPrice: "$19.99"
   },
 
+  // Original benefits from data.tsx
   benefits: {
     title: "Why Choose Our",
     subtitle: "Bamboo Toothbrushes?",
     items: [
       {
-        icon: "/images/Biodegradable.svg",
-        title: "100% Biodegradable",
-        description: "Our bamboo handles naturally decompose within 6 months in compost conditions."
+        icon: Leaf,
+        title: "100% Natural Bamboo",
+        description: "Made from sustainably sourced bamboo that's completely biodegradable"
       },
       {
-        icon: "/images/plastic-free.svg",
-        title: "Plastic-Free Packaging",
-        description: "Zero plastic waste with our compostable packaging made from recycled materials."
+        icon: Users,
+        title: "Perfect for Families",
+        description: "Pack of 10 toothbrushes - ideal for the whole family or extended personal use"
       },
       {
-        icon: "/images/super-soft.svg",
-        title: "Ultra-Soft Bristles",
-        description: "Gentle on gums while effectively removing plaque and bacteria."
+        icon: Shield,
+        title: "100% FBR Compliant",
+        description: "Certified solution ensuring compliance with Pakistan's tax regulations."
       },
       {
-        icon: "/images/earth.svg",
-        title: "Planet Friendly",
-        description: "Every purchase helps reduce plastic waste and supports sustainable forestry."
+        icon: Recycle,
+        title: "Eco-Friendly",
+        description: "Reduces plastic waste by 95% compared to traditional plastic toothbrushes"
       }
     ]
   },
 
+  // Original features from data.tsx
   features: {
-    title: "Sustainable",
-    subtitle: "Oral Care Revolution",
+    title: "Why Choose Our",
+    subtitle: "Bamboo Brush",
     mainImage: "/images/brush_w_human.png",
     items: [
       {
-        icon: "/images/Bristles.svg",
-        title: "Premium Bristles",
-        description: "BPA-free bristles that are gentle yet effective for daily cleaning."
+        title: "Charcoal-Infused Bristles",
+        description: "Deep cleaning power with natural whitening properties that remove plaque effectively while being gentle on your gums.",
+        image: "/images/Artboard_2.png",
+        icon: "Sparkles",
+        benefits: ["Natural whitening", "Plaque removal", "Gentle on gums"]
       },
       {
-        icon: "/images/round-leaf.svg",
-        title: "Natural Bamboo",
-        description: "Sustainably sourced bamboo that's naturally antimicrobial."
+        title: "Ergonomic Handle Design",
+        description: "Comfortable bamboo grip designed for optimal control and comfort during your daily brushing routine.",
+        image: "/images/brush.png",
+        icon: "Shield",
+        benefits: ["Perfect grip", "Comfortable hold", "Better control"]
       },
       {
-        icon: "/images/30_days.svg",
-        title: "30-Day Guarantee",
-        description: "Not satisfied? Return within 30 days for a full refund."
+        title: "Travel-Friendly & Lightweight",
+        description: "Perfect size for travel with eco-friendly packaging that fits easily in your luggage or bag.",
+        image: "/images/brush_set.png",
+        icon: "Feather",
+        benefits: ["Ultra lightweight", "Compact design", "Travel ready"]
+      },
+      {
+        title: "Splinter-Free Finish",
+        description: "Expertly polished bamboo handles ensure safe, splinter-free, and comfortable brushing experience every day.",
+        image: "/images/Artboard_1.png",
+        icon: "Package",
+        benefits: ["Smooth finish", "Safe usage", "Long lasting"]
       }
     ]
   },
+
+  // Original features2 from data.tsx
+  features2: [
+    {
+      title: "Soft & BPA-Free Bristles",
+      description: "Gentle on gums while providing effective cleaning",
+      position: "top-left"
+    },
+    {
+      title: "Charcoal-Infused Bristles",
+      description: "Deep cleaning power with natural whitening",
+      position: "top-right"
+    },
+    {
+      title: "Ergonomic Handle",
+      description: "Comfortable grip for better control",
+      position: "bottom-left"
+    },
+    {
+      title: "Eco-Friendly & Biodegradable",
+      description: "100% sustainable bamboo material",
+      position: "center-right"
+    },
+    {
+      title: "Lightweight",
+      description: "Perfect for travel and daily use",
+      position: "bottom-right"
+    }
+  ],
+
+  // Original features3 from data.tsx
+  features3: [
+    {
+      icon: "/images/earth.svg",
+      label: "Eco Friendly",
+      description: "100% sustainable materials"
+    },
+    {
+      icon: "/images/Bristles.svg",
+      label: "Super Soft",
+      description: "Gentle on sensitive gums"
+    },
+    {
+      icon: "/images/plastic.svg",
+      label: "Plastic Free",
+      description: "Zero plastic packaging"
+    },
+    {
+      icon: "/images/Biodegradable.svg",
+      label: "30 Days Return",
+      description: "Risk-free guarantee"
+    }
+  ],
+
+  // Original specifications from data.tsx
+  specifications: [
+    {
+      label: "Features & Specs",
+      value: "eco-friendly, biodegradable, travel toothbrush, soft BPA-free, natural wooden bristles, Travel Size, Bamboo Handle, Plant-Based Bristles"
+    },
+    {
+      label: "Power Source",
+      value: "Battery Powered"
+    },
+    {
+      label: "Item Firmness",
+      value: "Soft"
+    },
+    {
+      label: "Toothbrush head shape",
+      value: "Rectangle"
+    },
+    {
+      label: "Description Style",
+      value: "Natural"
+    },
+    {
+      label: "Color",
+      value: "Natural"
+    },
+    {
+      label: "Material Features",
+      value: "Natural"
+    },
+    {
+      label: "Bristle Material",
+      value: "Nylon"
+    },
+    {
+      label: "Handle Material",
+      value: "Wood"
+    },
+    {
+      label: "Number of Items",
+      value: "10"
+    },
+    {
+      label: "Unit Count",
+      value: "10.00 Count"
+    },
+    {
+      label: "Number of Items",
+      value: "Number of Pieces"
+    }
+  ],
 
   productDetails: {
     title: "Premium Quality",

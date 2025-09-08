@@ -1,26 +1,35 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useContent } from "@/contexts/ContentContext";
 
 const navItems = [
-  { label: "Home 1", action: "home1", type: "page" },
-  { label: "Home 2", action: "home2", type: "page" },
+  { label: "Home", action: "home", type: "scroll" },
   { label: "Benefits", action: "benefits", type: "scroll" },
   { label: "Features", action: "features", type: "scroll" },
   { label: "Products", action: "products", type: "scroll" },
   { label: "FAQ", action: "faq", type: "scroll" },
 ];
 
+const productTypes = [
+  { label: "Toothbrush", action: "home1", type: "page" },
+  { label: "Dishwasher", action: "home2", type: "page" },
+];
+
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { currentPage, switchToHome1, switchToHome2 } = useContent();
 
-  const handleNavigation = (item: (typeof navItems)[0]) => {
+  const handleNavigation = (item: {
+    label: string;
+    action: string;
+    type: string;
+  }) => {
     if (item.type === "page") {
       if (item.action === "home1") {
         switchToHome1();
@@ -31,6 +40,7 @@ const Navbar: React.FC = () => {
       scrollToSection(item.action);
     }
     setIsOpen(false);
+    setIsDropdownOpen(false);
   };
 
   const scrollToSection = (sectionId: string) => {
@@ -61,8 +71,19 @@ const Navbar: React.FC = () => {
       }
     };
 
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest(".dropdown-container")) {
+        setIsDropdownOpen(false);
+      }
+    };
+
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("click", handleClickOutside);
+    };
   }, []);
 
   return (
@@ -89,12 +110,73 @@ const Navbar: React.FC = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-2">
+            {/* Products Dropdown */}
+            <motion.div
+              className="relative dropdown-container"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0, duration: 0.6 }}
+            >
+              <button
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="relative px-4 py-2 font-medium text-[#005655] transition-all duration-300 hover:scale-105 flex items-center gap-1"
+              >
+                <span className="relative inline-block text-center">
+                  Home
+                  {productTypes.some((item) => currentPage === item.action) && (
+                    <motion.span
+                      layoutId="activeIndicator"
+                      className="block h-0.5 bg-[#005655] rounded mt-1 w-1/2 mx-auto"
+                      transition={{
+                        type: "spring",
+                        bounce: 0.25,
+                        duration: 0.6,
+                      }}
+                    />
+                  )}
+                </span>
+                <ChevronDown
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    isDropdownOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {/* Dropdown Menu */}
+              <AnimatePresence>
+                {isDropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
+                  >
+                    {productTypes.map((item, index) => (
+                      <button
+                        key={item.action}
+                        onClick={() => handleNavigation(item)}
+                        className={`w-full text-left px-4 py-2 hover:bg-[#E7F0CE] transition-colors duration-200 ${
+                          currentPage === item.action
+                            ? "bg-[#E7F0CE] text-[#005655] font-semibold"
+                            : "text-gray-700"
+                        }`}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+
+            {/* Regular Navigation Items */}
             {navItems.map((item, index) => (
               <motion.div
                 key={item.action}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
+                transition={{ delay: (index + 1) * 0.1, duration: 0.6 }}
               >
                 <button
                   onClick={() => handleNavigation(item)}
@@ -102,20 +184,18 @@ const Navbar: React.FC = () => {
                 >
                   <span className="relative inline-block text-center">
                     {item.label}
-                    {((item.type === "scroll" &&
-                      activeSection === item.action) ||
-                      (item.type === "page" &&
-                        currentPage === item.action)) && (
-                      <motion.span
-                        layoutId="activeIndicator"
-                        className="block h-0.5 bg-[#005655] rounded mt-1 w-1/2 mx-auto"
-                        transition={{
-                          type: "spring",
-                          bounce: 0.25,
-                          duration: 0.6,
-                        }}
-                      />
-                    )}
+                    {item.type === "scroll" &&
+                      activeSection === item.action && (
+                        <motion.span
+                          layoutId="activeIndicator"
+                          className="block h-0.5 bg-[#005655] rounded mt-1 w-1/2 mx-auto"
+                          transition={{
+                            type: "spring",
+                            bounce: 0.25,
+                            duration: 0.6,
+                          }}
+                        />
+                      )}
                   </span>
                 </button>
               </motion.div>
@@ -180,17 +260,37 @@ const Navbar: React.FC = () => {
               </div>
 
               <div className="bg-[#005655] flex-1 flex flex-col items-start justify-start px-6 py-8 space-y-6">
+                {/* Products Section */}
+                <div className="w-full">
+                  <h3 className="text-lg font-bold text-white mb-3">Home</h3>
+                  {productTypes.map((item, index) => (
+                    <motion.button
+                      key={item.action}
+                      onClick={() => handleNavigation(item)}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className={`text-lg font-medium tracking-wide text-white w-full text-left transition-colors duration-300 mb-2 pl-4 ${
+                        currentPage === item.action
+                          ? "underline underline-offset-4"
+                          : "hover:text-[#A0C474]"
+                      }`}
+                    >
+                      {item.label}
+                    </motion.button>
+                  ))}
+                </div>
+
+                {/* Regular Navigation */}
                 {navItems.map((item, index) => (
                   <motion.button
                     key={item.action}
                     onClick={() => handleNavigation(item)}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
+                    transition={{ delay: (index + productTypes.length) * 0.1 }}
                     className={`text-xl font-semibold tracking-wide text-white w-full text-left transition-colors duration-300 ${
-                      (item.type === "scroll" &&
-                        activeSection === item.action) ||
-                      (item.type === "page" && currentPage === item.action)
+                      item.type === "scroll" && activeSection === item.action
                         ? "underline underline-offset-4"
                         : "hover:text-[#A0C474]"
                     }`}
