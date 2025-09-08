@@ -1,37 +1,10 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { features2 } from "@/data/data";
 
 const ProductDetailingSection: React.FC = () => {
-  const features = [
-    {
-      title: "Soft & BPA-Free Bristles",
-      description: "Gentle on gums while providing effective cleaning",
-      position: "top-left",
-    },
-    {
-      title: "Charcoal-Infused Bristles",
-      description: "Deep cleaning power with natural whitening",
-      position: "top-right",
-    },
-    {
-      title: "Ergonomic Handle",
-      description: "Comfortable grip for better control",
-      position: "bottom-left",
-    },
-    {
-      title: "Eco-Friendly & Biodegradable",
-      description: "100% sustainable bamboo material",
-      position: "center-right",
-    },
-    {
-      title: "Lightweight",
-      description: "Perfect for travel and daily use",
-      position: "bottom-right",
-    },
-  ];
-
   return (
-    <section className=" px-4 relative overflow-hidden">
+    <section id="products" className=" px-4 relative overflow-hidden">
       <div className="max-w-7xl mx-auto ">
         <motion.div
           className="text-center mb-16"
@@ -74,7 +47,7 @@ const ProductDetailingSection: React.FC = () => {
           <div className="flex items-center justify-center">
             {/* Left Side Cards */}
             <div className="flex flex-col gap-5">
-              {features.slice(0, 3).map((feature, index) => (
+              {features2.slice(0, 3).map((feature, index) => (
                 <motion.div
                   key={index}
                   initial={{ x: -50, opacity: 0 }}
@@ -109,7 +82,7 @@ const ProductDetailingSection: React.FC = () => {
 
             {/* Right Side Cards */}
             <div className="flex flex-col gap-6">
-              {features.slice(3).map((feature, index) => (
+              {features2.slice(3).map((feature, index) => (
                 <motion.div
                   key={index + 3}
                   initial={{ x: 50, opacity: 0 }}
@@ -148,7 +121,7 @@ const ProductDetailingSection: React.FC = () => {
 
           {/* Features Grid Below Image */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {features.map((feature, index) => (
+            {features2.map((feature, index) => (
               <motion.div
                 key={index}
                 initial={{ y: 30, opacity: 0 }}

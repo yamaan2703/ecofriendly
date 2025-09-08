@@ -3,14 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
-export const navItems = [
-  { label: "Home", href: "home" },
-  { label: "Benefits", href: "benefits" },
-  { label: "Features", href: "features" },
-  { label: "Products", href: "products" },
-  { label: "FAQ", href: "faq" },
-];
+import { navItems } from "@/data/data";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);

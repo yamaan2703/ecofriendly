@@ -1,36 +1,10 @@
 import React from "react";
 import { Leaf, Users, Shield, Recycle, Check } from "lucide-react";
+import { benefits } from "@/data/data";
 
 const BenefitsSection: React.FC = () => {
-  const benefits = [
-    {
-      icon: Leaf,
-      title: "100% Natural Bamboo",
-      description:
-        "Made from sustainably sourced bamboo that's completely biodegradable",
-    },
-    {
-      icon: Users,
-      title: "Perfect for Families",
-      description:
-        "Pack of 10 toothbrushes - ideal for the whole family or extended personal use",
-    },
-    {
-      icon: Shield,
-      title: "100% FBR Compliant",
-      description:
-        "Certified solution ensuring compliance with Pakistan's tax regulations.",
-    },
-    {
-      icon: Recycle,
-      title: "Eco-Friendly",
-      description:
-        "Reduces plastic waste by 95% compared to traditional plastic toothbrushes",
-    },
-  ];
-
   return (
-    <section className="py-16 relative overflow-hidden px-10">
+    <section id="benefits" className="py-16 relative overflow-hidden px-10">
       {/* Decorative Leaves - Left Side */}
       <div className="absolute left-0 bottom-0 w-48 h-48 sm:w-64 sm:h-64 lg:w-96 lg:h-96 z-0 pointer-events-none">
         <img

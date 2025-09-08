@@ -9,47 +9,13 @@ import {
   ArrowRight,
   Star,
 } from "lucide-react";
+import { features } from "@/data/data";
 
 const FeaturesSection: React.FC = () => {
   const [activeFeature, setActiveFeature] = useState(0);
 
-  const features = [
-    {
-      title: "Charcoal-Infused Bristles",
-      description:
-        "Deep cleaning power with natural whitening properties that remove plaque effectively while being gentle on your gums.",
-      image: "/images/Artboard_2.png",
-      icon: <Sparkles className="size-4" />,
-      benefits: ["Natural whitening", "Plaque removal", "Gentle on gums"],
-    },
-    {
-      title: "Ergonomic Handle Design",
-      description:
-        "Comfortable bamboo grip designed for optimal control and comfort during your daily brushing routine.",
-      image: "/images/brush.png",
-      icon: <Shield className="size-4" />,
-      benefits: ["Perfect grip", "Comfortable hold", "Better control"],
-    },
-    {
-      title: "Travel-Friendly & Lightweight",
-      description:
-        "Perfect size for travel with eco-friendly packaging that fits easily in your luggage or bag.",
-      image: "/images/brush_set.png",
-      icon: <Feather className="size-4" />,
-      benefits: ["Ultra lightweight", "Compact design", "Travel ready"],
-    },
-    {
-      title: "Splinter-Free Finish",
-      description:
-        "Expertly polished bamboo handles ensure safe, splinter-free, and comfortable brushing experience every day.",
-      image: "/images/Artboard_1.png",
-      icon: <Package className="size-4" />,
-      benefits: ["Smooth finish", "Safe usage", "Long lasting"],
-    },
-  ];
-
   return (
-    <section className="py-20 relative overflow-hidden">
+    <section id="features" className="py-20 relative overflow-hidden">
       {/* Animated Background Elements */}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

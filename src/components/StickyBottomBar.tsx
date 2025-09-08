@@ -55,23 +55,9 @@ const StickyBottomBar: React.FC = () => {
                 </div>
 
                 <div className="flex flex-col">
-                  <h3 className="text-white font-semibold text-sm sm:text-base leading-tight">
-                    Bamboo Toothbrushes - 10 Pack | Eco-Friendly...
+                  <h3 className="text-white font-semibold text-xs sm:text-base leading-tight">
+                    Bamboo Toothbrushes - 10 Pack
                   </h3>
-
-                  <div className="flex items-center space-x-2 mt-1">
-                    <div className="flex items-center">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <Star
-                          key={star}
-                          className="w-3 h-3 fill-yellow-400 text-yellow-400"
-                        />
-                      ))}
-                    </div>
-                    <span className="text-white/80 text-xs">
-                      5.0 (1,100+ Reviews)
-                    </span>
-                  </div>
                 </div>
               </div>
 
@@ -85,9 +71,6 @@ const StickyBottomBar: React.FC = () => {
                       $19.99
                     </span>
                   </div>
-                  <span className="text-[#A0C474] text-xs font-medium">
-                    (Pack of 10)
-                  </span>
                 </div>
 
                 {/* Quantity Selector */}

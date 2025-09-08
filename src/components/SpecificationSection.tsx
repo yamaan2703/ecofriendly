@@ -1,60 +1,9 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
+import { specifications } from "@/data/data";
 
 const ProductSpecSection: React.FC = () => {
-  const specifications = [
-    {
-      label: "Features & Specs",
-      value:
-        "eco-friendly, biodegradable, travel toothbrush, soft BPA-free, natural wooden bristles, Travel Size, Bamboo Handle, Plant-Based Bristles",
-    },
-    {
-      label: "Power Source",
-      value: "Battery Powered",
-    },
-    {
-      label: "Item Firmness",
-      value: "Soft",
-    },
-    {
-      label: "Toothbrush head shape",
-      value: "Rectangle",
-    },
-    {
-      label: "Description Style",
-      value: "Natural",
-    },
-    {
-      label: "Color",
-      value: "Natural",
-    },
-    {
-      label: "Material Features",
-      value: "Natural",
-    },
-    {
-      label: "Bristle Material",
-      value: "Nylon",
-    },
-    {
-      label: "Handle Material",
-      value: "Wood",
-    },
-    {
-      label: "Number of Items",
-      value: "10",
-    },
-    {
-      label: "Unit Count",
-      value: "10.00 Count",
-    },
-    {
-      label: "Number of Items",
-      value: "Number of Pieces",
-    },
-  ];
-
   return (
     <section className="p-4 sm:p-6 lg:p-10">
       <div className="max-w-7xl mx-auto border rounded-lg sm:rounded-xl lg:rounded-2xl p-4 sm:p-6 lg:p-8">

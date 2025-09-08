@@ -3,32 +3,10 @@ import { motion } from "framer-motion";
 import { Star, ShoppingCart, CheckCircle, Mail, Gift } from "lucide-react";
 import Button from "./Button/Button";
 import { IoIosStar } from "react-icons/io";
+import { features3 } from "@/data/data";
 
 const ProductShowcaseSection: React.FC = () => {
   const [email, setEmail] = useState("");
-
-  const features = [
-    {
-      icon: "/images/earth.svg",
-      label: "Eco Friendly",
-      description: "100% sustainable materials",
-    },
-    {
-      icon: "/images/Bristles.svg",
-      label: "Super Soft",
-      description: "Gentle on sensitive gums",
-    },
-    {
-      icon: "/images/plastic.svg",
-      label: "Plastic Free",
-      description: "Zero plastic packaging",
-    },
-    {
-      icon: "/images/Biodegradable.svg",
-      label: "30 Days Return",
-      description: "Risk-free guarantee",
-    },
-  ];
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -217,7 +195,7 @@ const ProductShowcaseSection: React.FC = () => {
           viewport={{ once: true }}
         >
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {features.map((feature, index) => (
+            {features3.map((feature, index) => (
               <motion.div
                 key={index}
                 className="group bg-transparent hover:bg-[#E7F0CE] rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-500 ease-in-out transform hover:scale-105 cursor-pointer"
