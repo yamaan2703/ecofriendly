@@ -36,23 +36,23 @@ export const home1Content = {
     items: [
       {
         icon: Leaf,
-        title: "100% Natural Bamboo",
-        description: "Made from sustainably sourced bamboo that's completely biodegradable"
+        title: "Eco-Friendly & Biodegradable",
+        description: "Made from sustainable bamboo that naturally decomposes"
       },
       {
         icon: Users,
-        title: "Perfect for Families",
-        description: "Pack of 10 toothbrushes - ideal for the whole family or extended personal use"
+        title: "Family Pack of 10",
+        description: "Perfect for families or extended personal use"
       },
       {
         icon: Shield,
-        title: "100% FBR Compliant",
-        description: "Certified solution ensuring compliance with Pakistan's tax regulations."
+        title: "Soft BPA-Free Bristles",
+        description: "Gentle on gums while providing effective cleaning."
       },
       {
         icon: Recycle,
-        title: "Eco-Friendly",
-        description: "Reduces plastic waste by 95% compared to traditional plastic toothbrushes"
+        title: "Plastic-Free Packaging",
+        description: "100% recyclable and compostable packaging"
       }
     ]
   },
@@ -71,7 +71,7 @@ export const home1Content = {
         benefits: ["Natural whitening", "Plaque removal", "Gentle on gums"]
       },
       {
-        title: "Ergonomic Handle Design",
+        title: "Charcoal-Infused Bristles",
         description: "Comfortable bamboo grip designed for optimal control and comfort during your daily brushing routine.",
         image: "/images/brush.png",
         icon: "Shield",
@@ -258,5 +258,26 @@ export const home1Content = {
   stickyBar: {
     productName: "Bamboo Toothbrushes",
     buyNowText: "Buy Now"
+  },
+
+  // Product showcase section
+  productShowcase: {
+    title: "BAMBOO",
+    subtitle: "Toothbrushes",
+    rating: 4.9,
+    reviewCount: "1,100+ Reviews",
+    description: "A cleaner way to brush is here. Natural. Eco-friendly. Gentle. Enjoy a sustainable toothbrush that's soft on your gums and safe for the planet.",
+    highlightText: "Natural. Eco-friendly. Gentle.",
+    buttonText: "Shop Collection",
+    image: "/images/brush_set.png",
+    imageAlt: "Premium Bamboo Toothbrush Set",
+    guarantees: [
+      {
+        text: "100% Money back guarantee"
+      },
+      {
+        text: "Free shipping on orders $25+"
+      }
+    ]
   }
 };

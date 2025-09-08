@@ -74,8 +74,8 @@ const ProductShowcaseSection: React.FC = () => {
               ></motion.div>
 
               <motion.img
-                src="/images/brush_set.png"
-                alt="Premium Bamboo Toothbrush Set"
+                src={content.productShowcase.image}
+                alt={content.productShowcase.imageAlt}
                 width={800}
                 height={800}
                 className="relative rounded-2xl shadow-2xl object-cover z-10 bg-[#E7F0CE]"
@@ -105,9 +105,9 @@ const ProductShowcaseSection: React.FC = () => {
               className="flex"
             >
               <h1 className="text-4xl font-semibold text-eco-charcoal leading-tight flex items-baseline gap-2">
-                BAMBOO
+                {content.productShowcase.title}
                 <span className="font-eurotypo italic text-[#005655]">
-                  Toothbrushes
+                  {content.productShowcase.subtitle}
                 </span>
               </h1>
             </motion.div>
@@ -138,7 +138,8 @@ const ProductShowcaseSection: React.FC = () => {
                 ))}
               </div>
               <span className="text-gray-600 font-semibold text-lg">
-                4.9 (1,100+ Reviews)
+                {content.productShowcase.rating} (
+                {content.productShowcase.reviewCount})
               </span>
             </motion.div>
 
@@ -150,12 +151,19 @@ const ProductShowcaseSection: React.FC = () => {
               transition={{ duration: 0.6, delay: 0.5 }}
               viewport={{ once: true }}
             >
-              A cleaner way to brush is here.{" "}
+              {
+                content.productShowcase.description.split(
+                  content.productShowcase.highlightText
+                )[0]
+              }
               <span className="text-[#005655] font-semibold">
-                Natural. Eco-friendly. Gentle.
+                {content.productShowcase.highlightText}
               </span>
-              Enjoy a sustainable toothbrush that's soft on your gums and safe
-              for the planet.
+              {
+                content.productShowcase.description.split(
+                  content.productShowcase.highlightText
+                )[1]
+              }
             </motion.p>
 
             {/* CTA Button */}
@@ -171,18 +179,19 @@ const ProductShowcaseSection: React.FC = () => {
                 size="xs"
                 className="w-full sm:w-auto text-sm sm:text-base py-2 sm:py-1.5"
               >
-                Shop Collection
+                {content.productShowcase.buttonText}
               </Button>
             </motion.div>
             <div className="flex gap-6">
-              <span className="text-sm text-gray-500 flex items-center gap-1">
-                <CheckCircle className="w-4 h-4 text-green-500" />
-                100% Money back guarantee
-              </span>
-              <span className="text-sm text-gray-500 flex items-center gap-1 mt-1">
-                <CheckCircle className="w-4 h-4 text-green-500" />
-                Free shipping on orders $25+
-              </span>
+              {content.productShowcase.guarantees.map((guarantee, index) => (
+                <span
+                  key={index}
+                  className="text-sm text-gray-500 flex items-center gap-1 mt-1"
+                >
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  {guarantee.text}
+                </span>
+              ))}
             </div>
           </motion.div>
         </div>

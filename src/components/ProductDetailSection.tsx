@@ -14,128 +14,145 @@ const ProductDetailingSection: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <motion.h2
-            className="text-4xl sm:text-5xl lg:text-6xl font-black text-eco-charcoal font-eurotypo mb-6 leading-tight"
-            initial={{ opacity: 0, y: 20 }}
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.6 }}
           >
-            Product{" "}
-            <motion.span
-              className="relative inline-block ml-4 text-[#005655] italic"
-              whileHover={{ scale: 1.05, color: "#A0C474" }}
-              transition={{ duration: 0.3 }}
+            <motion.h2
+              className="text-4xl sm:text-5xl lg:text-6xl font-black text-eco-charcoal font-eurotypo mb-6 leading-tight"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
             >
-              Detailing
-            </motion.span>
-          </motion.h2>
+              Premium Product{" "}
+              <motion.span
+                className="relative inline-block ml-4 text-[#005655] italic"
+                whileHover={{ scale: 1.05, color: "#A0C474" }}
+                transition={{ duration: 0.3 }}
+              >
+                Features{" "}
+              </motion.span>
+            </motion.h2>
 
-          <motion.p
-            className="text-xl text-eco-charcoal opacity-70 max-w-2xl mx-auto leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
+            <motion.p
+              className="text-xl text-eco-charcoal opacity-70 max-w-2xl mx-auto leading-relaxed"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              Every detail crafted with sustainability and your oral health in
+              mind
+            </motion.p>
+          </motion.div>
+
+          {/* <motion.div
+            className="flex items-center justify-center space-x-6 text-sm text-eco-charcoal/60"
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
           >
-            Discover the premium features that make our bamboo toothbrush
-            exceptional
-          </motion.p>
+            <div className="flex items-center space-x-2">
+              <div className="w-2 h-2 bg-[#005655] rounded-full"></div>
+              <span>100% Natural</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="w-2 h-2 bg-[#A0C474] rounded-full"></div>
+              <span>Eco-Friendly</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="w-2 h-2 bg-[#E7F0CE] rounded-full"></div>
+              <span>Premium Quality</span>
+            </div>
+          </motion.div> */}
         </motion.div>
 
-        {/* Main Content - Desktop Layout */}
-        <div className="hidden lg:block ">
-          <div className="flex items-center justify-center">
-            {/* Left Side Cards */}
-            <div className="flex flex-col gap-5">
-              {content.features2.slice(0, 3).map((feature, index) => (
+        {/* Main Content - Responsive Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-10 gap-8 lg:items-center pb-10">
+          {/* Product Image - First on Mobile, Right on Desktop */}
+          <div className="order-1 lg:order-2 lg:col-span-7">
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0, x: 50 }}
+              whileInView={{ scale: 1, opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              viewport={{ once: true }}
+              className="flex justify-center relative mb-8 lg:mb-0"
+            >
+              <motion.div
+                className="relative w-72 sm:w-80 md:w-[22rem] lg:w-96 xl:w-[28rem] 2xl:w-[32rem] group"
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+              >
+                <motion.div
+                  className="absolute inset-0 bg-eco-green rounded-3xl shadow-xl border-4 border-[#A0C474] bg-[#A0C474]"
+                  initial={{ rotate: 6 }}
+                  animate={{ rotate: 6 }}
+                  whileHover={{
+                    rotate: 8,
+                    scale: 1.05,
+                    x: 5,
+                    y: -5,
+                  }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                ></motion.div>
+
+                <motion.img
+                  src="/images/brush_rock.png"
+                  alt="Bamboo toothbrush with rock formation"
+                  className="relative rounded-2xl object-cover z-10 bg-[#E7F0CE] w-full h-auto"
+                  whileHover={{
+                    scale: 1.03,
+                    rotate: 1,
+                  }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                />
+              </motion.div>
+            </motion.div>
+          </div>
+
+          {/* Feature Cards - Second on Mobile, Left on Desktop */}
+          <div className="order-2 lg:order-1 lg:col-span-3 mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 lg:gap-4 max-w-2xl lg:max-w-xs">
+              {content.features2.map((feature, index) => (
                 <motion.div
                   key={index}
                   initial={{ x: -50, opacity: 0 }}
                   whileInView={{ x: 0, opacity: 1 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="bg-[#E7F0CE] rounded-md p-2 shadow-md hover:shadow-lg transition-shadow duration-300 max-w-xs"
+                  className="group bg-[#FDFDEA] rounded-xl p-3 lg:p-2 shadow-md border border-[#9CBF71] hover:shadow-lg hover:border-[#A0C474]/30 transition-all duration-300"
+                  whileHover={{
+                    scale: 1.02,
+                    y: -5,
+                    boxShadow:
+                      "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+                  }}
                 >
-                  <h3 className="font-semibold text-gray-900 text-xs text-center">
-                    {feature.title}
-                  </h3>
+                  <div className="flex items-start space-x-3 lg:space-x-2">
+                    <div className="flex-1">
+                      <motion.h3
+                        className="font-bold text-[#005655] text-sm lg:text-sm mb-1 transition-colors duration-300"
+                        whileHover={{ x: 1 }}
+                      >
+                        {feature.title}
+                      </motion.h3>
+                      <motion.p
+                        className="text-eco-charcoal/70 text-xs leading-relaxed"
+                        initial={{ opacity: 0.7 }}
+                        whileHover={{ opacity: 1 }}
+                      >
+                        {feature.description}
+                      </motion.p>
+                    </div>
+                  </div>
                 </motion.div>
               ))}
             </div>
-
-            {/* Central Product Image */}
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 1 }}
-              viewport={{ once: true }}
-              className="flex-shrink-0"
-            >
-              <div className="w-[700px] relative">
-                <img
-                  src="/images/brush_rock.png"
-                  alt="Bamboo toothbrush with rock formation"
-                  className="w-full h-full object-contain"
-                />
-              </div>
-            </motion.div>
-
-            {/* Right Side Cards */}
-            <div className="flex flex-col gap-6">
-              {content.features2.slice(3).map((feature, index) => (
-                <motion.div
-                  key={index + 3}
-                  initial={{ x: 50, opacity: 0 }}
-                  whileInView={{ x: 0, opacity: 1 }}
-                  transition={{ duration: 0.6, delay: (index + 3) * 0.1 }}
-                  viewport={{ once: true }}
-                  className="bg-[#E7F0CE] rounded-md p-2 shadow-md hover:shadow-lg transition-shadow duration-300 max-w-xs"
-                >
-                  <h3 className="font-semibold text-gray-900 text-xs text-center">
-                    {feature.title}
-                  </h3>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile/Tablet Layout */}
-        <div className="lg:hidden">
-          {/* Product Image */}
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 1 }}
-            viewport={{ once: true }}
-            className="flex justify-center mb-12"
-          >
-            <div className="w-80 sm:w-96 md:w-[400px] ">
-              <img
-                src="/images/brush_rock.png"
-                alt="Bamboo toothbrush with rock formation"
-                className="w-full h-full object-contain"
-              />
-            </div>
-          </motion.div>
-
-          {/* Features Grid Below Image */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {content.features2.map((feature, index) => (
-              <motion.div
-                key={index}
-                initial={{ y: 30, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-white rounded-xl p-4 shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-300"
-              >
-                <h3 className="font-semibold text-gray-900 text-sm text-center">
-                  {feature.title}
-                </h3>
-              </motion.div>
-            ))}
           </div>
         </div>
       </div>

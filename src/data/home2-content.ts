@@ -12,18 +12,18 @@ import {
 
 export const home2Content = {
   hero: {
-    badge: "Premium Luxury Collection",
-    title: "Luxury",
-    subtitle: "Bamboo Wellness",
-    description: "Indulge in the ultimate oral care experience with our luxury bamboo toothbrush collection. Handcrafted with premium materials and designed for discerning customers who value quality and sophistication.",
-    heroImage: "/images/brush_on_hand.png",
+    badge: "100% Plastic-Free Packaging",
+    title: "Ecofriendly.",
+    subtitle: "Bamboo Dish Brush",
+    description: "Say goodbye to plastic scrubbers with our sustainable, long-lasting bamboo dish brush with natural bristles and 2 replacement heads.",
+    heroImage: "/images/hero-dish.png",
     ctaText: "Experience Luxury - $18.99",
     videoText: "Discover Excellence"
   },
   
   products: {
-    title: "Luxury Bamboo Collection – Premium Edition",
-    description: "Handcrafted Excellence, Ultra-Premium Materials, Designer Quality",
+    title: "Bamboo Dish Brush with 2 Replacement Heads ",
+    description: "Eco-Friendly, Biodegradable ",
     mainImage: "/images/brush_rock.png",
     price: "$18.99",
     originalPrice: "$29.99"
@@ -31,36 +31,36 @@ export const home2Content = {
 
   // New benefits for Home 2 - Premium theme
   benefits: {
-    title: "Experience",
-    subtitle: "Luxury Oral Care",
+    title: "Why Choose Our",
+    subtitle: "Bamboo Dish Washer?",
     items: [
       {
         icon: Crown,
-        title: "Premium Craftsmanship",
-        description: "Each toothbrush is individually handcrafted by skilled artisans using traditional techniques for unmatched quality."
+        title: "Eco-Friendly & Biodegradable",
+        description: "Made from sustainable bamboo that naturally decomposes"
       },
       {
         icon: Gem,
-        title: "Ultra-Soft Bristles",
-        description: "Premium Japanese bristles that provide gentle yet thorough cleaning for the most sensitive gums."
+        title: "2 Replacement Heads",
+        description: "Extends brush life & reduces waste"
       },
       {
         icon: Award,
-        title: "Dentist Recommended",
-        description: "Endorsed by leading dental professionals worldwide for superior plaque removal and optimal gum health."
+        title: "Quick-Dry & Odor-Free",
+        description: "Stays fresh after every wash"
       },
       {
         icon: Gift,
-        title: "Luxury Packaging",
-        description: "Beautiful gift-ready packaging made from sustainable materials with elegant, sophisticated design."
+        title: "Plastic-Free Packaging",
+        description: "100% recyclable and compostable packaging"
       }
     ]
   },
 
   // New features for Home 2 - Different from Home 1
   features: {
-    title: "Luxury",
-    subtitle: "Meets Innovation",
+    title: "Premium Product ",
+    subtitle: "Features",
     mainImage: "/images/right_brush.png",
     items: [
       {
@@ -97,30 +97,25 @@ export const home2Content = {
   // New features2 for Home 2 - Premium positioning
   features2: [
     {
-      title: "Diamond-Infused Bristles",
-      description: "Premium bristles with diamond dust for superior cleaning",
+      title: "Crafted from Premium Bamboo",
+      description: "Premium  with diamond dust for superior cleaning",
       position: "top-left"
     },
     {
-      title: "Hand-Polished Handle",
+      title: "Stiff, Plant-Based Bristles",
       description: "Individually crafted and polished by artisans",
       position: "top-right"
     },
     {
-      title: "Luxury Grip Design",
+      title: "Ergonomic Wooden Handle",
       description: "Ergonomically designed for perfect balance",
       position: "bottom-left"
     },
     {
-      title: "Premium & Sustainable",
+      title: "Convenient Hanging Hole",
       description: "Luxury meets environmental responsibility",
       position: "center-right"
     },
-    {
-      title: "Gift-Ready Packaging",
-      description: "Beautiful presentation in luxury box",
-      position: "bottom-right"
-    }
   ],
 
   // New features3 for Home 2 - Premium benefits
@@ -150,60 +145,44 @@ export const home2Content = {
   // New specifications for Home 2 - Premium product specs
   specifications: [
     {
-      label: "Features & Specs",
-      value: "premium-luxury, handcrafted, diamond-infused bristles, ultra-soft, ergonomic handle, gift-ready packaging, Premium Quality, Luxury Materials"
-    },
-    {
-      label: "Power Source",
-      value: "Manual Premium"
-    },
-    {
-      label: "Item Firmness",
-      value: "Ultra-Soft Premium"
-    },
-    {
-      label: "Toothbrush head shape",
-      value: "Ergonomic Curved"
-    },
-    {
-      label: "Description Style",
-      value: "Luxury Premium"
-    },
-    {
       label: "Color",
-      value: "Natural Luxury"
+      value: "Brown"
     },
     {
-      label: "Material Features",
-      value: "Premium Bamboo"
+      label: "Shape",
+      value: "Rectangular"
     },
     {
-      label: "Bristle Material",
-      value: "Diamond-Infused Premium"
+      label: "Theme",
+      value: "Eco-friendly"
     },
     {
       label: "Handle Material",
-      value: "Hand-Polished Bamboo"
+      value: "Wood"
     },
     {
-      label: "Number of Items",
-      value: "4 Premium Brushes"
+      label: "Item Dimensions L x W x H",
+      value: "9.84\"L x 3.14\"W x 1.96\"H"
     },
     {
-      label: "Unit Count",
-      value: "4.00 Luxury Count"
+      label: "Item Weight",
+      value: "0.02 Pounds"
     },
     {
-      label: "Package Type",
-      value: "Premium Gift Box"
-    }
+      label: "Other Features",
+      value: "Long Handle, Reusable"
+    },
+    {
+      label: "Product Firmness",
+      value: "Rigid"
+    },
   ],
 
   productDetails: {
     title: "Luxury Wellness",
     subtitle: "Premium Collection",
     description: "Experience the pinnacle of bamboo toothbrush craftsmanship with our luxury wellness line, featuring diamond-infused bristles and hand-polished handles.",
-    detailedDescription: "Elevate your oral care routine with our luxury bamboo toothbrush collection. Each brush is individually handcrafted by skilled artisans using premium sustainably-sourced bamboo and features diamond-infused bristles for superior cleaning and natural whitening. The ergonomically curved handles are hand-polished to perfection and come in beautiful gift-ready packaging. Perfect for discerning customers who value both luxury and environmental responsibility.",
+    detailedDescription: "Our Bamboo Dish Brush is a sustainable kitchen essential, featuring natural sisal bristles and a durable FSC-certified bamboo handle. Safe for all surfaces, including non-stick cookware, it comes with 2 replacement heads for long-lasting, eco-friendly cleaning",
     mainImage: "/images/brush_w_human.png"
   },
 
@@ -258,5 +237,26 @@ export const home2Content = {
   stickyBar: {
     productName: "Luxury Bamboo Collection",
     buyNowText: "Buy Premium"
+  },
+
+  // Product showcase section
+  productShowcase: {
+    title: "BAMBOO",
+    subtitle: "DISH WASHER",
+    rating: 4.9,
+    reviewCount: "1,100+ Reviews",
+    description: "Our Bamboo Dish Washer is a sustainable kitchen essential, featuring natural sisal bristles and a durable FSC-certified bamboo handle. Safe for all surfaces, including non-stick cookware, it comes with 2 replacement heads for long-lasting, eco-friendly cleaning.",
+    highlightText: "Sustainable. Durable. Safe.",
+    buttonText: "Shop Premium",
+    image: "/images/brush_w_human.png",
+    imageAlt: "Premium Bamboo Dish Washer",
+    guarantees: [
+      {
+        text: "Premium quality guarantee"
+      },
+      {
+        text: "Free luxury shipping"
+      }
+    ]
   }
 };

@@ -145,36 +145,13 @@ const FeaturesSection: React.FC = () => {
                         transition={{ duration: 0.3 }}
                       >
                         <motion.p
-                          className="text-eco-charcoal opacity-70 text-sm leading-relaxed"
+                          className="text-eco-charcoal opacity-70 text-sm leading-relaxed mb-3"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ duration: 0.3, delay: 0.1 }}
                         >
                           {feature.description}
                         </motion.p>
-
-                        <motion.div
-                          className="flex flex-wrap gap-2"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ duration: 0.3, delay: 0.2 }}
-                        >
-                          {feature.benefits.map((benefit, idx) => (
-                            <motion.span
-                              key={idx}
-                              className="inline-flex items-center gap-1 bg-[#E7F0CE] text-[#005655] text-xs font-medium px-3 py-1 rounded-full"
-                              initial={{ opacity: 0, scale: 0.8 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              transition={{
-                                duration: 0.2,
-                                delay: 0.3 + idx * 0.1,
-                              }}
-                            >
-                              <CheckCircle className="w-3 h-3 text-[#A0C474]" />
-                              {benefit}
-                            </motion.span>
-                          ))}
-                        </motion.div>
                       </motion.div>
                     )}
 
@@ -224,8 +201,8 @@ const FeaturesSection: React.FC = () => {
                 ></motion.div>
 
                 <motion.img
-                  src={content.features.mainImage}
-                  alt={`${content.features.title} ${content.features.subtitle}`}
+                  src={content.features.items[activeFeature].image}
+                  alt={`${content.features.items[activeFeature].title}`}
                   width={800}
                   height={800}
                   className="relative rounded-2xl shadow-2xl object-cover z-10 bg-[#E7F0CE]"
