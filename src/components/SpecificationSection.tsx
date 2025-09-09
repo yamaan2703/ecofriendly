@@ -6,17 +6,24 @@ import { useContent } from "@/contexts/ContentContext";
 const ProductSpecSection: React.FC = () => {
   const { content } = useContent();
   return (
-    <section className="p-4 sm:p-6 lg:p-10">
+    <section className="relative p-4 sm:p-6 lg:p-10">
+      <div className="absolute right-0 bottom-0 w-48 h-48 sm:w-64 sm:h-64 lg:w-96 lg:h-96 z-0 pointer-events-none">
+        <img
+          src="/images/leaf_2.png"
+          alt="Decorative leaves"
+          className="w-full h-full object-contain object-right"
+        />
+      </div>
       <div className="max-w-7xl mx-auto border rounded-lg sm:rounded-xl lg:rounded-2xl p-4 sm:p-6 lg:p-8">
         <motion.div
-          className="text-start mb-16"
+          className="text-start mb-10"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
           <motion.h2
-            className="text-4xl font-black text-eco-charcoal font-eurotypo mb-6 leading-tight"
+            className="text-2xl sm:text-2xl lg:text-5xl font-black text-eco-charcoal font-eurotypo mb-6 leading-tight"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}

@@ -5,7 +5,10 @@ import { useContent } from "@/contexts/ContentContext";
 const BenefitsSection: React.FC = () => {
   const { content } = useContent();
   return (
-    <section id="benefits" className="py-16 relative overflow-hidden px-10">
+    <section
+      id="benefits"
+      className="py-16 relative overflow-hidden px-0 sm:px-10"
+    >
       {/* Decorative Leaves - Left Side */}
       <div className="absolute left-0 bottom-0 w-48 h-48 sm:w-64 sm:h-64 lg:w-96 lg:h-96 z-0 pointer-events-none">
         <img
@@ -24,10 +27,10 @@ const BenefitsSection: React.FC = () => {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="z-10 mb-16">
+        <div className="z-10 mb-10">
           <div className="text-center px-2">
-            <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2 text-lg sm:text-2xl lg:text-3xl xl:text-4xl font-eurotypo-bold">
-              <span className="text-eco-charcoal font-eurotypo font-bold ">
+            <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2 text-xl sm:text-2xl lg:text-5xl font-eurotypo-bold">
+              <span className=" text-eco-charcoal font-eurotypo font-bold ">
                 {content.benefits.title}
               </span>
               <div className="w-12 h-6 sm:w-16 sm:h-7 lg:w-20 lg:h-8 mx-1 mt-1 sm:mt-2 relative overflow-hidden rounded-full">

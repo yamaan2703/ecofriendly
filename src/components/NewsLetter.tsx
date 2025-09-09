@@ -39,13 +39,13 @@ function NewsLetter() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.2 }}
                 >
-                  {content.newsletter.title}
+                  Subscribe Our
                   <motion.span
                     className="relative inline-block ml-4 text-[#005655] italic"
                     whileHover={{ scale: 1.05, color: "#A0C474" }}
                     transition={{ duration: 0.3 }}
                   >
-                    {content.newsletter.subtitle}
+                    Newsletter
                   </motion.span>
                 </motion.h2>
               </motion.div>
@@ -57,11 +57,9 @@ function NewsLetter() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.5 }}
               >
-                {content.newsletter.description}
-                <span className="font-medium">
-                  {" "}
-                  {content.newsletter.highlight}
-                </span>
+                Be the first to know about new arrivals, exclusive deals, and
+                sustainable living tips.
+                <span className="font-medium"> Join 10,000+ eco-warriors!</span>
               </motion.p>
             </motion.div>
 
@@ -75,7 +73,7 @@ function NewsLetter() {
               <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
                 <motion.input
                   type="email"
-                  placeholder={content.newsletter.placeholder}
+                  placeholder="Enter your email address"
                   className="flex-1 px-4 py-3 rounded-lg text-gray-900 placeholder-gray-500 bg-white border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#005655] focus:border-[#005655] shadow-sm hover:shadow-md transition-all duration-300"
                   required
                   whileFocus={{ scale: 1.02 }}

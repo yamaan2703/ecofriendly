@@ -34,17 +34,24 @@ const FeaturesSection: React.FC = () => {
     <section id="features" className="py-20 relative overflow-hidden">
       {/* Animated Background Elements */}
 
+      <div className="absolute right-0 top-0 w-48 h-48 sm:w-64 sm:h-64 lg:w-96 lg:h-96 z-0 pointer-events-none">
+        <img
+          src="/images/leaf_2.png"
+          alt="Decorative leaves"
+          className="w-full h-full object-contain object-right"
+        />
+      </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-10"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
           <motion.h2
-            className="text-4xl sm:text-5xl lg:text-6xl font-black text-eco-charcoal font-eurotypo mb-6 leading-tight"
+            className="text-2xl sm:text-2xl lg:text-5xl font-black text-eco-charcoal font-eurotypo mb-6 leading-tight"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -59,17 +66,6 @@ const FeaturesSection: React.FC = () => {
               {content.features.subtitle}
             </motion.span>
           </motion.h2>
-
-          <motion.p
-            className="text-xl text-eco-charcoal opacity-70 max-w-2xl mx-auto leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            Every detail crafted with sustainability and your oral health in
-            mind
-          </motion.p>
         </motion.div>
 
         {/* Interactive Features Display */}

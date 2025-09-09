@@ -6,9 +6,16 @@ const ProductDetailingSection: React.FC = () => {
   const { content } = useContent();
   return (
     <section id="products" className=" px-4 relative overflow-hidden">
+      <div className="absolute left-0 top-0 w-48 h-48 sm:w-64 sm:h-64 lg:w-96 lg:h-96 z-0 pointer-events-none">
+        <img
+          src="/images/leaves_1.png"
+          alt="Decorative leaves"
+          className="w-full h-full object-contain object-left"
+        />
+      </div>
       <div className="max-w-7xl mx-auto ">
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-10"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -22,7 +29,7 @@ const ProductDetailingSection: React.FC = () => {
             transition={{ duration: 0.6 }}
           >
             <motion.h2
-              className="text-4xl sm:text-5xl lg:text-6xl font-black text-eco-charcoal font-eurotypo mb-6 leading-tight"
+              className="text-2xl sm:text-2xl lg:text-5xl font-black text-eco-charcoal font-eurotypo mb-6 leading-tight"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -30,46 +37,14 @@ const ProductDetailingSection: React.FC = () => {
             >
               Premium Product{" "}
               <motion.span
-                className="relative inline-block ml-4 text-[#005655] italic"
+                className="relative inline-block text-[#005655] italic"
                 whileHover={{ scale: 1.05, color: "#A0C474" }}
                 transition={{ duration: 0.3 }}
               >
-                Features{" "}
+                Features
               </motion.span>
             </motion.h2>
-
-            <motion.p
-              className="text-xl text-eco-charcoal opacity-70 max-w-2xl mx-auto leading-relaxed"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              Every detail crafted with sustainability and your oral health in
-              mind
-            </motion.p>
           </motion.div>
-
-          {/* <motion.div
-            className="flex items-center justify-center space-x-6 text-sm text-eco-charcoal/60"
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-          >
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-[#005655] rounded-full"></div>
-              <span>100% Natural</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-[#A0C474] rounded-full"></div>
-              <span>Eco-Friendly</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-[#E7F0CE] rounded-full"></div>
-              <span>Premium Quality</span>
-            </div>
-          </motion.div> */}
         </motion.div>
 
         {/* Main Content - Responsive Layout */}

@@ -20,9 +20,9 @@ const ProductSection: React.FC = () => {
 
   return (
     <main className="container mx-auto">
-      <section className="py-8 sm:py-12 lg:py-16 sm:mx-4 lg:mx-12">
+      <section className="py-8 sm:py-8 lg:py-16 mx-0 sm:mx-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-start">
-          <div className="mx-auto w-4/5">
+          <div className="mx-auto w-full sm:w-4/5">
             <div className="sm:hidden bg-[#F3F7DE] rounded-2xl flex items-center justify-center h-[280px] mb-4">
               <div className="relative w-full h-full">
                 <img
@@ -129,7 +129,7 @@ const ProductSection: React.FC = () => {
               ({content.pricing.freeShipping})
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-2 items-stretch sm:items-center">
+            <div className="flex flex-row gap-3 sm:gap-2 items-stretch sm:items-center">
               <div className="flex items-center">
                 <div className="flex items-center border-2 border-[#005655] rounded-full">
                   <button

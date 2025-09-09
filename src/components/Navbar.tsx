@@ -1,12 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, User, ShoppingBag } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useContent } from "@/contexts/ContentContext";
 
 const navItems = [
-  { label: "Home", action: "home", type: "scroll" },
   { label: "Benefits", action: "benefits", type: "scroll" },
   { label: "Features", action: "features", type: "scroll" },
   { label: "Products", action: "products", type: "scroll" },
@@ -200,6 +199,30 @@ const Navbar: React.FC = () => {
                 </button>
               </motion.div>
             ))}
+
+            {/* User and Shop Icons */}
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: (navItems.length + 1) * 0.1, duration: 0.6 }}
+              className="flex items-center space-x-2 ml-4"
+            >
+              {/* User Icon */}
+              <button
+                className="p-2 text-[#005655] transition-all duration-300 hover:scale-110 hover:bg-[#E7F0CE] rounded-full"
+                aria-label="User account"
+              >
+                <User className="w-5 h-5" />
+              </button>
+
+              {/* Shop Icon */}
+              <button
+                className="p-2 text-[#005655] transition-all duration-300 hover:scale-110 hover:bg-[#E7F0CE] rounded-full"
+                aria-label="Shopping cart"
+              >
+                <ShoppingBag className="w-5 h-5" />
+              </button>
+            </motion.div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -298,6 +321,35 @@ const Navbar: React.FC = () => {
                     {item.label}
                   </motion.button>
                 ))}
+
+                {/* User and Shop Icons for Mobile */}
+                <div className="w-full flex justify-start space-x-6 pt-4 border-t border-white/20">
+                  <motion.button
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{
+                      delay: (navItems.length + productTypes.length) * 0.1,
+                    }}
+                    className="flex items-center space-x-3 text-white hover:text-[#A0C474] transition-colors duration-300"
+                    aria-label="User account"
+                  >
+                    <User className="w-6 h-6" />
+                    <span className="text-lg font-medium">Account</span>
+                  </motion.button>
+
+                  <motion.button
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{
+                      delay: (navItems.length + productTypes.length + 1) * 0.1,
+                    }}
+                    className="flex items-center space-x-3 text-white hover:text-[#A0C474] transition-colors duration-300"
+                    aria-label="Shopping cart"
+                  >
+                    <ShoppingBag className="w-6 h-6" />
+                    <span className="text-lg font-medium">Cart</span>
+                  </motion.button>
+                </div>
               </div>
             </motion.div>
           </>
