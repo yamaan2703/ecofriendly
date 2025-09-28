@@ -1,18 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Menu, X, ChevronDown, User, ShoppingBag } from "lucide-react";
+import { Menu, X, User, ShoppingBag } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useContent } from "@/contexts/ContentContext";
 
 const navItems = [
-  { label: "Benefits", action: "benefits", type: "scroll" },
-  { label: "Features", action: "features", type: "scroll" },
-  { label: "Products", action: "products", type: "scroll" },
-  { label: "FAQ", action: "faq", type: "scroll" },
-];
-
-const productTypes = [
   { label: "Toothbrush", action: "home1", type: "page" },
   { label: "Dishwasher", action: "home2", type: "page" },
 ];
@@ -21,7 +14,7 @@ const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Simulate login state
   const { currentPage, switchToHome1, switchToHome2 } = useContent();
 
   const handleNavigation = (item: {
@@ -39,7 +32,6 @@ const Navbar: React.FC = () => {
       scrollToSection(item.action);
     }
     setIsOpen(false);
-    setIsDropdownOpen(false);
   };
 
   const scrollToSection = (sectionId: string) => {
@@ -48,6 +40,42 @@ const Navbar: React.FC = () => {
       element.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  const handleLogoClick = () => {
+    window.location.href = "/";
+    setIsOpen(false);
+  };
+
+  const handleUserClick = () => {
+    if (isLoggedIn) {
+      window.location.href = "/profile";
+    } else {
+      window.location.href = "/login";
+    }
+    setIsOpen(false);
+  };
+
+  const handleShopClick = () => {
+    window.location.href = "/shop";
+    setIsOpen(false);
+  };
+
+  // Check current page for active states
+  const isShopPage = window.location.pathname === "/shop";
+  const isProfilePage = window.location.pathname === "/profile";
+  const isLoginPage = window.location.pathname === "/login";
+  const isSignupPage = window.location.pathname === "/signup";
+
+  // Only show nav items as active when on home page
+  const isHomePage = window.location.pathname === "/";
+
+  // Simulate login state - you can change this to true to test logged in state
+  // In a real app, this would come from your authentication context/state
+  useEffect(() => {
+    // Check localStorage or your auth state here
+    const userLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    setIsLoggedIn(userLoggedIn);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -70,18 +98,9 @@ const Navbar: React.FC = () => {
       }
     };
 
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      if (!target.closest(".dropdown-container")) {
-        setIsDropdownOpen(false);
-      }
-    };
-
     window.addEventListener("scroll", handleScroll);
-    document.addEventListener("click", handleClickOutside);
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      document.removeEventListener("click", handleClickOutside);
     };
   }, []);
 
@@ -97,79 +116,28 @@ const Navbar: React.FC = () => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <div className="w-40 h-20 flex items-center justify-center">
-            <img
-              src="/images/ecofriendly_dark.png"
-              alt="EcoFriendly"
-              className="h-8 w-auto"
-            />
-          </div>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-2">
-            {/* Products Dropdown */}
-            <motion.div
-              className="relative dropdown-container"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0, duration: 0.6 }}
+        <div className="flex items-center justify-between h-16">
+          {/* Logo - Left Side */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.1, duration: 0.6 }}
+            className="flex items-center"
+          >
+            <button
+              onClick={handleLogoClick}
+              className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
             >
-              <button
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="relative px-4 py-2 font-medium text-[#005655] transition-all duration-300 hover:scale-105 flex items-center gap-1"
-              >
-                <span className="relative inline-block text-center">
-                  Home
-                  {productTypes.some((item) => currentPage === item.action) && (
-                    <motion.span
-                      layoutId="activeIndicator"
-                      className="block h-0.5 bg-[#005655] rounded mt-1 w-1/2 mx-auto"
-                      transition={{
-                        type: "spring",
-                        bounce: 0.25,
-                        duration: 0.6,
-                      }}
-                    />
-                  )}
-                </span>
-                <ChevronDown
-                  className={`w-4 h-4 transition-transform duration-200 ${
-                    isDropdownOpen ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
+              <img
+                src="/images/ecofriendly_dark.png"
+                alt="EcoFriendly"
+                className="h-8 w-auto"
+              />
+            </button>
+          </motion.div>
 
-              {/* Dropdown Menu */}
-              <AnimatePresence>
-                {isDropdownOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
-                  >
-                    {productTypes.map((item, index) => (
-                      <button
-                        key={item.action}
-                        onClick={() => handleNavigation(item)}
-                        className={`w-full text-left px-4 py-2 hover:bg-[#E7F0CE] transition-colors duration-200 ${
-                          currentPage === item.action
-                            ? "bg-[#E7F0CE] text-[#005655] font-semibold"
-                            : "text-gray-700"
-                        }`}
-                      >
-                        {item.label}
-                      </button>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
-
-            {/* Regular Navigation Items */}
+          {/* Navigation Items - Center */}
+          <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item, index) => (
               <motion.div
                 key={item.action}
@@ -183,8 +151,11 @@ const Navbar: React.FC = () => {
                 >
                   <span className="relative inline-block text-center">
                     {item.label}
-                    {item.type === "scroll" &&
-                      activeSection === item.action && (
+                    {isHomePage &&
+                      ((item.type === "scroll" &&
+                        activeSection === item.action) ||
+                        (item.type === "page" &&
+                          currentPage === item.action)) && (
                         <motion.span
                           layoutId="activeIndicator"
                           className="block h-0.5 bg-[#005655] rounded mt-1 w-1/2 mx-auto"
@@ -199,31 +170,39 @@ const Navbar: React.FC = () => {
                 </button>
               </motion.div>
             ))}
-
-            {/* User and Shop Icons */}
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: (navItems.length + 1) * 0.1, duration: 0.6 }}
-              className="flex items-center space-x-2 ml-4"
-            >
-              {/* User Icon */}
-              <button
-                className="p-2 text-[#005655] transition-all duration-300 hover:scale-110 hover:bg-[#E7F0CE] rounded-full"
-                aria-label="User account"
-              >
-                <User className="w-5 h-5" />
-              </button>
-
-              {/* Shop Icon */}
-              <button
-                className="p-2 text-[#005655] transition-all duration-300 hover:scale-110 hover:bg-[#E7F0CE] rounded-full"
-                aria-label="Shopping cart"
-              >
-                <ShoppingBag className="w-5 h-5" />
-              </button>
-            </motion.div>
           </div>
+
+          {/* Icons - Right Side */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="flex items-center space-x-2"
+          >
+            {/* User Icon */}
+            <button
+              onClick={handleUserClick}
+              className={`p-2 transition-all duration-300 hover:scale-110 hover:bg-[#E7F0CE] rounded-full ${
+                isLoggedIn ? "text-green-600" : "text-[#005655]"
+              }`}
+              aria-label={isLoggedIn ? "Profile" : "Login"}
+              title={isLoggedIn ? "Profile" : "Login"}
+            >
+              <User className="w-5 h-5" />
+            </button>
+
+            {/* Shop Icon */}
+            <button
+              onClick={handleShopClick}
+              className={`p-2 transition-all duration-300 hover:scale-110 hover:bg-[#E7F0CE] rounded-full ${
+                isShopPage ? "text-[#005655] bg-[#E7F0CE]" : "text-[#005655]"
+              }`}
+              aria-label="Shop"
+              title="Shop"
+            >
+              <ShoppingBag className="w-5 h-5" />
+            </button>
+          </motion.div>
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">
@@ -283,37 +262,19 @@ const Navbar: React.FC = () => {
               </div>
 
               <div className="bg-[#005655] flex-1 flex flex-col items-start justify-start px-6 py-8 space-y-6">
-                {/* Products Section */}
-                <div className="w-full">
-                  <h3 className="text-lg font-bold text-white mb-3">Home</h3>
-                  {productTypes.map((item, index) => (
-                    <motion.button
-                      key={item.action}
-                      onClick={() => handleNavigation(item)}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className={`text-lg font-medium tracking-wide text-white w-full text-left transition-colors duration-300 mb-2 pl-4 ${
-                        currentPage === item.action
-                          ? "underline underline-offset-4"
-                          : "hover:text-[#A0C474]"
-                      }`}
-                    >
-                      {item.label}
-                    </motion.button>
-                  ))}
-                </div>
-
-                {/* Regular Navigation */}
+                {/* Navigation Items */}
                 {navItems.map((item, index) => (
                   <motion.button
                     key={item.action}
                     onClick={() => handleNavigation(item)}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: (index + productTypes.length) * 0.1 }}
+                    transition={{ delay: index * 0.1 }}
                     className={`text-xl font-semibold tracking-wide text-white w-full text-left transition-colors duration-300 ${
-                      item.type === "scroll" && activeSection === item.action
+                      isHomePage &&
+                      ((item.type === "scroll" &&
+                        activeSection === item.action) ||
+                        (item.type === "page" && currentPage === item.action))
                         ? "underline underline-offset-4"
                         : "hover:text-[#A0C474]"
                     }`}
@@ -323,31 +284,35 @@ const Navbar: React.FC = () => {
                 ))}
 
                 {/* User and Shop Icons for Mobile */}
-                <div className="w-full flex justify-start space-x-6 pt-4 border-t border-white/20">
+                <div className="w-full flex flex-col space-y-4 pt-4 border-t border-white/20">
                   <motion.button
+                    onClick={handleUserClick}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{
-                      delay: (navItems.length + productTypes.length) * 0.1,
+                      delay: navItems.length * 0.1,
                     }}
                     className="flex items-center space-x-3 text-white hover:text-[#A0C474] transition-colors duration-300"
-                    aria-label="User account"
+                    aria-label={isLoggedIn ? "Profile" : "Login"}
                   >
                     <User className="w-6 h-6" />
-                    <span className="text-lg font-medium">Account</span>
+                    <span className="text-lg font-medium">
+                      {isLoggedIn ? "Profile" : "Login"}
+                    </span>
                   </motion.button>
 
                   <motion.button
+                    onClick={handleShopClick}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{
-                      delay: (navItems.length + productTypes.length + 1) * 0.1,
+                      delay: (navItems.length + 1) * 0.1,
                     }}
                     className="flex items-center space-x-3 text-white hover:text-[#A0C474] transition-colors duration-300"
-                    aria-label="Shopping cart"
+                    aria-label="Shop"
                   >
                     <ShoppingBag className="w-6 h-6" />
-                    <span className="text-lg font-medium">Cart</span>
+                    <span className="text-lg font-medium">Shop</span>
                   </motion.button>
                 </div>
               </div>
