@@ -1,20 +1,23 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { User, Save, X, Check, LogOut } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import { useAuth } from "@/contexts/AuthContext";
 
 const ProfilePage: React.FC = () => {
+  const { user, logout, updateProfile } = useAuth();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editName, setEditName] = useState("John Doe");
+  const [editName, setEditName] = useState(user?.name || "");
+
+  // Update editName when user changes
+  useEffect(() => {
+    setEditName(user?.name || "");
+  }, [user?.name]);
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
-
-  const handleBackToHome = () => {
-    window.location.href = "/";
-  };
 
   const handleEditClick = () => {
     setIsEditModalOpen(true);
@@ -22,30 +25,40 @@ const ProfilePage: React.FC = () => {
 
   const handleCloseModal = () => {
     setIsEditModalOpen(false);
-    setEditName("John Doe");
+    setEditName(user?.name || "");
   };
 
   const handleSaveName = async () => {
     setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const result = await updateProfile({ name: editName });
+
+      if (result.success) {
+        setIsEditModalOpen(false);
+        setShowSuccess(true);
+        setTimeout(() => setShowSuccess(false), 3000);
+      } else {
+        console.error("Update failed:", result.error);
+      }
+    } catch (error) {
+      console.error("Update error:", error);
+    } finally {
       setIsLoading(false);
-      setIsEditModalOpen(false);
-      setShowSuccess(true);
-      setTimeout(() => setShowSuccess(false), 3000);
-    }, 1000);
+    }
   };
 
   const handleLogoutClick = () => {
     setIsLogoutModalOpen(true);
   };
 
-  const handleLogoutConfirm = () => {
-    // Simulate logout process
-    setIsLogoutModalOpen(false);
-    // Redirect to login page
-    window.location.href = "/login";
+  const handleLogoutConfirm = async () => {
+    try {
+      await logout();
+      setIsLogoutModalOpen(false);
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   const handleLogoutCancel = () => {
@@ -93,10 +106,22 @@ const ProfilePage: React.FC = () => {
 
               {/* Profile Details */}
               <div className="flex-1">
-                <h3 className="font-medium text-gray-900">John Doe</h3>
+                <h3 className="font-medium text-gray-900">
+                  {user?.name || "Loading..."}
+                </h3>
                 <div className="flex items-center gap-2">
-                  <p className="text-sm text-gray-500">john.doe@example.com</p>{" "}
-                  |<p className="text-sm text-gray-500">Status: Active</p>
+                  <p className="text-sm text-gray-500">
+                    {user?.email || "Loading..."}
+                  </p>{" "}
+                  |
+                  <p className="text-sm text-gray-500">
+                    Status:{" "}
+                    {user?.status === "true" ||
+                    user?.status === "active" ||
+                    (user?.status as any) === true
+                      ? "Active"
+                      : user?.status || "Loading..."}
+                  </p>
                 </div>
               </div>
 
@@ -104,7 +129,12 @@ const ProfilePage: React.FC = () => {
                 {/* Join Date */}
                 <div className="text-right">
                   <p className="font-semibold text-xl text-[#005655]">
-                    Jan 2024
+                    {user?.created_at
+                      ? new Date(user.created_at).toLocaleDateString("en-US", {
+                          month: "short",
+                          year: "numeric",
+                        })
+                      : "Loading..."}
                   </p>
                   <p className="text-xs text-gray-500">Join Date</p>
                 </div>
@@ -115,7 +145,7 @@ const ProfilePage: React.FC = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={handleEditClick}
-                    className="bg-[#005655] hover:bg-[#004444] text-white px-3 py-1.5 text-sm rounded-lg transition-colors"
+                    className="bg-[#005655] hover:bg-[#004444] text-white px-3 py-1 text-sm rounded-sm transition-colors"
                   >
                     Edit
                   </motion.button>
@@ -123,7 +153,7 @@ const ProfilePage: React.FC = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={handleLogoutClick}
-                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 text-sm rounded-lg transition-colors flex items-center space-x-1"
+                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 text-sm rounded-sm transition-colors flex items-center space-x-1"
                   >
                     <LogOut className="w-4 h-4" />
                     <span>Logout</span>
@@ -266,21 +296,6 @@ const ProfilePage: React.FC = () => {
                   </div>
                 </div>
               </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Success Message */}
-        <AnimatePresence>
-          {showSuccess && (
-            <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.9 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -20, scale: 0.9 }}
-              className="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2 z-50"
-            >
-              <Check className="w-5 h-5" />
-              <span>Name updated successfully!</span>
             </motion.div>
           )}
         </AnimatePresence>

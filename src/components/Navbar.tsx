@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Menu, X, User, ShoppingBag } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useContent } from "@/contexts/ContentContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 const navItems = [
   { label: "Toothbrush", action: "home1", type: "page" },
@@ -14,8 +15,8 @@ const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Simulate login state
   const { currentPage, switchToHome1, switchToHome2 } = useContent();
+  const { user, logout } = useAuth();
 
   const handleNavigation = (item: {
     label: string;
@@ -47,7 +48,7 @@ const Navbar: React.FC = () => {
   };
 
   const handleUserClick = () => {
-    if (isLoggedIn) {
+    if (user) {
       window.location.href = "/profile";
     } else {
       window.location.href = "/login";
@@ -68,14 +69,6 @@ const Navbar: React.FC = () => {
 
   // Only show nav items as active when on home page
   const isHomePage = window.location.pathname === "/";
-
-  // Simulate login state - you can change this to true to test logged in state
-  // In a real app, this would come from your authentication context/state
-  useEffect(() => {
-    // Check localStorage or your auth state here
-    const userLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-    setIsLoggedIn(userLoggedIn);
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -183,10 +176,10 @@ const Navbar: React.FC = () => {
             <button
               onClick={handleUserClick}
               className={`p-2 transition-all duration-300 hover:scale-110 hover:bg-[#E7F0CE] rounded-full ${
-                isLoggedIn ? "text-green-600" : "text-[#005655]"
+                user ? "text-green-600" : "text-[#005655]"
               }`}
-              aria-label={isLoggedIn ? "Profile" : "Login"}
-              title={isLoggedIn ? "Profile" : "Login"}
+              aria-label={user ? "Profile" : "Login"}
+              title={user ? "Profile" : "Login"}
             >
               <User className="w-5 h-5" />
             </button>
@@ -293,11 +286,11 @@ const Navbar: React.FC = () => {
                       delay: navItems.length * 0.1,
                     }}
                     className="flex items-center space-x-3 text-white hover:text-[#A0C474] transition-colors duration-300"
-                    aria-label={isLoggedIn ? "Profile" : "Login"}
+                    aria-label={user ? "Profile" : "Login"}
                   >
                     <User className="w-6 h-6" />
                     <span className="text-lg font-medium">
-                      {isLoggedIn ? "Profile" : "Login"}
+                      {user ? "Profile" : "Login"}
                     </span>
                   </motion.button>
 

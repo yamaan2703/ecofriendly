@@ -3,8 +3,10 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, Mail, Lock, Leaf, ArrowLeft } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const LoginPage: React.FC = () => {
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -37,12 +39,14 @@ const LoginPage: React.FC = () => {
 
     setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      await login(formData.email, formData.password);
+    } catch (error) {
+      console.error("Login error:", error);
+      // Error handling is done in the AuthContext with toast notifications
+    } finally {
       setIsLoading(false);
-      // Navigate to home or dashboard after successful login
-      window.location.href = "/";
-    }, 1500);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

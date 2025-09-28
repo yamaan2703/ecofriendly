@@ -4,8 +4,10 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, User, Mail, Lock, Leaf, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 const SignupPage: React.FC = () => {
+  const { signup } = useAuth();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -47,12 +49,14 @@ const SignupPage: React.FC = () => {
 
     setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      await signup(formData.name, formData.email, formData.password);
+    } catch (error) {
+      console.error("Signup error:", error);
+      // Error handling is done in the AuthContext with toast notifications
+    } finally {
       setIsLoading(false);
-      // Navigate to home or dashboard after successful signup
-      window.location.href = "/";
-    }, 1500);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
