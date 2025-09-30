@@ -9,6 +9,7 @@ import { useAuth } from "@/contexts/AuthContext";
 const navItems = [
   { label: "Toothbrush", action: "home1", type: "page" },
   { label: "Dishwasher", action: "home2", type: "page" },
+  { label: "Blog", action: "blog", type: "route" },
 ];
 
 const Navbar: React.FC = () => {
@@ -29,6 +30,8 @@ const Navbar: React.FC = () => {
       } else if (item.action === "home2") {
         switchToHome2();
       }
+    } else if (item.type === "route") {
+      window.location.href = `/${item.action}`;
     } else {
       scrollToSection(item.action);
     }
@@ -66,6 +69,7 @@ const Navbar: React.FC = () => {
   const isProfilePage = window.location.pathname === "/profile";
   const isLoginPage = window.location.pathname === "/login";
   const isSignupPage = window.location.pathname === "/signup";
+  const isBlogPage = window.location.pathname === "/blog";
 
   // Only show nav items as active when on home page
   const isHomePage = window.location.pathname === "/";
@@ -130,7 +134,7 @@ const Navbar: React.FC = () => {
           </motion.div>
 
           {/* Navigation Items - Center */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-2">
             {navItems.map((item, index) => (
               <motion.div
                 key={item.action}
@@ -144,21 +148,24 @@ const Navbar: React.FC = () => {
                 >
                   <span className="relative inline-block text-center">
                     {item.label}
-                    {isHomePage &&
+                    {((isHomePage &&
                       ((item.type === "scroll" &&
                         activeSection === item.action) ||
                         (item.type === "page" &&
-                          currentPage === item.action)) && (
-                        <motion.span
-                          layoutId="activeIndicator"
-                          className="block h-0.5 bg-[#005655] rounded mt-1 w-1/2 mx-auto"
-                          transition={{
-                            type: "spring",
-                            bounce: 0.25,
-                            duration: 0.6,
-                          }}
-                        />
-                      )}
+                          currentPage === item.action))) ||
+                      (item.type === "route" &&
+                        isBlogPage &&
+                        item.action === "blog")) && (
+                      <motion.span
+                        layoutId="activeIndicator"
+                        className="block h-0.5 bg-[#005655] rounded mt-1 w-1/2 mx-auto"
+                        transition={{
+                          type: "spring",
+                          bounce: 0.25,
+                          duration: 0.6,
+                        }}
+                      />
+                    )}
                   </span>
                 </button>
               </motion.div>
@@ -264,10 +271,14 @@ const Navbar: React.FC = () => {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
                     className={`text-xl font-semibold tracking-wide text-white w-full text-left transition-colors duration-300 ${
-                      isHomePage &&
-                      ((item.type === "scroll" &&
-                        activeSection === item.action) ||
-                        (item.type === "page" && currentPage === item.action))
+                      (isHomePage &&
+                        ((item.type === "scroll" &&
+                          activeSection === item.action) ||
+                          (item.type === "page" &&
+                            currentPage === item.action))) ||
+                      (item.type === "route" &&
+                        isBlogPage &&
+                        item.action === "blog")
                         ? "underline underline-offset-4"
                         : "hover:text-[#A0C474]"
                     }`}

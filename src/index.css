@@ -165,3 +165,104 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
+/* Quill Editor Styles for Blog Content */
+.quill-content {
+  @apply w-full;
+}
+
+.quill-content .ql-editor {
+  @apply p-0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #374151;
+}
+
+.quill-content .ql-editor h1 {
+  @apply text-3xl font-bold text-gray-900 mb-6 mt-8;
+}
+
+.quill-content .ql-editor h2 {
+  @apply text-2xl font-bold text-gray-900 mb-4 mt-6;
+}
+
+.quill-content .ql-editor h3 {
+  @apply text-xl font-semibold text-gray-900 mb-3 mt-5;
+}
+
+.quill-content .ql-editor h4 {
+  @apply text-lg font-semibold text-gray-900 mb-2 mt-4;
+}
+
+.quill-content .ql-editor h5 {
+  @apply text-base font-semibold text-gray-900 mb-2 mt-3;
+}
+
+.quill-content .ql-editor h6 {
+  @apply text-sm font-semibold text-gray-900 mb-2 mt-3;
+}
+
+.quill-content .ql-editor p {
+  @apply text-gray-700 mb-4 leading-relaxed;
+}
+
+.quill-content .ql-editor ul {
+  @apply list-disc list-inside mb-4 text-gray-700;
+}
+
+.quill-content .ql-editor ol {
+  @apply list-decimal list-inside mb-4 text-gray-700;
+}
+
+.quill-content .ql-editor li {
+  @apply mb-2;
+}
+
+.quill-content .ql-editor blockquote {
+  @apply border-l-4 border-green-500 pl-4 italic text-gray-600 my-4;
+}
+
+.quill-content .ql-editor a {
+  @apply text-green-600 hover:text-green-700 underline;
+}
+
+.quill-content .ql-editor strong {
+  @apply font-bold text-gray-900;
+}
+
+.quill-content .ql-editor em {
+  @apply italic;
+}
+
+.quill-content .ql-editor u {
+  @apply underline;
+}
+
+.quill-content .ql-editor code {
+  @apply bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm font-mono;
+}
+
+.quill-content .ql-editor pre {
+  @apply bg-gray-100 p-4 rounded-lg overflow-x-auto my-4;
+}
+
+.quill-content .ql-editor pre code {
+  @apply bg-transparent p-0;
+}
+
+.quill-content .ql-editor img {
+  @apply max-w-full h-auto rounded-lg my-4;
+}
+
+.quill-content .ql-editor table {
+  @apply w-full border-collapse border border-gray-300 my-4;
+}
+
+.quill-content .ql-editor th,
+.quill-content .ql-editor td {
+  @apply border border-gray-300 px-4 py-2 text-left;
+}
+
+.quill-content .ql-editor th {
+  @apply bg-gray-50 font-semibold;
+}
