@@ -1,37 +1,168 @@
 "use client";
-import React, { useState } from "react";
-// import Image from "next/image";
+import React, { useState, useEffect } from "react";
 import { IoIosStar } from "react-icons/io";
 import { Plus, Minus } from "lucide-react";
 import Button from "./Button/Button";
 import { useContent } from "@/contexts/ContentContext";
-// import Button from "../Button";
+import { supabase } from "@/lib/supabase";
+
+// Product interface based on actual Supabase data structure
+interface Product {
+  id: number;
+  product_name: string;
+  product_description: string;
+  price: number;
+  product_images: string[];
+  category: string;
+  quantity: number;
+  status: boolean;
+  created_at: string;
+  updated_at: string;
+}
 
 const ProductSection: React.FC = () => {
-  const { content } = useContent();
+  const { content, currentPage } = useContent();
   const [quantity, setQuantity] = useState(1);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Product Images from content
-  const productImages = content.productImages;
+  // Determine category based on current page
+  const currentCategory = currentPage === "home1" ? "Toothbrush" : "Dishwasher";
+
+  // Product Images from content (fallback) or database
+  const productImages =
+    products.length > 0 && products[0].product_images
+      ? products[0].product_images
+      : content.productImages;
+
+  // Debug: Log current images being used
+  console.log("🖼️ Current productImages:", productImages);
+  console.log("🖼️ Number of images:", productImages?.length || 0);
+
+  // Helper function to get image URL (same as blog page)
+  const getImageUrl = (filename: string) => {
+    return `https://dnpxijvjjdokgppqxnap.supabase.co/storage/v1/object/public/images/${filename}`;
+  };
+
+  // Fetch products from Supabase based on category
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        console.log(`🔄 Fetching ${currentCategory} products from Supabase...`);
+
+        const { data, error } = await supabase
+          .from("products")
+          .select("*")
+          .eq("status", true)
+          .eq("category", currentCategory)
+          .order("created_at", { ascending: false });
+
+        if (error) {
+          console.error("❌ Error fetching products:", error.message);
+          return;
+        }
+
+        if (!data || data.length === 0) {
+          console.warn(
+            `⚠️ No ${currentCategory} products found in Supabase table.`
+          );
+        } else {
+          console.log(`✅ ${currentCategory} products fetched successfully!`);
+          console.log(`📊 Total ${currentCategory} products:`, data.length);
+
+          // Log each product with all details
+          data.forEach((product: any, index: number) => {
+            console.log(`\n🏷️ Product ${index + 1}:`);
+            Object.entries(product).forEach(([key, value]) => {
+              console.log(`   ${key}:`, value ?? "null");
+            });
+
+            // Log image details like admin panel
+            if (product.product_images && product.product_images.length > 0) {
+              console.log(
+                `🖼️ Product ${index + 1} images:`,
+                product.product_images
+              );
+              product.product_images.forEach(
+                (image: string, imgIndex: number) => {
+                  const imageUrl = getImageUrl(image);
+                  console.log(
+                    `🖼️ Image ${imgIndex + 1}: ${image} → ${imageUrl}`
+                  );
+                  // Test if image loads
+                  const img = new Image();
+                  img.onload = () =>
+                    console.log(`✅ Image ${imgIndex + 1} loaded successfully`);
+                  img.onerror = () =>
+                    console.log(
+                      `❌ Image ${imgIndex + 1} failed to load: ${imageUrl}`
+                    );
+                  img.src = imageUrl;
+                }
+              );
+            }
+          });
+        }
+
+        setProducts((data as Product[]) || []);
+      } catch (err) {
+        console.error("💥 Failed to fetch products:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [currentCategory]);
 
   const incrementQuantity = () => setQuantity((prev) => prev + 1);
   const decrementQuantity = () => setQuantity((prev) => Math.max(1, prev - 1));
 
+  // Debug summary
+  useEffect(() => {
+    if (!loading) {
+      console.log(`\n📈 ${currentCategory} Products Summary:`);
+      console.log(`   Total ${currentCategory} products: ${products.length}`);
+      console.log(`   Current page: ${currentPage}`);
+      console.log(`   Category filter: ${currentCategory}`);
+      console.log("   Products array:", products);
+    }
+  }, [products, loading, currentCategory, currentPage]);
+
   return (
     <main className="container mx-auto">
       <section className="py-8 sm:py-8 lg:py-16 mx-0 sm:mx-12">
+        {/* Original product section - keeping the original UI */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-start">
           <div className="mx-auto w-full sm:w-4/5">
             <div className="sm:hidden bg-[#F3F7DE] rounded-2xl flex items-center justify-center h-[280px] mb-4">
               <div className="relative w-full h-full">
-                <img
-                  src={productImages[selectedImageIndex]}
-                  alt="Bamboo Toothbrush"
-                  width={1000}
-                  height={1000}
-                  className="object-contain w-full h-full"
-                />
+                {productImages && productImages.length > 0 ? (
+                  <img
+                    src={getImageUrl(productImages[selectedImageIndex])}
+                    alt={
+                      products.length > 0
+                        ? products[0].product_name
+                        : "Bamboo Toothbrush"
+                    }
+                    width={1000}
+                    height={1000}
+                    className="object-contain w-full h-full"
+                    onError={(e) => {
+                      console.error(
+                        "Image failed to load:",
+                        getImageUrl(productImages[selectedImageIndex])
+                      );
+                      e.currentTarget.style.display = "none";
+                    }}
+                  />
+                ) : (
+                  <div className="flex flex-col items-center justify-center text-gray-500">
+                    <div className="text-4xl mb-2">🖼️</div>
+                    <p className="text-sm">No images available</p>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -47,11 +178,22 @@ const ProductSection: React.FC = () => {
                   }`}
                 >
                   <img
-                    src={src}
-                    alt={`Toothbrush view ${index + 1}`}
+                    src={getImageUrl(src)}
+                    alt={`${
+                      products.length > 0
+                        ? products[0].product_name
+                        : "Toothbrush"
+                    } view ${index + 1}`}
                     width={1000}
                     height={1000}
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      console.error(
+                        "Thumbnail image failed to load:",
+                        getImageUrl(src)
+                      );
+                      e.currentTarget.style.display = "none";
+                    }}
                   />
                 </div>
               ))}
@@ -70,11 +212,22 @@ const ProductSection: React.FC = () => {
                     }`}
                   >
                     <img
-                      src={src}
-                      alt={`Toothbrush view ${index + 1}`}
+                      src={getImageUrl(src)}
+                      alt={`${
+                        products.length > 0
+                          ? products[0].product_name
+                          : "Toothbrush"
+                      } view ${index + 1}`}
                       width={1000}
                       height={1000}
                       className="w-full h-full object-cover"
+                      onError={(e) => {
+                        console.error(
+                          "Desktop thumbnail image failed to load:",
+                          getImageUrl(src)
+                        );
+                        e.currentTarget.style.display = "none";
+                      }}
                     />
                   </div>
                 ))}
@@ -82,13 +235,31 @@ const ProductSection: React.FC = () => {
 
               <div className="flex-1 bg-[#F3F7DE] rounded-2xl flex items-center justify-center h-[300px] sm:h-[350px] md:h-[400px] lg:h-[430px]">
                 <div className="relative w-full h-full">
-                  <img
-                    src={productImages[selectedImageIndex]}
-                    alt="Bamboo Toothbrush"
-                    width={1000}
-                    height={1000}
-                    className="object-contain w-full h-full"
-                  />
+                  {productImages && productImages.length > 0 ? (
+                    <img
+                      src={getImageUrl(productImages[selectedImageIndex])}
+                      alt={
+                        products.length > 0
+                          ? products[0].product_name
+                          : "Bamboo Toothbrush"
+                      }
+                      width={1000}
+                      height={1000}
+                      className="object-contain w-full h-full"
+                      onError={(e) => {
+                        console.error(
+                          "Main desktop image failed to load:",
+                          getImageUrl(productImages[selectedImageIndex])
+                        );
+                        e.currentTarget.style.display = "none";
+                      }}
+                    />
+                  ) : (
+                    <div className="flex flex-col items-center justify-center text-gray-500">
+                      <div className="text-4xl mb-2">🖼️</div>
+                      <p className="text-sm">No images available</p>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -96,7 +267,9 @@ const ProductSection: React.FC = () => {
 
           <div className="space-y-3 sm:space-y-4 lg:space-y-3 w-full max-w-2xl mx-auto lg:max-w-none">
             <h1 className="text-xl sm:text-2xl font-eurotypo font-bold text-[#005655] leading-tight">
-              {content.products.title} | {content.products.description}
+              {products.length > 0
+                ? products[0].product_name
+                : content.products.title}{" "}
             </h1>
 
             <div className="flex items-center gap-2 flex-wrap">
@@ -115,7 +288,10 @@ const ProductSection: React.FC = () => {
 
             <div className="flex items-center gap-2 flex-wrap">
               <span className="text-4xl font-bold text-[#005655]">
-                {content.products.price}
+                $
+                {products.length > 0
+                  ? products[0].price
+                  : content.products.price}
               </span>
               <span className="text-xl text-gray-500 line-through font-semibold">
                 {content.products.originalPrice}
@@ -169,7 +345,9 @@ const ProductSection: React.FC = () => {
                 Description
               </h3>
               <p className="text-sm sm:text-base text-eco-charcoal/80 leading-relaxed">
-                {content.productDetails.detailedDescription}
+                {products.length > 0
+                  ? products[0].product_description
+                  : content.productDetails.detailedDescription}
               </p>
             </div>
           </div>
