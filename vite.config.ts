@@ -19,4 +19,19 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Separate vendor chunks
+          vendor: ['react', 'react-dom'],
+          // Separate Quill chunk
+          quill: ['quill', 'react-quill'],
+          // Separate UI components
+          ui: ['framer-motion', 'lucide-react'],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 1000,
+  },
 }));

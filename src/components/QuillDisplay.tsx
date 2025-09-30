@@ -1,5 +1,4 @@
-import React from "react";
-import "quill/dist/quill.snow.css";
+import React, { useEffect } from "react";
 
 interface QuillDisplayProps {
   content: string;
@@ -10,6 +9,11 @@ const QuillDisplay: React.FC<QuillDisplayProps> = ({
   content,
   className = "",
 }) => {
+  // Dynamically import Quill CSS only when component is used
+  useEffect(() => {
+    import("quill/dist/quill.snow.css");
+  }, []);
+
   return (
     <div
       className={`ql-editor ${className}`}
