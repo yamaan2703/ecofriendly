@@ -67,7 +67,11 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
   });
 
   const getImageUrl = (filename: string) => {
-    return `https://dnpxijvjjdokgppqxnap.supabase.co/storage/v1/object/public/images/${filename}`;
+    // Remove any leading slashes or "product-images/" prefix from filename
+    const cleanFilename = filename
+      .replace(/^\/+/, "")
+      .replace(/^product-images\//, "");
+    return `https://dnpxijvjjdokgppqxnap.supabase.co/storage/v1/object/public/images/${cleanFilename}`;
   };
 
   // Update form data when user changes

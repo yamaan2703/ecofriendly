@@ -39,7 +39,11 @@ const ProductSection: React.FC = () => {
       : content.productImages;
 
   const getImageUrl = (filename: string) => {
-    return `https://dnpxijvjjdokgppqxnap.supabase.co/storage/v1/object/public/images/${filename}`;
+    // Remove any leading slashes or "product-images/" prefix from filename
+    const cleanFilename = filename
+      .replace(/^\/+/, "")
+      .replace(/^product-images\//, "");
+    return `https://dnpxijvjjdokgppqxnap.supabase.co/storage/v1/object/public/images/product-images/${cleanFilename}`;
   };
 
   useEffect(() => {
@@ -211,13 +215,6 @@ const ProductSection: React.FC = () => {
                       width={1000}
                       height={1000}
                       className="w-full h-full object-cover"
-                      onError={(e) => {
-                        console.error(
-                          "Desktop thumbnail image failed to load:",
-                          getImageUrl(src)
-                        );
-                        e.currentTarget.style.display = "none";
-                      }}
                     />
                   </div>
                 ))}
@@ -236,13 +233,6 @@ const ProductSection: React.FC = () => {
                       width={1000}
                       height={1000}
                       className="object-contain w-full h-full"
-                      onError={(e) => {
-                        console.error(
-                          "Main desktop image failed to load:",
-                          getImageUrl(productImages[selectedImageIndex])
-                        );
-                        e.currentTarget.style.display = "none";
-                      }}
                     />
                   ) : (
                     <div className="flex flex-col items-center justify-center text-gray-500">

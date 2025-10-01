@@ -27,7 +27,11 @@ const CartPage: React.FC = () => {
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
 
   const getImageUrl = (filename: string) => {
-    return `https://dnpxijvjjdokgppqxnap.supabase.co/storage/v1/object/public/images/${filename}`;
+    // Remove any leading slashes or "product-images/" prefix from filename
+    const cleanFilename = filename
+      .replace(/^\/+/, "")
+      .replace(/^product-images\//, "");
+    return `https://dnpxijvjjdokgppqxnap.supabase.co/storage/v1/object/public/images/${cleanFilename}`;
   };
 
   const handleRemoveItem = (productId: number, productName: string) => {
