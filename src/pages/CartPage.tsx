@@ -31,7 +31,7 @@ const CartPage: React.FC = () => {
     const cleanFilename = filename
       .replace(/^\/+/, "")
       .replace(/^product-images\//, "");
-    return `https://dnpxijvjjdokgppqxnap.supabase.co/storage/v1/object/public/images/${cleanFilename}`;
+    return `https://dnpxijvjjdokgppqxnap.supabase.co/storage/v1/object/public/images/product-images/${cleanFilename}`;
   };
 
   const handleRemoveItem = (productId: number, productName: string) => {

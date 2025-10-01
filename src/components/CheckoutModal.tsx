@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { CartItem } from "@/contexts/CartContext";
+import { supabase } from "@/lib/supabase";
 
 interface CheckoutFormData {
   fullName: string;
@@ -51,6 +52,22 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const { user } = useAuth();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
+
+  // Load saved card details from localStorage
+  const loadSavedCardDetails = () => {
+    try {
+      const savedCard = localStorage.getItem("ecofriendly_saved_card");
+      if (savedCard) {
+        return JSON.parse(savedCard);
+      }
+    } catch (error) {
+      console.error("Error loading saved card:", error);
+    }
+    return null;
+  };
+
+  const savedCard = loadSavedCardDetails();
+
   const [formData, setFormData] = useState<CheckoutFormData>({
     fullName: user?.name || "",
     email: user?.email || "",
@@ -60,10 +77,10 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
     state: "",
     zipCode: "",
     country: "",
-    cardNumber: "",
-    cardName: "",
-    expiryDate: "",
-    cvv: "",
+    cardNumber: savedCard?.cardNumber || "",
+    cardName: savedCard?.cardName || "",
+    expiryDate: savedCard?.expiryDate || "",
+    cvv: savedCard?.cvv || "",
   });
 
   const getImageUrl = (filename: string) => {
@@ -71,19 +88,24 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
     const cleanFilename = filename
       .replace(/^\/+/, "")
       .replace(/^product-images\//, "");
-    return `https://dnpxijvjjdokgppqxnap.supabase.co/storage/v1/object/public/images/${cleanFilename}`;
+    return `https://dnpxijvjjdokgppqxnap.supabase.co/storage/v1/object/public/images/product-images/${cleanFilename}`;
   };
 
-  // Update form data when user changes
+  // Update form data when user changes or modal opens
   useEffect(() => {
     if (user) {
+      const savedCard = loadSavedCardDetails();
       setFormData((prev) => ({
         ...prev,
         fullName: user.name || prev.fullName,
         email: user.email || prev.email,
+        cardNumber: savedCard?.cardNumber || prev.cardNumber,
+        cardName: savedCard?.cardName || prev.cardName,
+        expiryDate: savedCard?.expiryDate || prev.expiryDate,
+        cvv: savedCard?.cvv || prev.cvv,
       }));
     }
-  }, [user]);
+  }, [user, isOpen]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -105,51 +127,75 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
     setIsProcessing(true);
 
-    // Simulate order processing
-    setTimeout(() => {
-      // Create order data
+    try {
+      // Save card details to localStorage (for future use)
+      const cardDetails = {
+        cardNumber: formData.cardNumber,
+        cardName: formData.cardName,
+        expiryDate: formData.expiryDate,
+        cvv: formData.cvv,
+      };
+      localStorage.setItem(
+        "ecofriendly_saved_card",
+        JSON.stringify(cardDetails)
+      );
+
+      // Create ONE order entry for all products in cart
+      // product_id will be an array of all product IDs
+      // quantity will be an array of quantities for each product
+      const productIds = cartItems.map((item) => item.id);
+      const quantities = cartItems.map((item) => item.quantity);
+      const totalQuantity = quantities.reduce((sum, qty) => sum + qty, 0);
+      const totalAmount = cartItems.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+      );
+
       const orderData = {
-        userId: user.id,
-        userName: user.name,
-        userEmail: user.email,
-        items: cartItems.map((item) => ({
-          productId: item.id,
-          productName: item.product_name,
-          quantity: item.quantity,
-          price: item.price,
-          total: item.price * item.quantity,
-        })),
-        shippingAddress: {
-          fullName: formData.fullName,
-          phone: formData.phone,
-          address: formData.address,
-          city: formData.city,
-          state: formData.state,
-          zipCode: formData.zipCode,
-          country: formData.country,
-        },
-        paymentMethod: {
-          cardName: formData.cardName,
-          cardLastFour: formData.cardNumber.slice(-4),
-        },
-        totalAmount: totalPrice,
-        orderDate: new Date().toISOString(),
+        user_id: user.id,
+        product_id: productIds, // Array of product IDs [1, 2, 3]
+        quantity: quantities, // Array of quantities [2, 1, 3]
+        status: "pending",
+        country: formData.country,
+        state: formData.state,
+        city: formData.city,
+        street_address: formData.address,
+        total_price: totalAmount,
       };
 
-      console.log("Order placed:", orderData);
+      console.log("📦 Creating order with multiple products:", {
+        productIds,
+        quantities,
+        totalQuantity,
+        totalAmount,
+        fullOrderData: orderData,
+      });
+
+      const { data, error } = await supabase
+        .from("order")
+        .insert([orderData])
+        .select();
+
+      if (error) {
+        console.error("❌ Error creating order:", error);
+        throw error;
+      }
+
+      console.log("✅ Order created successfully:", data);
 
       toast({
         title: "Order Placed Successfully! 🎉",
         description: `Your order of $${totalPrice.toFixed(
           2
-        )} has been confirmed.`,
+        )} has been confirmed. Card details saved for future use.`,
         duration: 5000,
       });
 
       setIsProcessing(false);
       onCheckoutSuccess();
 
-      // Reset form
+      // Reset form but keep card details
+      const savedCard = loadSavedCardDetails();
       setFormData({
         fullName: user?.name || "",
         email: user?.email || "",
@@ -159,12 +205,21 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
         state: "",
         zipCode: "",
         country: "",
-        cardNumber: "",
-        cardName: "",
-        expiryDate: "",
-        cvv: "",
+        cardNumber: savedCard?.cardNumber || "",
+        cardName: savedCard?.cardName || "",
+        expiryDate: savedCard?.expiryDate || "",
+        cvv: savedCard?.cvv || "",
       });
-    }, 2000);
+    } catch (error) {
+      console.error("Error processing order:", error);
+      toast({
+        title: "Order Failed",
+        description:
+          "There was an error processing your order. Please try again.",
+        duration: 3000,
+      });
+      setIsProcessing(false);
+    }
   };
 
   const handleClose = () => {
