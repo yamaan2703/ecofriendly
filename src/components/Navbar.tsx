@@ -59,13 +59,15 @@ const Navbar: React.FC = () => {
     setIsOpen(false);
   };
 
-  const handleShopClick = () => {
-    window.location.href = "/shop";
+  const handleCartClick = () => {
+    window.location.href = "/cart";
     setIsOpen(false);
   };
 
   // Check current page for active states
-  const isShopPage = window.location.pathname === "/shop";
+  const isCartPage =
+    window.location.pathname === "/cart" ||
+    window.location.pathname === "/shop";
   const isProfilePage = window.location.pathname === "/profile";
   const isLoginPage = window.location.pathname === "/login";
   const isSignupPage = window.location.pathname === "/signup";
@@ -191,14 +193,14 @@ const Navbar: React.FC = () => {
               <User className="w-5 h-5" />
             </button>
 
-            {/* Shop Icon */}
+            {/* Cart Icon */}
             <button
-              onClick={handleShopClick}
+              onClick={handleCartClick}
               className={`p-2 transition-all duration-300 hover:scale-110 hover:bg-[#E7F0CE] rounded-full ${
-                isShopPage ? "text-[#005655] bg-[#E7F0CE]" : "text-[#005655]"
+                isCartPage ? "text-[#005655] bg-[#E7F0CE]" : "text-[#005655]"
               }`}
-              aria-label="Shop"
-              title="Shop"
+              aria-label="Cart"
+              title="Cart"
             >
               <ShoppingBag className="w-5 h-5" />
             </button>
@@ -306,17 +308,17 @@ const Navbar: React.FC = () => {
                   </motion.button>
 
                   <motion.button
-                    onClick={handleShopClick}
+                    onClick={handleCartClick}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{
                       delay: (navItems.length + 1) * 0.1,
                     }}
                     className="flex items-center space-x-3 text-white hover:text-[#A0C474] transition-colors duration-300"
-                    aria-label="Shop"
+                    aria-label="Cart"
                   >
                     <ShoppingBag className="w-6 h-6" />
-                    <span className="text-lg font-medium">Shop</span>
+                    <span className="text-lg font-medium">Cart</span>
                   </motion.button>
                 </div>
               </div>

@@ -166,6 +166,18 @@ All colors MUST be HSL.
   }
 }
 
+/* Hide scrollbar utility */
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
 /* Quill Editor Styles for Blog Content */
 .quill-content {
   @apply w-full;

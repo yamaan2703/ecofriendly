@@ -4,6 +4,8 @@ import { IoIosStar } from "react-icons/io";
 import { Plus, Minus } from "lucide-react";
 import Button from "./Button/Button";
 import { useContent } from "@/contexts/ContentContext";
+import { useCart } from "@/contexts/CartContext";
+import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
 
 // Product interface based on actual Supabase data structure
@@ -22,35 +24,27 @@ interface Product {
 
 const ProductSection: React.FC = () => {
   const { content, currentPage } = useContent();
+  const { addToCart } = useCart();
+  const { toast } = useToast();
   const [quantity, setQuantity] = useState(1);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Determine category based on current page
   const currentCategory = currentPage === "home1" ? "Toothbrush" : "Dishwasher";
 
-  // Product Images from content (fallback) or database
   const productImages =
     products.length > 0 && products[0].product_images
       ? products[0].product_images
       : content.productImages;
 
-  // Debug: Log current images being used
-  console.log("🖼️ Current productImages:", productImages);
-  console.log("🖼️ Number of images:", productImages?.length || 0);
-
-  // Helper function to get image URL (same as blog page)
   const getImageUrl = (filename: string) => {
     return `https://dnpxijvjjdokgppqxnap.supabase.co/storage/v1/object/public/images/${filename}`;
   };
 
-  // Fetch products from Supabase based on category
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        console.log(`🔄 Fetching ${currentCategory} products from Supabase...`);
-
         const { data, error } = await supabase
           .from("products")
           .select("*")
@@ -68,16 +62,7 @@ const ProductSection: React.FC = () => {
             `⚠️ No ${currentCategory} products found in Supabase table.`
           );
         } else {
-          console.log(`✅ ${currentCategory} products fetched successfully!`);
-          console.log(`📊 Total ${currentCategory} products:`, data.length);
-
-          // Log each product with all details
           data.forEach((product: any, index: number) => {
-            console.log(`\n🏷️ Product ${index + 1}:`);
-            Object.entries(product).forEach(([key, value]) => {
-              console.log(`   ${key}:`, value ?? "null");
-            });
-
             // Log image details like admin panel
             if (product.product_images && product.product_images.length > 0) {
               console.log(
@@ -87,18 +72,10 @@ const ProductSection: React.FC = () => {
               product.product_images.forEach(
                 (image: string, imgIndex: number) => {
                   const imageUrl = getImageUrl(image);
-                  console.log(
-                    `🖼️ Image ${imgIndex + 1}: ${image} → ${imageUrl}`
-                  );
-                  // Test if image loads
                   const img = new Image();
                   img.onload = () =>
                     console.log(`✅ Image ${imgIndex + 1} loaded successfully`);
-                  img.onerror = () =>
-                    console.log(
-                      `❌ Image ${imgIndex + 1} failed to load: ${imageUrl}`
-                    );
-                  img.src = imageUrl;
+                  img.onerror = () => (img.src = imageUrl);
                 }
               );
             }
@@ -107,7 +84,6 @@ const ProductSection: React.FC = () => {
 
         setProducts((data as Product[]) || []);
       } catch (err) {
-        console.error("💥 Failed to fetch products:", err);
       } finally {
         setLoading(false);
       }
@@ -119,21 +95,35 @@ const ProductSection: React.FC = () => {
   const incrementQuantity = () => setQuantity((prev) => prev + 1);
   const decrementQuantity = () => setQuantity((prev) => Math.max(1, prev - 1));
 
-  // Debug summary
-  useEffect(() => {
-    if (!loading) {
-      console.log(`\n📈 ${currentCategory} Products Summary:`);
-      console.log(`   Total ${currentCategory} products: ${products.length}`);
-      console.log(`   Current page: ${currentPage}`);
-      console.log(`   Category filter: ${currentCategory}`);
-      console.log("   Products array:", products);
+  const handleAddToCart = () => {
+    if (products.length > 0) {
+      const product = products[0];
+      addToCart(
+        {
+          id: product.id,
+          product_name: product.product_name,
+          product_description: product.product_description,
+          price: product.price,
+          product_images: product.product_images,
+          category: product.category,
+        },
+        quantity
+      );
+
+      toast({
+        title: "Added to Cart!",
+        description: `${product.product_name} (x${quantity}) has been added to your cart.`,
+        duration: 3000,
+      });
+
+      // Reset quantity to 1 after adding to cart
+      setQuantity(1);
     }
-  }, [products, loading, currentCategory, currentPage]);
+  };
 
   return (
     <main className="container mx-auto">
       <section className="py-8 sm:py-8 lg:py-16 mx-0 sm:mx-12">
-        {/* Original product section - keeping the original UI */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-start">
           <div className="mx-auto w-full sm:w-4/5">
             <div className="sm:hidden bg-[#F3F7DE] rounded-2xl flex items-center justify-center h-[280px] mb-4">
@@ -333,6 +323,7 @@ const ProductSection: React.FC = () => {
                     variant="solid"
                     size="xs"
                     className="w-full sm:w-auto text-sm sm:text-base py-2 sm:py-1.5"
+                    onClick={handleAddToCart}
                   >
                     Add to Cart
                   </Button>
