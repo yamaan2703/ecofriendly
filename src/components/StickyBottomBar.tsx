@@ -13,7 +13,8 @@ interface Product {
   id: number;
   product_name: string;
   product_description: string;
-  price: number;
+  actual_price: number;
+  discounted_price: number;
   product_images: string[];
   category: string;
   quantity: number;
@@ -116,7 +117,7 @@ const StickyBottomBar: React.FC = () => {
           id: product.id,
           product_name: product.product_name,
           product_description: product.product_description,
-          price: product.price,
+          price: product.discounted_price,
           product_images: product.product_images,
           category: product.category,
         },
@@ -175,11 +176,13 @@ const StickyBottomBar: React.FC = () => {
                   </h3>
                   <div className="flex items-baseline space-x-2">
                     <span className="text-lg font-bold text-white">
-                      ${product.price}
+                      ${product.discounted_price}
                     </span>
-                    <span className="text-white/60 line-through text-sm">
-                      {content.products.originalPrice}
-                    </span>
+                    {product.actual_price > product.discounted_price && (
+                      <span className="text-white/60 line-through text-sm">
+                        ${product.actual_price}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -252,11 +255,13 @@ const StickyBottomBar: React.FC = () => {
                     </h3>
                     <div className="flex items-baseline space-x-2 mt-1">
                       <span className="text-lg font-bold text-white">
-                        ${product.price}
+                        ${product.discounted_price}
                       </span>
-                      <span className="text-white/60 line-through text-xs">
-                        {content.products.originalPrice}
-                      </span>
+                      {product.actual_price > product.discounted_price && (
+                        <span className="text-white/60 line-through text-xs">
+                          ${product.actual_price}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>

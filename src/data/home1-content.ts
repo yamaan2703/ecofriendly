@@ -234,7 +234,7 @@ export const home1Content = {
 
   // Pricing info
   pricing: {
-    freeShipping: "Free Shipping over $25 orders",
+    freeShipping: "Free Shipping over $50 orders",
     packInfo: "Pack of 10"
   },
 

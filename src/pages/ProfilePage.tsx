@@ -28,13 +28,15 @@ interface Order {
   state: string;
   city: string;
   street_address: string;
+  phone_Number: string;
   total_price: number;
 }
 
 interface ProductDetails {
   id: number;
   product_name: string;
-  price: number;
+  actual_price: number;
+  discounted_price: number;
   product_images: string[];
 }
 
@@ -136,7 +138,9 @@ const ProfilePage: React.FC = () => {
         if (allProductIds.size > 0) {
           const { data: productsData, error: productsError } = await supabase
             .from("products")
-            .select("id, product_name, price, product_images")
+            .select(
+              "id, product_name, actual_price, discounted_price, product_images"
+            )
             .in("id", Array.from(allProductIds));
 
           if (productsError) {
@@ -249,9 +253,7 @@ const ProfilePage: React.FC = () => {
                   |
                   <p className="text-sm text-gray-500">
                     Status:{" "}
-                    {user?.status === "true" ||
-                    user?.status === "active" ||
-                    (user?.status as any) === true
+                    {user?.status === true || (user?.status as any) === true
                       ? "Active"
                       : user?.status || "Loading..."}
                   </p>
@@ -436,17 +438,34 @@ const ProfilePage: React.FC = () => {
                                       {quantity}
                                     </span>
                                   </p>
-                                  <p className="text-sm text-gray-600">
-                                    Price:{" "}
-                                    <span className="font-semibold">
-                                      ${product?.price || 0}
-                                    </span>
-                                  </p>
+                                  <div className="text-sm text-gray-600">
+                                    <div className="flex items-center gap-2">
+                                      <span>Price:</span>
+                                      {product?.actual_price &&
+                                      product?.discounted_price &&
+                                      product.actual_price >
+                                        product.discounted_price ? (
+                                        <div className="flex items-center gap-2">
+                                          <span className="text-gray-400 line-through">
+                                            ${product.actual_price}
+                                          </span>
+                                          <span className="font-semibold text-green-600">
+                                            ${product.discounted_price}
+                                          </span>
+                                        </div>
+                                      ) : (
+                                        <span className="font-semibold">
+                                          ${product?.discounted_price || 0}
+                                        </span>
+                                      )}
+                                    </div>
+                                  </div>
                                   <p className="text-sm font-semibold text-[#005655]">
                                     Subtotal: $
-                                    {((product?.price || 0) * quantity).toFixed(
-                                      2
-                                    )}
+                                    {(
+                                      (product?.discounted_price || 0) *
+                                      quantity
+                                    ).toFixed(2)}
                                   </p>
                                 </div>
                               </div>

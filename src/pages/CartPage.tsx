@@ -65,6 +65,12 @@ const CartPage: React.FC = () => {
     0
   );
 
+  const deliveryFee = 5.99; // $5.99 delivery fee
+  const freeDeliveryThreshold = 50; // Free delivery over $50
+  const subtotal = getTotalPrice();
+  const isFreeDelivery = subtotal >= freeDeliveryThreshold;
+  const finalTotal = isFreeDelivery ? subtotal : subtotal + deliveryFee;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#FDFDEA] via-[#FEFEF5] to-white">
       <Navbar />
@@ -283,15 +289,59 @@ const CartPage: React.FC = () => {
                   <div className="flex items-center justify-between py-3 border-b border-white/20">
                     <span className="text-white/80">Items ({totalItems})</span>
                     <span className="font-bold text-lg">
-                      ${getTotalPrice().toFixed(2)}
+                      ${subtotal.toFixed(2)}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between py-3 border-b border-white/20">
+                    <div className="flex items-center gap-2">
+                      <span className="text-white/80">Delivery</span>
+                      {isFreeDelivery ? (
+                        <span className="text-green-400 text-sm font-semibold bg-green-400/20 px-2 py-1 rounded-full">
+                          FREE
+                        </span>
+                      ) : (
+                        <span className="text-white/80 text-sm">
+                          (Free over ${freeDeliveryThreshold})
+                        </span>
+                      )}
+                    </div>
+                    <span className="font-bold text-lg">
+                      {isFreeDelivery ? (
+                        <span className="text-green-400">FREE</span>
+                      ) : (
+                        `$${deliveryFee.toFixed(2)}`
+                      )}
                     </span>
                   </div>
 
                   <div className="flex items-center justify-between pt-4">
                     <span className="text-xl font-bold">Total</span>
                     <span className="text-3xl font-bold text-[#A0C474]">
-                      ${getTotalPrice().toFixed(2)}
+                      ${finalTotal.toFixed(2)}
                     </span>
+                  </div>
+
+                  {/* Delivery Time Information */}
+                  <div className="bg-white/10 rounded-lg p-4 mt-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Package className="w-5 h-5 text-[#A0C474]" />
+                      <span className="text-white font-semibold">
+                        Delivery Time
+                      </span>
+                    </div>
+                    <p className="text-white/80 text-sm">
+                      Your order will be delivered within{" "}
+                      <span className="font-bold text-[#A0C474]">
+                        4-5 business days
+                      </span>
+                    </p>
+                    {!isFreeDelivery && (
+                      <p className="text-white/60 text-xs mt-1">
+                        Add ${(freeDeliveryThreshold - subtotal).toFixed(2)}{" "}
+                        more for free delivery
+                      </p>
+                    )}
                   </div>
                 </div>
 

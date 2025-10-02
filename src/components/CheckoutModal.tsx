@@ -22,7 +22,7 @@ import { supabase } from "@/lib/supabase";
 interface CheckoutFormData {
   fullName: string;
   email: string;
-  phone: string;
+  phone_Number: string;
   address: string;
   city: string;
   state: string;
@@ -53,6 +53,13 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
 
+  // Delivery fee calculation
+  const deliveryFee = 5.99; // $5.99 delivery fee
+  const freeDeliveryThreshold = 50; // Free delivery over $50
+  const subtotal = totalPrice;
+  const isFreeDelivery = subtotal >= freeDeliveryThreshold;
+  const finalTotal = isFreeDelivery ? subtotal : subtotal + deliveryFee;
+
   // Load saved card details from localStorage
   const loadSavedCardDetails = () => {
     try {
@@ -71,12 +78,12 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const [formData, setFormData] = useState<CheckoutFormData>({
     fullName: user?.name || "",
     email: user?.email || "",
-    phone: "",
+    phone_Number: "",
     address: "",
     city: "",
     state: "",
     zipCode: "",
-    country: "",
+    country: "USA",
     cardNumber: savedCard?.cardNumber || "",
     cardName: savedCard?.cardName || "",
     expiryDate: savedCard?.expiryDate || "",
@@ -99,6 +106,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
         ...prev,
         fullName: user.name || prev.fullName,
         email: user.email || prev.email,
+        country: "USA", // Set default to USA
         cardNumber: savedCard?.cardNumber || prev.cardNumber,
         cardName: savedCard?.cardName || prev.cardName,
         expiryDate: savedCard?.expiryDate || prev.expiryDate,
@@ -146,10 +154,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
       const productIds = cartItems.map((item) => item.id);
       const quantities = cartItems.map((item) => item.quantity);
       const totalQuantity = quantities.reduce((sum, qty) => sum + qty, 0);
-      const totalAmount = cartItems.reduce(
-        (sum, item) => sum + item.price * item.quantity,
-        0
-      );
+      const totalAmount = finalTotal; // Use final total including delivery fee
 
       const orderData = {
         user_id: user.id,
@@ -160,6 +165,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
         state: formData.state,
         city: formData.city,
         street_address: formData.address,
+        phone_Number: formData.phone_Number,
         total_price: totalAmount,
       };
 
@@ -168,6 +174,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
         quantities,
         totalQuantity,
         totalAmount,
+        phone_Number: formData.phone_Number,
         fullOrderData: orderData,
       });
 
@@ -185,7 +192,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
       toast({
         title: "Order Placed Successfully! 🎉",
-        description: `Your order of $${totalPrice.toFixed(
+        description: `Your order of $${finalTotal.toFixed(
           2
         )} has been confirmed. Card details saved for future use.`,
         duration: 5000,
@@ -199,12 +206,12 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
       setFormData({
         fullName: user?.name || "",
         email: user?.email || "",
-        phone: "",
+        phone_Number: "",
         address: "",
         city: "",
         state: "",
         zipCode: "",
-        country: "",
+        country: "USA",
         cardNumber: savedCard?.cardNumber || "",
         cardName: savedCard?.cardName || "",
         expiryDate: savedCard?.expiryDate || "",
@@ -272,49 +279,6 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
               </div>
 
               <form onSubmit={handleSubmit} className="p-6 space-y-6">
-                {/* Order Summary */}
-                <div className="bg-gradient-to-br from-[#E7F0CE] to-[#F3F7DE] rounded-xl p-6">
-                  <h3 className="text-xl font-bold text-[#005655] mb-4 flex items-center gap-2">
-                    <Package className="w-5 h-5" />
-                    Order Summary
-                  </h3>
-                  <div className="space-y-3">
-                    {cartItems.map((item) => (
-                      <div
-                        key={item.id}
-                        className="flex items-center justify-between text-sm"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className="w-12 h-12 bg-white rounded-lg overflow-hidden">
-                            <img
-                              src={getImageUrl(item.product_images[0])}
-                              alt={item.product_name}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                          <div>
-                            <p className="font-semibold text-[#005655]">
-                              {item.product_name}
-                            </p>
-                            <p className="text-gray-600">
-                              Qty: {item.quantity}
-                            </p>
-                          </div>
-                        </div>
-                        <p className="font-bold text-[#005655]">
-                          ${(item.price * item.quantity).toFixed(2)}
-                        </p>
-                      </div>
-                    ))}
-                    <div className="border-t-2 border-[#005655]/20 pt-3 flex items-center justify-between">
-                      <p className="text-lg font-bold text-[#005655]">Total:</p>
-                      <p className="text-2xl font-bold text-[#005655]">
-                        ${totalPrice.toFixed(2)}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
                 {/* Shipping Information */}
                 <div>
                   <h3 className="text-xl font-bold text-[#005655] mb-4 flex items-center gap-2">
@@ -362,6 +326,20 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        📞 phone_Number Number *
+                      </label>
+                      <input
+                        type="tel"
+                        name="phone_Number"
+                        value={formData.phone_Number}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[#005655] focus:outline-none transition-colors"
+                        placeholder="+1 (555) 123-4567"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
                         <Building className="w-4 h-4 inline mr-1" />
                         Country *
                       </label>
@@ -371,9 +349,13 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
                         value={formData.country}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[#005655] focus:outline-none transition-colors"
-                        placeholder="United States"
+                        readOnly
+                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl bg-gray-50 text-gray-700 cursor-not-allowed"
+                        placeholder="USA"
                       />
+                      <p className="text-xs text-gray-500 mt-1">
+                        Currently shipping to USA only
+                      </p>
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -528,7 +510,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
                       </>
                     ) : (
                       <>
-                        Place Order ${totalPrice.toFixed(2)}
+                        Place Order ${finalTotal.toFixed(2)}
                         <ArrowRight className="w-5 h-5 ml-2" />
                       </>
                     )}

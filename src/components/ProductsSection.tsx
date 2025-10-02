@@ -14,7 +14,8 @@ interface Product {
   id: number;
   product_name: string;
   product_description: string;
-  price: number;
+  actual_price: number;
+  discounted_price: number;
   product_images: string[];
   category: string;
   quantity: number;
@@ -92,6 +93,14 @@ const ProductSection: React.FC = () => {
         }
 
         setProducts((data as Product[]) || []);
+        // Debug price data
+        if (data && data.length > 0) {
+          console.log("💰 Price data from database:", {
+            actual_price: data[0]?.actual_price,
+            discounted_price: data[0]?.discounted_price,
+            product_name: data[0]?.product_name,
+          });
+        }
       } catch (err) {
       } finally {
         setLoading(false);
@@ -122,7 +131,7 @@ const ProductSection: React.FC = () => {
           id: product.id,
           product_name: product.product_name,
           product_description: product.product_description,
-          price: product.price,
+          price: product.discounted_price,
           product_images: product.product_images,
           category: product.category,
         },
@@ -285,15 +294,15 @@ const ProductSection: React.FC = () => {
               <span className="text-4xl font-bold text-[#005655]">
                 $
                 {products.length > 0
-                  ? products[0].price
+                  ? products[0].discounted_price
                   : content.products.price}
               </span>
-              <span className="text-xl text-gray-500 line-through font-semibold">
-                {content.products.originalPrice}
-              </span>
-              <span className="text-xs sm:text-sm text-gray-500">
-                ({content.pricing.packInfo})
-              </span>
+              {products.length > 0 &&
+                products[0].actual_price > products[0].discounted_price && (
+                  <span className="text-xl text-gray-500 line-through font-semibold">
+                    ${products[0].actual_price}
+                  </span>
+                )}
             </div>
 
             <p className="text-xs sm:text-sm text-gray-500">
