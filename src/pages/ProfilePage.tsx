@@ -13,10 +13,13 @@ import {
   Clock,
   CheckCircle,
   Truck,
+  Download,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
+import { pdf } from "@react-pdf/renderer";
+import OrderPDF from "@/components/OrderPDF";
 
 interface Order {
   id: number;
@@ -30,6 +33,8 @@ interface Order {
   street_address: string;
   phone_Number: string;
   total_price: number;
+  user_id?: number;
+  updated_at?: string | null;
 }
 
 interface ProductDetails {
@@ -102,6 +107,42 @@ const ProfilePage: React.FC = () => {
 
   const handleLogoutCancel = () => {
     setIsLogoutModalOpen(false);
+  };
+
+  const handleDownloadInvoice = async (order: Order) => {
+    try {
+      // Prepare order data for PDF
+      const orderForPDF = {
+        ...order,
+        user_id: order.user_id || user?.id || 0,
+        updated_at: order.updated_at || null,
+        customer_name: user?.name || "N/A",
+        customer_email: user?.email || "N/A",
+        products: order.product_id.map((productId, index) => {
+          const product = productsMap.get(productId);
+          return {
+            id: productId,
+            product_name: product?.product_name || `Product #${productId}`,
+            discounted_price: product?.discounted_price || 0,
+          };
+        }),
+      };
+
+      // Generate PDF
+      const blob = await pdf(<OrderPDF order={orderForPDF} />).toBlob();
+
+      // Create download link
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `invoice-order-${order.id}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    }
   };
 
   // Fetch orders and product details
@@ -384,6 +425,15 @@ const ProfilePage: React.FC = () => {
                           {order.status.charAt(0).toUpperCase() +
                             order.status.slice(1)}
                         </span>
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => handleDownloadInvoice(order)}
+                          className="bg-[#005655] hover:bg-[#004444] text-white p-2 rounded-lg transition-colors flex items-center gap-1"
+                          title="Download Invoice"
+                        >
+                          <Download className="w-4 h-4" />
+                        </motion.button>
                         <div className="text-right">
                           <p className="text-xs text-gray-500">Total</p>
                           <p className="text-lg font-bold text-[#005655]">
