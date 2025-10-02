@@ -268,7 +268,7 @@ export const home1Content = {
     reviewCount: "1,100+ Reviews",
     description: "A cleaner way to brush is here. Natural. Eco-friendly. Gentle. Enjoy a sustainable toothbrush that's soft on your gums and safe for the planet.",
     highlightText: "Natural. Eco-friendly. Gentle.",
-    buttonText: "Shop Collection",
+    buttonText: "Add to Cart",
     image: "/images/brush_set.png",
     imageAlt: "Premium Bamboo Toothbrush Set",
     guarantees: [

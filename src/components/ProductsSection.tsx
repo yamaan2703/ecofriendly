@@ -5,6 +5,7 @@ import { Plus, Minus } from "lucide-react";
 import Button from "./Button/Button";
 import { useContent } from "@/contexts/ContentContext";
 import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
 
@@ -25,6 +26,7 @@ interface Product {
 const ProductSection: React.FC = () => {
   const { content, currentPage } = useContent();
   const { addToCart } = useCart();
+  const { isAuthenticated } = useAuth();
   const { toast } = useToast();
   const [quantity, setQuantity] = useState(1);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -32,6 +34,9 @@ const ProductSection: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   const currentCategory = currentPage === "home1" ? "Toothbrush" : "Dishwasher";
+
+  console.log("ProductsSection: currentPage =", currentPage);
+  console.log("ProductsSection: currentCategory =", currentCategory);
 
   const productImages =
     products.length > 0 && products[0].product_images
@@ -100,6 +105,16 @@ const ProductSection: React.FC = () => {
   const decrementQuantity = () => setQuantity((prev) => Math.max(1, prev - 1));
 
   const handleAddToCart = () => {
+    if (!isAuthenticated) {
+      toast({
+        title: "Login Required",
+        description: "Please login first to add products to cart.",
+        variant: "destructive",
+        duration: 4000,
+      });
+      return;
+    }
+
     if (products.length > 0) {
       const product = products[0];
       addToCart(
@@ -315,7 +330,7 @@ const ProductSection: React.FC = () => {
                     className="w-full sm:w-auto text-sm sm:text-base py-2 sm:py-1.5"
                     onClick={handleAddToCart}
                   >
-                    Add to Cart
+                    {isAuthenticated ? "Add to Cart" : "Login to Add to Cart"}
                   </Button>
                 </div>
               </div>

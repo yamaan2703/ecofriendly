@@ -25,10 +25,22 @@ const Navbar: React.FC = () => {
     type: string;
   }) => {
     if (item.type === "page") {
-      if (item.action === "home1") {
-        switchToHome1();
-      } else if (item.action === "home2") {
-        switchToHome2();
+      // Check if we're on the home page
+      if (window.location.pathname === "/") {
+        if (item.action === "home1") {
+          switchToHome1();
+        } else if (item.action === "home2") {
+          switchToHome2();
+        }
+      } else {
+        // If not on home page, navigate to home page with the product view
+        if (item.action === "home1") {
+          console.log("Navigating to toothbrush view");
+          window.location.href = "/?view=toothbrush";
+        } else if (item.action === "home2") {
+          console.log("Navigating to dishwasher view");
+          window.location.href = "/?view=dishwasher";
+        }
       }
     } else if (item.type === "route") {
       window.location.href = `/${item.action}`;

@@ -16,7 +16,7 @@ interface User {
   id: number;
   name: string;
   email: string;
-  status: string;
+  status: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -67,7 +67,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             id: userData.id,
             name: userData.name || session.user.user_metadata?.name || "User",
             email: userData.email || session.user.email || "",
-            status: userData.status || "active",
+            status: userData.status || true,
             created_at: userData.created_at || new Date().toISOString(),
             updated_at: userData.updated_at || new Date().toISOString(),
           });
@@ -106,7 +106,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               id: data.id,
               name: data.name || session.user.user_metadata?.name || "User",
               email: data.email || session.user.email || "",
-              status: data.status || "active",
+              status: data.status || true,
               created_at: data.created_at || new Date().toISOString(),
               updated_at: data.updated_at || new Date().toISOString(),
             });
@@ -171,7 +171,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         id: userData.id,
         name: userData.name || data.user.user_metadata?.name || "User",
         email: userData.email || data.user.email || "",
-        status: userData.status || "active",
+        status: userData.status || true,
         created_at: userData.created_at || new Date().toISOString(),
         updated_at: userData.updated_at || new Date().toISOString(),
       });
@@ -226,7 +226,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           email,
           created_at: currentTime,
           updated_at: currentTime,
-          status: "active",
+          status: true,
           is_admin: false,
         })
         .select("id, name, email")
@@ -244,7 +244,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         id: userData.id,
         name: userData.name || name,
         email: userData.email || email,
-        status: "active",
+        status: true,
         created_at: currentTime,
         updated_at: currentTime,
       });

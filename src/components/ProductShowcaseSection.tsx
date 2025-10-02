@@ -166,22 +166,6 @@ const ProductShowcaseSection: React.FC = () => {
               }
             </motion.p>
 
-            {/* CTA Button */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1.4 }}
-              viewport={{ once: true }}
-              className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start"
-            >
-              <Button
-                variant="solid"
-                size="xs"
-                className="w-full sm:w-auto text-xs sm:text-sm md:text-base py-2 sm:py-1.5 px-4 sm:px-6"
-              >
-                {content.productShowcase.buttonText}
-              </Button>
-            </motion.div>
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 md:gap-6">
               {content.productShowcase.guarantees.map((guarantee, index) => (
                 <span

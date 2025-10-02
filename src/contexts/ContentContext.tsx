@@ -22,8 +22,14 @@ export function ContentProvider({ children }: ContentProviderProps) {
 
   const content = currentPage === "home1" ? home1Content : home2Content;
 
-  const switchToHome1 = () => setCurrentPage("home1");
-  const switchToHome2 = () => setCurrentPage("home2");
+  const switchToHome1 = () => {
+    console.log("ContentContext: Switching to home1 (toothbrush)");
+    setCurrentPage("home1");
+  };
+  const switchToHome2 = () => {
+    console.log("ContentContext: Switching to home2 (dishwasher)");
+    setCurrentPage("home2");
+  };
 
   return (
     <ContentContext.Provider

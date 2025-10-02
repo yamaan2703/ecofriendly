@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { useAuth } from "./AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 // Cart item interface
 export interface CartItem {
@@ -30,6 +32,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const { isAuthenticated } = useAuth();
+  const { toast } = useToast();
 
   // Load cart from localStorage on mount
   useEffect(() => {
@@ -50,6 +54,17 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Add item to cart
   const addToCart = (product: Omit<CartItem, "quantity">, quantity: number) => {
+    // Check if user is authenticated
+    if (!isAuthenticated) {
+      toast({
+        title: "Login Required",
+        description: "Please login first to add products to cart.",
+        variant: "destructive",
+        duration: 4000,
+      });
+      return;
+    }
+
     setCartItems((prevItems) => {
       const existingItem = prevItems.find((item) => item.id === product.id);
 

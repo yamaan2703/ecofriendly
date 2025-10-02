@@ -9,11 +9,13 @@ import {
   Trash2,
   ArrowRight,
   Package,
+  Leaf,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import CheckoutModal from "@/components/CheckoutModal";
 import { useCart } from "@/contexts/CartContext";
 import { useToast } from "@/hooks/use-toast";
+import { FaLeaf } from "react-icons/fa";
 
 const CartPage: React.FC = () => {
   const {
@@ -27,7 +29,6 @@ const CartPage: React.FC = () => {
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
 
   const getImageUrl = (filename: string) => {
-    // Remove any leading slashes or "product-images/" prefix from filename
     const cleanFilename = filename
       .replace(/^\/+/, "")
       .replace(/^product-images\//, "");
@@ -125,7 +126,9 @@ const CartPage: React.FC = () => {
                 <ShoppingCart className="w-24 h-24 text-[#005655]" />
               </div>
               <div className="absolute -top-4 -right-4 w-16 h-16 bg-[#005655] rounded-full flex items-center justify-center">
-                <span className="text-3xl">🌿</span>
+                <span className="text-3xl text-[#fefef2]">
+                  <FaLeaf />
+                </span>
               </div>
             </motion.div>
             <h2 className="text-3xl font-bold text-[#005655] mb-3">
