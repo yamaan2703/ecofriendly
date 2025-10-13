@@ -1,9 +1,31 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Star, ShoppingCart, CheckCircle, Mail, Gift } from "lucide-react";
+import {
+  Star,
+  ShoppingCart,
+  CheckCircle,
+  Mail,
+  Gift,
+  Globe,
+  Feather,
+  ShieldOff,
+  RotateCcw,
+} from "lucide-react";
 import Button from "./Button/Button";
 import { IoIosStar } from "react-icons/io";
 import { useContent } from "@/contexts/ContentContext";
+
+// Icon mapping for features
+const featureIconMap: Record<string, React.ElementType> = {
+  "Eco Friendly": Globe,
+  "Super Soft": Feather,
+  "Plastic Free": ShieldOff,
+  "30 Days Return": RotateCcw,
+  "Premium Quality": Star,
+  "Ultra Gentle": Feather,
+  "Whitening Effect": Star,
+  "Luxury Guarantee": CheckCircle,
+};
 
 const ProductShowcaseSection: React.FC = () => {
   const { content } = useContent();
@@ -199,14 +221,14 @@ const ProductShowcaseSection: React.FC = () => {
                 viewport={{ once: true }}
               >
                 <div className="flex flex-col items-start gap-2 sm:gap-3 md:gap-4">
-                  {/* Icon */}
+                  {/* Icon and Title */}
                   <div className="flex items-center gap-2">
                     <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#005655] group-hover:bg-white rounded-lg flex items-center justify-center transition-all duration-500 ease-in-out">
-                      <img
-                        src={feature.icon}
-                        alt={feature.label}
-                        className="w-8 h-8 sm:w-10 sm:h-10 object-contain filter brightness-0 invert group-hover:brightness-100 group-hover:invert-0 transition-all duration-500 ease-in-out"
-                      />
+                      {featureIconMap[feature.label] &&
+                        React.createElement(featureIconMap[feature.label], {
+                          className:
+                            "w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:text-[#005655] transition-all duration-500 ease-in-out",
+                        })}
                     </div>
 
                     {/* Title */}
