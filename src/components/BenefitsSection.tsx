@@ -1,84 +1,71 @@
 import React from "react";
-import { Check } from "lucide-react";
+import { Check, Smile } from "lucide-react";
 import { useContent } from "@/contexts/ContentContext";
 
 const BenefitsSection: React.FC = () => {
   const { content } = useContent();
   return (
-    <section
-      id="benefits"
-      className="py-16 relative overflow-hidden px-0 sm:px-10"
-    >
-      {/* Decorative Leaves - Left Side */}
-      <div className="absolute left-0 bottom-0 w-48 h-48 sm:w-64 sm:h-64 lg:w-96 lg:h-96 z-0 pointer-events-none">
+    <section id="benefits" className="py-20 relative overflow-hidden">
+      {/* Decorative Leaves */}
+      <div className="absolute left-0 bottom-0 w-64 h-64 lg:w-96 lg:h-96 opacity-40 pointer-events-none">
         <img
           src="/images/leaves_1.png"
-          alt="Decorative leaves"
-          className="w-full h-full object-contain object-left"
+          alt=""
+          className="w-full h-full object-contain"
         />
       </div>
 
-      <div className="absolute right-0 top-0 w-48 h-48 sm:w-64 sm:h-64 lg:w-96 lg:h-96 z-0 pointer-events-none">
+      <div className="absolute right-0 top-0 w-64 h-64 lg:w-96 lg:h-96 opacity-40 pointer-events-none">
         <img
           src="/images/leaf_2.png"
-          alt="Decorative leaves"
-          className="w-full h-full object-contain object-right"
+          alt=""
+          className="w-full h-full object-contain"
         />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="z-10 mb-10">
-          <div className="text-center px-2">
-            <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2 text-xl sm:text-2xl lg:text-5xl font-eurotypo-bold">
-              <span className=" text-eco-charcoal font-eurotypo font-bold ">
-                {content.benefits.title}
-              </span>
-              <div className="w-12 h-6 sm:w-16 sm:h-7 lg:w-20 lg:h-8 mx-1 mt-1 sm:mt-2 relative overflow-hidden rounded-full">
-                <img
-                  src="/images/teeth.png"
-                  alt="Smile"
-                  width={1000}
-                  height={1000}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <span className="text-[#005655] font-bold font-eurotypo italic">
-                {content.benefits.subtitle}
-              </span>
-            </div>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative">
+        {/* Section Header */}
+        <div className="text-center mb-16 max-w-3xl mx-auto">
+          <div className="flex flex-wrap items-center justify-center gap-2 text-3xl sm:text-4xl lg:text-5xl mb-4">
+            <span className="text-foreground font-eurotypo font-bold">
+              {content.benefits.title}
+            </span>
+            <Smile className="w-10 h-10 text-primary" />
+            <span className="text-primary font-bold font-eurotypo italic">
+              {content.benefits.subtitle}
+            </span>
           </div>
         </div>
 
         {/* Benefits Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           {content.benefits.items.map((benefit, index) => (
             <div
               key={index}
-              className="group bg-transparent hover:bg-[#E7F0CE] rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-500 ease-in-out transform hover:scale-105 cursor-pointer"
+              className="bg-card border border-border rounded-2xl p-6 shadow-soft hover:shadow-eco transition-shadow"
             >
-              <div className="flex flex-col items-start gap-4">
-                {/* Icon */}
-                <div className="flex items-center gap-2">
-                  <div className="w-12 h-12 bg-[#005655] group-hover:bg-white rounded-lg flex items-center justify-center transition-all duration-500 ease-in-out">
+              <div className="space-y-4">
+                {/* Icon and Title */}
+                <div className="flex items-start gap-3">
+                  <div className="w-14 h-14 bg-primary rounded-xl flex items-center justify-center flex-shrink-0">
                     {typeof benefit.icon === "string" ? (
                       <img
                         src={benefit.icon}
                         alt={benefit.title}
-                        className="w-6 h-6 object-contain"
+                        className="w-7 h-7 object-contain"
                       />
                     ) : (
-                      <benefit.icon className="w-6 h-6 text-white group-hover:text-[#005655] transition-colors duration-500 ease-in-out" />
+                      <benefit.icon className="w-7 h-7 text-primary-foreground" />
                     )}
                   </div>
 
-                  {/* Title */}
-                  <h3 className="text-xl font-eurotypo font-bold text-[#005655]  leading-tight transition-colors duration-500 ease-in-out">
+                  <h3 className="text-xl font-eurotypo font-bold text-primary leading-tight pt-2">
                     {benefit.title}
                   </h3>
                 </div>
 
                 {/* Description */}
-                <p className="leading-relaxed font-eurotypo text-sm text-gray-600  transition-colors duration-500 ease-in-out">
+                <p className="text-sm text-muted-foreground leading-relaxed">
                   {benefit.description}
                 </p>
               </div>
@@ -86,26 +73,35 @@ const BenefitsSection: React.FC = () => {
           ))}
         </div>
 
-        {/* Simple CTA */}
-        <div className="text-center mt-12">
-          <div className="bg-[#E7F0CE] border border-[#005655] rounded-2xl p-8 shadow-sm max-w-2xl mx-auto">
-            <h3 className="text-2xl font-eurotypo font-bold text-[#005655] mb-4">
+        {/* CTA Card */}
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-primary-lighter border-l-4 border-primary rounded-xl p-8 shadow-soft">
+            <h3 className="text-2xl sm:text-3xl font-eurotypo font-bold text-primary mb-4 text-center">
               Ready to Make the Switch?
             </h3>
-            <p className="text-gray-600 mb-6 font-eurotypo">
+            <p className="text-muted-foreground mb-8 text-center text-lg">
               Join thousands of customers who have chosen a more sustainable way
               to care for their teeth.
             </p>
 
-            <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-600">
-              <span className="flex items-center gap-2">
-                <Check color="#005655" /> 30-day money back guarantee
+            <div className="flex flex-wrap justify-center gap-8 text-sm text-foreground">
+              <span className="flex items-center gap-2 font-medium">
+                <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                  <Check className="w-4 h-4 text-primary-foreground" />
+                </div>
+                30-day money back guarantee
               </span>
-              <span className="flex items-center gap-2">
-                <Check color="#005655" /> Free shipping
+              <span className="flex items-center gap-2 font-medium">
+                <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                  <Check className="w-4 h-4 text-primary-foreground" />
+                </div>
+                Free shipping
               </span>
-              <span className="flex items-center gap-2">
-                <Check color="#005655" /> Eco-certified materials
+              <span className="flex items-center gap-2 font-medium">
+                <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                  <Check className="w-4 h-4 text-primary-foreground" />
+                </div>
+                Eco-certified materials
               </span>
             </div>
           </div>

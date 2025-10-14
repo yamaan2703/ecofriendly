@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { Menu, X, User, ShoppingBag } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { useContent } from "@/contexts/ContentContext";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -116,28 +115,20 @@ const Navbar: React.FC = () => {
   }, []);
 
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled || isOpen
-          ? "bg-[#E7F0CE]/60 backdrop-blur-md shadow-lg"
-          : "bg-transparent"
+          ? "bg-background-cream/95 backdrop-blur-sm shadow-soft"
+          : "bg-background/80 backdrop-blur-sm"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo - Left Side */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1, duration: 0.6 }}
-            className="flex items-center"
-          >
+          {/* Logo */}
+          <div className="flex items-center">
             <button
               onClick={handleLogoClick}
-              className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+              className="flex items-center hover:opacity-80 transition-opacity"
             >
               <img
                 src="/images/ecofriendly_dark.png"
@@ -145,59 +136,40 @@ const Navbar: React.FC = () => {
                 className="h-8 w-auto"
               />
             </button>
-          </motion.div>
+          </div>
 
-          {/* Navigation Items - Center */}
-          <div className="hidden md:flex items-center space-x-2">
-            {navItems.map((item, index) => (
-              <motion.div
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-1">
+            {navItems.map((item) => (
+              <button
                 key={item.action}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: (index + 1) * 0.1, duration: 0.6 }}
+                onClick={() => handleNavigation(item)}
+                className={`relative px-5 py-2 font-medium transition-colors rounded-lg ${
+                  (isHomePage &&
+                    ((item.type === "scroll" &&
+                      activeSection === item.action) ||
+                      (item.type === "page" && currentPage === item.action))) ||
+                  (item.type === "route" &&
+                    isBlogPage &&
+                    item.action === "blog")
+                    ? "text-primary-foreground bg-primary"
+                    : "text-primary hover:bg-primary-lighter"
+                }`}
               >
-                <button
-                  onClick={() => handleNavigation(item)}
-                  className="relative px-4 py-2 font-medium text-[#005655] transition-all duration-300 hover:scale-105"
-                >
-                  <span className="relative inline-block text-center">
-                    {item.label}
-                    {((isHomePage &&
-                      ((item.type === "scroll" &&
-                        activeSection === item.action) ||
-                        (item.type === "page" &&
-                          currentPage === item.action))) ||
-                      (item.type === "route" &&
-                        isBlogPage &&
-                        item.action === "blog")) && (
-                      <motion.span
-                        layoutId="activeIndicator"
-                        className="block h-0.5 bg-[#005655] rounded mt-1 w-1/2 mx-auto"
-                        transition={{
-                          type: "spring",
-                          bounce: 0.25,
-                          duration: 0.6,
-                        }}
-                      />
-                    )}
-                  </span>
-                </button>
-              </motion.div>
+                {item.label}
+              </button>
             ))}
           </div>
 
-          {/* Icons - Right Side */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-            className="flex items-center space-x-2"
-          >
+          {/* Action Icons */}
+          <div className="flex items-center gap-2">
             {/* User Icon */}
             <button
               onClick={handleUserClick}
-              className={`p-2 transition-all duration-300 hover:scale-110 hover:bg-[#E7F0CE] rounded-full ${
-                user ? "text-green-600" : "text-[#005655]"
+              className={`p-2 rounded-lg transition-all ${
+                user
+                  ? "text-primary bg-primary-lighter"
+                  : "text-primary hover:bg-primary-lighter"
               }`}
               aria-label={user ? "Profile" : "Login"}
               title={user ? "Profile" : "Login"}
@@ -208,137 +180,93 @@ const Navbar: React.FC = () => {
             {/* Cart Icon */}
             <button
               onClick={handleCartClick}
-              className={`p-2 transition-all duration-300 hover:scale-110 hover:bg-[#E7F0CE] rounded-full ${
-                isCartPage ? "text-[#005655] bg-[#E7F0CE]" : "text-[#005655]"
+              className={`p-2 rounded-lg transition-all ${
+                isCartPage
+                  ? "text-primary bg-primary-lighter"
+                  : "text-primary hover:bg-primary-lighter"
               }`}
               aria-label="Cart"
               title="Cart"
             >
               <ShoppingBag className="w-5 h-5" />
             </button>
-          </motion.div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <div
+            {/* Mobile Menu Button */}
+            <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-[#005655] transition-all duration-300 hover:scale-110 cursor-pointer"
+              className="md:hidden p-2 text-primary hover:bg-primary-lighter rounded-lg transition-colors"
             >
-              <motion.div
-                animate={{ rotate: isOpen ? 90 : 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                {isOpen ? (
-                  <X className="w-7 h-7" />
-                ) : (
-                  <Menu className="w-7 h-7" />
-                )}
-              </motion.div>
-            </div>
+              {isOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Fullscreen Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.6 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="fixed inset-0 bg-black z-40"
-              onClick={() => setIsOpen(false)}
-            />
+      {/* Mobile Menu */}
+      {isOpen && (
+        <>
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black/50 z-40"
+            onClick={() => setIsOpen(false)}
+          />
 
-            {/* Slide-in menu */}
-            <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="fixed top-0 right-0 w-3/4 sm:w-1/2 h-screen bg-[#005655] z-50 shadow-xl flex flex-col"
-            >
-              <div className="flex justify-between items-center p-5 border-b border-white/20">
-                <img
-                  src="/images/ecofriendly_light.png"
-                  alt="Logo"
-                  className="h-6"
-                />
+          {/* Menu Panel */}
+          <div className="fixed top-16 left-0 right-0 bg-card border-b border-border shadow-xl z-50 md:hidden">
+            <div className="container mx-auto px-4 py-6 space-y-2">
+              {/* Navigation Items */}
+              {navItems.map((item) => (
                 <button
-                  onClick={() => setIsOpen(false)}
-                  className="text-white hover:text-gray-300 transition-colors"
+                  key={item.action}
+                  onClick={() => handleNavigation(item)}
+                  className={`w-full text-left px-4 py-3 rounded-lg font-medium transition-colors ${
+                    (isHomePage &&
+                      ((item.type === "scroll" &&
+                        activeSection === item.action) ||
+                        (item.type === "page" &&
+                          currentPage === item.action))) ||
+                    (item.type === "route" &&
+                      isBlogPage &&
+                      item.action === "blog")
+                      ? "text-primary-foreground bg-primary"
+                      : "text-primary hover:bg-primary-lighter"
+                  }`}
                 >
-                  <X className="w-7 h-7" />
+                  {item.label}
+                </button>
+              ))}
+
+              {/* User and Cart for Mobile */}
+              <div className="pt-4 border-t border-border space-y-2">
+                <button
+                  onClick={handleUserClick}
+                  className="w-full flex items-center gap-3 px-4 py-3 text-primary hover:bg-primary-lighter rounded-lg transition-colors"
+                  aria-label={user ? "Profile" : "Login"}
+                >
+                  <User className="w-5 h-5" />
+                  <span className="font-medium">
+                    {user ? "Profile" : "Login"}
+                  </span>
+                </button>
+
+                <button
+                  onClick={handleCartClick}
+                  className="w-full flex items-center gap-3 px-4 py-3 text-primary hover:bg-primary-lighter rounded-lg transition-colors"
+                  aria-label="Cart"
+                >
+                  <ShoppingBag className="w-5 h-5" />
+                  <span className="font-medium">Cart</span>
                 </button>
               </div>
-
-              <div className="bg-[#005655] flex-1 flex flex-col items-start justify-start px-6 py-8 space-y-6">
-                {/* Navigation Items */}
-                {navItems.map((item, index) => (
-                  <motion.button
-                    key={item.action}
-                    onClick={() => handleNavigation(item)}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className={`text-xl font-semibold tracking-wide text-white w-full text-left transition-colors duration-300 ${
-                      (isHomePage &&
-                        ((item.type === "scroll" &&
-                          activeSection === item.action) ||
-                          (item.type === "page" &&
-                            currentPage === item.action))) ||
-                      (item.type === "route" &&
-                        isBlogPage &&
-                        item.action === "blog")
-                        ? "underline underline-offset-4"
-                        : "hover:text-[#A0C474]"
-                    }`}
-                  >
-                    {item.label}
-                  </motion.button>
-                ))}
-
-                {/* User and Shop Icons for Mobile */}
-                <div className="w-full flex flex-col space-y-4 pt-4 border-t border-white/20">
-                  <motion.button
-                    onClick={handleUserClick}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{
-                      delay: navItems.length * 0.1,
-                    }}
-                    className="flex items-center space-x-3 text-white hover:text-[#A0C474] transition-colors duration-300"
-                    aria-label={user ? "Profile" : "Login"}
-                  >
-                    <User className="w-6 h-6" />
-                    <span className="text-lg font-medium">
-                      {user ? "Profile" : "Login"}
-                    </span>
-                  </motion.button>
-
-                  <motion.button
-                    onClick={handleCartClick}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{
-                      delay: (navItems.length + 1) * 0.1,
-                    }}
-                    className="flex items-center space-x-3 text-white hover:text-[#A0C474] transition-colors duration-300"
-                    aria-label="Cart"
-                  >
-                    <ShoppingBag className="w-6 h-6" />
-                    <span className="text-lg font-medium">Cart</span>
-                  </motion.button>
-                </div>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-    </motion.nav>
+            </div>
+          </div>
+        </>
+      )}
+    </nav>
   );
 };
 

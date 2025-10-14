@@ -150,19 +150,19 @@ const ProductSection: React.FC = () => {
   };
 
   return (
-    <main className="container mx-auto">
-      <section className="py-8 sm:py-8 lg:py-16 mx-0 sm:mx-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-start">
-          <div className="mx-auto w-full sm:w-4/5">
-            <div className="sm:hidden bg-[#F3F7DE] rounded-2xl flex items-center justify-center h-[280px] mb-4">
-              <div className="relative w-full h-full">
+    <main className="container mx-auto px-4 sm:px-6 lg:px-12">
+      <section className="py-12 lg:py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+          {/* Image Gallery */}
+          <div className="space-y-4">
+            {/* Mobile Main Image */}
+            <div className="lg:hidden bg-background-cream rounded-2xl p-6 shadow-soft">
+              <div className="relative w-full h-80">
                 {productImages && productImages.length > 0 ? (
                   <img
                     src={getImageUrl(productImages[selectedImageIndex])}
                     alt={
-                      products.length > 0
-                        ? products[0].product_name
-                        : "Bamboo Toothbrush"
+                      products.length > 0 ? products[0].product_name : "Product"
                     }
                     width={1000}
                     height={1000}
@@ -176,7 +176,7 @@ const ProductSection: React.FC = () => {
                     }}
                   />
                 ) : (
-                  <div className="flex flex-col items-center justify-center text-gray-500">
+                  <div className="flex flex-col items-center justify-center text-muted-foreground h-full">
                     <div className="text-4xl mb-2">🖼️</div>
                     <p className="text-sm">No images available</p>
                   </div>
@@ -184,30 +184,27 @@ const ProductSection: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex sm:hidden gap-2 overflow-x-auto pb-2">
+            {/* Thumbnail Navigation */}
+            <div className="flex gap-3 overflow-x-auto pb-2">
               {productImages.map((src, index) => (
                 <div
                   key={index}
                   onClick={() => setSelectedImageIndex(index)}
-                  className={`flex-shrink-0 w-16 h-20 rounded-lg border-2 overflow-hidden cursor-pointer transition-colors ${
+                  className={`flex-shrink-0 w-20 h-24 rounded-xl border-2 overflow-hidden cursor-pointer transition-all ${
                     selectedImageIndex === index
-                      ? "border-eco-green"
-                      : "border-gray-200 hover:border-eco-green"
+                      ? "border-primary shadow-eco"
+                      : "border-border hover:border-primary-light"
                   }`}
                 >
                   <img
                     src={getImageUrl(src)}
-                    alt={`${
-                      products.length > 0
-                        ? products[0].product_name
-                        : "Toothbrush"
-                    } view ${index + 1}`}
+                    alt={`View ${index + 1}`}
                     width={1000}
                     height={1000}
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       console.error(
-                        "Thumbnail image failed to load:",
+                        "Thumbnail failed to load:",
                         getImageUrl(src)
                       );
                       e.currentTarget.style.display = "none";
@@ -217,139 +214,108 @@ const ProductSection: React.FC = () => {
               ))}
             </div>
 
-            <div className="hidden sm:flex gap-3 md:gap-4 w-full max-w-2xl mx-auto lg:max-w-none">
-              <div className="flex flex-col gap-3 md:gap-4">
-                {productImages.map((src, index) => (
-                  <div
-                    key={index}
-                    onClick={() => setSelectedImageIndex(index)}
-                    className={`w-16 h-20 md:w-20 md:h-24 rounded-lg border-2 overflow-hidden cursor-pointer transition-colors ${
-                      selectedImageIndex === index
-                        ? "border-eco-green"
-                        : "border-gray-200 hover:border-eco-green"
-                    }`}
-                  >
-                    <img
-                      src={getImageUrl(src)}
-                      alt={`${
-                        products.length > 0
-                          ? products[0].product_name
-                          : "Toothbrush"
-                      } view ${index + 1}`}
-                      width={1000}
-                      height={1000}
-                      className="w-full h-full object-cover"
-                    />
+            {/* Desktop Main Image */}
+            <div className="hidden lg:block bg-background-cream rounded-2xl p-8 shadow-soft">
+              <div className="relative w-full h-96">
+                {productImages && productImages.length > 0 ? (
+                  <img
+                    src={getImageUrl(productImages[selectedImageIndex])}
+                    alt={
+                      products.length > 0 ? products[0].product_name : "Product"
+                    }
+                    width={1000}
+                    height={1000}
+                    className="object-contain w-full h-full"
+                  />
+                ) : (
+                  <div className="flex flex-col items-center justify-center text-muted-foreground h-full">
+                    <div className="text-4xl mb-2">🖼️</div>
+                    <p className="text-sm">No images available</p>
                   </div>
-                ))}
-              </div>
-
-              <div className="flex-1 bg-[#F3F7DE] rounded-2xl flex items-center justify-center h-[300px] sm:h-[350px] md:h-[400px] lg:h-[430px]">
-                <div className="relative w-full h-full">
-                  {productImages && productImages.length > 0 ? (
-                    <img
-                      src={getImageUrl(productImages[selectedImageIndex])}
-                      alt={
-                        products.length > 0
-                          ? products[0].product_name
-                          : "Bamboo Toothbrush"
-                      }
-                      width={1000}
-                      height={1000}
-                      className="object-contain w-full h-full"
-                    />
-                  ) : (
-                    <div className="flex flex-col items-center justify-center text-gray-500">
-                      <div className="text-4xl mb-2">🖼️</div>
-                      <p className="text-sm">No images available</p>
-                    </div>
-                  )}
-                </div>
+                )}
               </div>
             </div>
           </div>
 
-          <div className="space-y-3 sm:space-y-4 lg:space-y-3 w-full max-w-2xl mx-auto lg:max-w-none">
-            <h1 className="text-xl sm:text-2xl font-eurotypo font-bold text-[#005655] leading-tight">
-              {products.length > 0
-                ? products[0].product_name
-                : content.products.title}{" "}
-            </h1>
-
-            <div className="flex items-center gap-2 flex-wrap">
-              <div className="flex items-center gap-1">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <IoIosStar
-                    key={star}
-                    className="w-4 h-4 sm:w-5 sm:h-5 fill-yellow-400 text-yellow-400"
-                  />
-                ))}
-              </div>
-              <span className="text-xs text-eco-charcoal font-semibold">
-                {content.reviews.count}
-              </span>
-            </div>
-
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-4xl font-bold text-[#005655]">
-                $
+          {/* Product Details */}
+          <div className="space-y-6">
+            <div>
+              <h1 className="text-3xl sm:text-4xl font-eurotypo font-bold text-primary leading-tight mb-4">
                 {products.length > 0
-                  ? products[0].discounted_price
-                  : content.products.price}
-              </span>
-              {products.length > 0 &&
-                products[0].actual_price > products[0].discounted_price && (
-                  <span className="text-xl text-gray-500 line-through font-semibold">
-                    ${products[0].actual_price}
-                  </span>
-                )}
-            </div>
+                  ? products[0].product_name
+                  : content.products.title}
+              </h1>
 
-            <p className="text-xs sm:text-sm text-gray-500">
-              ({content.pricing.freeShipping})
-            </p>
-
-            <div className="flex flex-row gap-3 sm:gap-2 items-stretch sm:items-center">
-              <div className="flex items-center">
-                <div className="flex items-center border-2 border-[#005655] rounded-full">
-                  <button
-                    onClick={decrementQuantity}
-                    disabled={quantity <= 1}
-                    className="p-1.5 sm:p-2 text-eco-charcoal cursor-pointer disabled:opacity-50"
-                  >
-                    <Minus className="size-5" />
-                  </button>
-                  <span className="px-3 sm:px-4 py-1.5 sm:py-2 min-w-[2.5rem] sm:min-w-[3rem] text-center font-semibold text-eco-charcoal text-sm sm:text-base">
-                    {quantity}
-                  </span>
-                  <button
-                    onClick={incrementQuantity}
-                    className="p-1.5 sm:p-2 text-eco-charcoal cursor-pointer"
-                  >
-                    <Plus className="size-5" />
-                  </button>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center gap-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <IoIosStar
+                      key={star}
+                      className="w-5 h-5 fill-yellow-400 text-yellow-400"
+                    />
+                  ))}
                 </div>
-              </div>
-
-              <div className="flex flex-row gap-2">
-                <div>
-                  <Button
-                    variant="solid"
-                    size="xs"
-                    className="w-full sm:w-auto text-sm sm:text-base py-2 sm:py-1.5"
-                    onClick={handleAddToCart}
-                  >
-                    {isAuthenticated ? "Add to Cart" : "Login to Add to Cart"}
-                  </Button>
-                </div>
+                <span className="text-sm text-muted-foreground font-semibold">
+                  {content.reviews.count}
+                </span>
               </div>
             </div>
 
-            <div className="pt-2 sm:pt-3">
-              <h3 className="text-base sm:text-lg font-bold text-eco-charcoal mb-2">
-                Description
+            <div className="border-t border-b border-border py-6 space-y-2">
+              <div className="flex items-baseline gap-3">
+                <span className="text-5xl font-bold text-primary">
+                  $
+                  {products.length > 0
+                    ? products[0].discounted_price
+                    : content.products.price}
+                </span>
+                {products.length > 0 &&
+                  products[0].actual_price > products[0].discounted_price && (
+                    <span className="text-2xl text-muted-foreground line-through">
+                      ${products[0].actual_price}
+                    </span>
+                  )}
+              </div>
+              <p className="text-sm text-muted-foreground">
+                {content.pricing.freeShipping}
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex items-center border-2 border-primary rounded-lg px-1">
+                <button
+                  onClick={decrementQuantity}
+                  disabled={quantity <= 1}
+                  className="p-3 text-primary disabled:opacity-30 hover:bg-primary-lighter rounded-lg transition-colors"
+                >
+                  <Minus className="w-5 h-5" />
+                </button>
+                <span className="px-6 py-3 min-w-[4rem] text-center font-bold text-primary text-lg">
+                  {quantity}
+                </span>
+                <button
+                  onClick={incrementQuantity}
+                  className="p-3 text-primary hover:bg-primary-lighter rounded-lg transition-colors"
+                >
+                  <Plus className="w-5 h-5" />
+                </button>
+              </div>
+
+              <Button
+                variant="solid"
+                size="xs"
+                className="flex-1 text-base py-3 px-6"
+                onClick={handleAddToCart}
+              >
+                {isAuthenticated ? "Add to Cart" : "Login to Add to Cart"}
+              </Button>
+            </div>
+
+            <div className="bg-background-cream rounded-lg p-6 space-y-3">
+              <h3 className="text-xl font-bold text-primary">
+                About This Product
               </h3>
-              <p className="text-sm sm:text-base text-eco-charcoal/80 leading-relaxed">
+              <p className="text-base text-foreground leading-relaxed">
                 {products.length > 0
                   ? products[0].product_description
                   : content.productDetails.detailedDescription}

@@ -37,13 +37,7 @@ const Index = () => {
   }, [switchToHome1, switchToHome2]);
 
   return (
-    <div
-      className="min-h-screen"
-      style={{
-        background:
-          "linear-gradient(to bottom, #FDFDEA 0%, #FDFDEA 60%, #FEFEF5 75%, #FFFFFF 80%)",
-      }}
-    >
+    <div className="min-h-screen bg-background">
       <Navbar />
       <main>
         <HeroSection />

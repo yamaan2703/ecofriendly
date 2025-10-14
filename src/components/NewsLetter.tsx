@@ -1,96 +1,56 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { Star, ShoppingCart, CheckCircle, Mail, Gift } from "lucide-react";
+import React from "react";
+import { Mail } from "lucide-react";
 import Button from "./Button/Button";
-import { IoIosStar } from "react-icons/io";
 import { useContent } from "@/contexts/ContentContext";
 
 function NewsLetter() {
   const { content } = useContent();
   return (
-    <div>
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-        className="relative overflow-hidden"
-      >
-        <div className=" bg-[#E7F0CE] rounded-3xl p-8 lg:p-12 relative">
-          <div className="relative z-10 text-center">
-            <motion.div
-              className="mb-8"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <motion.div
-                className="text-center"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-              >
-                <motion.h2
-                  className="text-4xl font-black text-eco-charcoal font-eurotypo mb-6 leading-tight"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                >
-                  Subscribe Our
-                  <motion.span
-                    className="relative inline-block ml-4 text-[#005655] italic"
-                    whileHover={{ scale: 1.05, color: "#A0C474" }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    Newsletter
-                  </motion.span>
-                </motion.h2>
-              </motion.div>
+    <section className="py-20">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12">
+        <div className="max-w-4xl mx-auto bg-primary-lighter rounded-3xl p-8 lg:p-12 shadow-soft">
+          <div className="text-center space-y-6">
+            {/* Header */}
+            <div className="space-y-4">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-foreground font-eurotypo">
+                Subscribe Our{" "}
+                <span className="text-primary italic">Newsletter</span>
+              </h2>
 
-              <motion.p
-                className="text-md text-eco-charcoal max-w-2xl mx-auto leading-relaxed"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.5 }}
-              >
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Be the first to know about new arrivals, exclusive deals, and
-                sustainable living tips.
-                <span className="font-medium"> Join 10,000+ eco-warriors!</span>
-              </motion.p>
-            </motion.div>
+                sustainable living tips.{" "}
+                <span className="font-semibold text-primary">
+                  Join 10,000+ eco-warriors!
+                </span>
+              </p>
+            </div>
 
-            <motion.form
-              className="max-w-lg mx-auto"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-            >
-              <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-                <motion.input
-                  type="email"
-                  placeholder="Enter your email address"
-                  className="flex-1 px-4 py-3 rounded-lg text-gray-900 placeholder-gray-500 bg-white border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#005655] focus:border-[#005655] shadow-sm hover:shadow-md transition-all duration-300"
-                  required
-                  whileFocus={{ scale: 1.02 }}
-                />
+            {/* Newsletter Form */}
+            <form className="max-w-lg mx-auto">
+              <div className="flex flex-col sm:flex-row gap-3">
+                <div className="flex-1 relative">
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <input
+                    type="email"
+                    placeholder="Enter your email address"
+                    className="w-full pl-12 pr-4 py-3 rounded-lg text-foreground placeholder-muted-foreground bg-card border-2 border-border focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+                    required
+                  />
+                </div>
                 <Button
                   variant="solid"
                   size="sm"
-                  className="text-sm sm:text-base py-2 sm:py-1.5"
+                  className="text-base py-3 px-6 whitespace-nowrap"
                 >
                   {content.newsletter.buttonText}
                 </Button>
               </div>
-            </motion.form>
+            </form>
           </div>
         </div>
-      </motion.div>
-    </div>
+      </div>
+    </section>
   );
 }
 
