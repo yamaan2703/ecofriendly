@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { FaFacebook, FaInstagram } from "react-icons/fa";
 
 const Footer: React.FC = () => {
   return (
@@ -11,7 +12,7 @@ const Footer: React.FC = () => {
         </p>
 
         {/* Contact Information */}
-        <div className="text-eco-green text-sm">
+        <div className="text-eco-green text-sm mb-6">
           <a
             href="mailto:support@ecobamboobrush.com"
             className="hover:underline mr-4"
@@ -21,6 +22,28 @@ const Footer: React.FC = () => {
           <span className="text-eco-green">|</span>
           <a href="tel:1-800-ECO-BRUSH" className="hover:underline ml-4">
             1-800-ECO-BRUSH
+          </a>
+        </div>
+
+        {/* Social Media Icons */}
+        <div className="flex justify-center items-center gap-6">
+          <a
+            href="https://www.facebook.com/eco.frienddly"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-eco-green hover:text-eco-green/80 transition-colors"
+            aria-label="Visit our Facebook page"
+          >
+            <FaFacebook size={24} />
+          </a>
+          <a
+            href="https://www.instagram.com/ecofriendlyshop.us"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-eco-green hover:text-eco-green/80 transition-colors"
+            aria-label="Visit our Instagram page"
+          >
+            <FaInstagram size={24} />
           </a>
         </div>
       </div>
