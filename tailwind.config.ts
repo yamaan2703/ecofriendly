@@ -34,6 +34,10 @@ export default {
 					DEFAULT: 'hsl(var(--foreground))',
 					eco: 'hsl(var(--foreground-eco))'
 				},
+				'custom': {
+					'dark-gray': 'hsl(var(--dark-gray))',
+					'eco-green': 'hsl(var(--eco-green))'
+				},
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
 					foreground: 'hsl(var(--primary-foreground))',

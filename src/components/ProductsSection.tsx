@@ -530,57 +530,34 @@ const ProductSection = () => {
 
   return (
     <div className="min-h-screen py-12 px-4">
-      <div className="container mx-auto max-w-7xl ">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 rounded-3xl bg-[#e7f0ce] shadow-xl p-8 lg:p-12">
-          {/* Left - Image Gallery */}
+      <div className="container mx-auto max-w-6xl">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Left - Image */}
           <div className="space-y-6">
-            {/* Main Image with Navigation */}
-            <div className="relative rounded-2xl overflow-hidden group bg-[#FDFDEA]">
-              <div className="aspect-square flex items-center justify-center p-8">
+            {/* Main Image */}
+            <div className="border-4 border-primary rounded-2xl shadow-lg">
+              <div className="w-full h-96 flex items-center justify-center">
                 <img
                   src={getImageUrl(productImages[selectedImageIndex])}
                   alt={product.product_name}
-                  className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
+                  className="max-w-full max-h-full object-contain"
                   onError={(e) => {
                     e.currentTarget.style.display = "none";
                   }}
                 />
               </div>
-
-              {/* Image Navigation Arrows */}
-              {productImages.length > 1 && (
-                <>
-                  <button
-                    onClick={prevImage}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-card/90 hover:bg-card rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    <ChevronLeft className="w-5 h-5 text-foreground" />
-                  </button>
-                  <button
-                    onClick={nextImage}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-card/90 hover:bg-card rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    <ChevronRight className="w-5 h-5 text-foreground" />
-                  </button>
-                </>
-              )}
-
-              {/* Image Counter */}
-              <div className="absolute bottom-4 right-4 bg-primary/80 text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
-                {selectedImageIndex + 1} / {productImages.length}
-              </div>
             </div>
 
-            {/* Thumbnail Grid */}
-            <div className="grid grid-cols-4 gap-3">
+            {/* Thumbnails */}
+            <div className="flex gap-3">
               {productImages.map((image, index) => (
                 <button
                   key={index}
                   onClick={() => setSelectedImageIndex(index)}
-                  className={`aspect-square rounded-xl overflow-hidden border-2 transition-all ${
+                  className={`w-16 h-16 rounded-lg overflow-hidden border-2 ${
                     selectedImageIndex === index
-                      ? "border-primary scale-105 shadow-eco"
-                      : "border-border hover:border-primary-light"
+                      ? "border-primary"
+                      : "border-gray-200"
                   }`}
                 >
                   <img
@@ -596,18 +573,18 @@ const ProductSection = () => {
             </div>
           </div>
 
-          {/* Right - Product Details */}
-          <div className="space-y-3">
-            {/* Product Title & Rating */}
+          {/* Right - Product Info */}
+          <div className="space-y-6">
+            {/* Title */}
             <div>
-              <h1 className="text-3xl font-bold text-foreground mb-2 font-notulen">
+              <h1 className="text-3xl font-bold text-foreground mb-2">
                 {product.product_name}
               </h1>
             </div>
 
-            {/* Price Section */}
-            <div className="">
-              <div className="flex items-baseline gap-4">
+            {/* Price */}
+            <div>
+              <div className="flex items-baseline gap-3">
                 <span className="text-4xl font-bold text-primary">
                   ${product.discounted_price}
                 </span>
@@ -619,76 +596,62 @@ const ProductSection = () => {
               </div>
             </div>
 
-            {/* Quantity & Actions */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-4">
-                <span className="text-foreground font-medium">Quantity:</span>
-                <div className="flex items-center bg-background-cream rounded-full border-2 border-border">
+            {/* Quantity */}
+            <div>
+              <label className="block text-foreground font-medium mb-2">
+                Quantity
+              </label>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={decrementQuantity}
+                  disabled={quantity <= 1}
+                  className="w-10 h-10 border border-border rounded-lg flex items-center justify-center hover:bg-primary-lighter disabled:opacity-50"
+                >
+                  <Minus className="w-4 h-4" />
+                </button>
+                <span className="w-16 text-center font-semibold text-lg">
+                  {quantity}
+                </span>
+                <button
+                  onClick={incrementQuantity}
+                  className="w-10 h-10 border border-border rounded-lg flex items-center justify-center hover:bg-primary-lighter"
+                >
+                  <Plus className="w-4 h-4" />
+                </button>
+
+                {/* Add to Cart */}
+                <div>
                   <button
-                    onClick={decrementQuantity}
-                    disabled={quantity <= 1}
-                    className="w-10 h-10 flex items-center justify-center hover:bg-primary-lighter rounded-full transition-colors disabled:opacity-50 text-primary"
+                    onClick={handleAddToCart}
+                    className="w-full bg-primary hover:bg-primary-light text-primary-foreground font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors"
                   >
-                    <Minus className="w-5 h-5" />
-                  </button>
-                  <span className="px-6 py-2 font-bold text-lg text-primary">
-                    {quantity}
-                  </span>
-                  <button
-                    onClick={incrementQuantity}
-                    className="w-10 h-10 flex items-center justify-center hover:bg-primary-lighter rounded-full transition-colors text-primary"
-                  >
-                    <Plus className="w-5 h-5" />
+                    <ShoppingCart className="w-5 h-5" />
+                    {isAuthenticated ? "Add to Cart" : "Login to Add to Cart"}
                   </button>
                 </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex gap-3">
-                <button
-                  onClick={handleAddToCart}
-                  className="flex-1 bg-primary hover:bg-primary-light text-primary-foreground font-bold py-4 px-6 rounded-xl flex items-center justify-center gap-2 transition-all shadow-eco hover:shadow-xl hover:scale-105"
-                >
-                  <ShoppingCart className="w-5 h-5" />
-                  {isAuthenticated ? "Add to Cart" : "Login to Add to Cart"}
-                </button>
               </div>
             </div>
 
             {/* Features */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-3">
+            <div className="space-y-3 flex justify-between">
               <div className="flex items-center gap-3">
-                <div className="size-8 bg-primary-lighter rounded-full flex items-center justify-center">
-                  <Truck className="size-4 text-primary" />
-                </div>
-                <div>
-                  <div className="font-semibold text-sm text-foreground">
-                    Free Shipping
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    {content.pricing.freeShipping}
-                  </div>
-                </div>
+                <Truck className="w-5 h-5 text-primary" />
+                <span className="text-foreground">Free Shipping</span>
               </div>
-              <div className="flex items-center gap-1">
-                <div className="size-8 bg-primary-lighter rounded-full flex items-center justify-center">
-                  <Shield className="size-4 text-primary" />
-                </div>
-                <div>
-                  <div className="font-semibold text-sm text-foreground">
-                    Secure Payment
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    100% Protected
-                  </div>
-                </div>
+              <div className="flex items-center gap-3">
+                <Shield className="w-5 h-5 text-primary" />
+                <span className="text-foreground">Secure Payment</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Package className="w-5 h-5 text-primary" />
+                <span className="text-foreground">Easy Returns</span>
               </div>
             </div>
 
             {/* Description */}
-            <div className="pt-3">
-              <h3 className="text-xl font-bold text-foreground mb-3 font-eurotypo">
-                Product Description
+            <div>
+              <h3 className="text-xl font-semibold text-foreground mb-3">
+                Description
               </h3>
               <p className="text-muted-foreground leading-relaxed">
                 {product.product_description}

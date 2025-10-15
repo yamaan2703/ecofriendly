@@ -58,10 +58,15 @@ All colors MUST be HSL.
 @layer base {
   :root {
     /* Eco-friendly Design System */
-    --background: 0 0% 100%;
+    /* Main colors: #FFFFDD, #1E1E1E, #84B350 */
+    --background: 60 100% 93%; /* #FFFFDD */
     --background-cream: 60 80% 97%;
-    --foreground: 0 0% 12%;
+    --foreground: 0 0% 11%; /* #1E1E1E */
     --foreground-eco: 178 98% 16%;
+    
+    /* Custom colors */
+    --dark-gray: 0 0% 11%; /* #1E1E1E */
+    --eco-green: 84 36% 49%; /* #84B350 */
 
     --card: 0 0% 100%;
     --card-foreground: 0 0% 12%;

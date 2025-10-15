@@ -1,108 +1,138 @@
 import React from "react";
-import { Check, Smile } from "lucide-react";
+import {
+  Check,
+  Leaf,
+  Shield,
+  Heart,
+  Star,
+  ArrowRight,
+  Zap,
+} from "lucide-react";
 import { useContent } from "@/contexts/ContentContext";
 
 const BenefitsSection: React.FC = () => {
   const { content } = useContent();
   return (
-    <section id="benefits" className="py-20 relative overflow-hidden">
-      {/* Decorative Leaves */}
-      <div className="absolute left-0 bottom-0 w-64 h-64 lg:w-96 lg:h-96 opacity-40 pointer-events-none">
-        <img
-          src="/images/leaves_1.png"
-          alt=""
-          className="w-full h-full object-contain"
-        />
-      </div>
+    <section
+      id="benefits"
+      className="py-24 bg-gradient-to-b from-background to-background-cream/30"
+    >
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Main Benefits Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
+          {/* Left - Content */}
+          <div className="space-y-8">
+            <div>
+              <h2 className="text-5xl font-bold text-foreground mb-6 font-notulen leading-tight">
+                {content.benefits.title}
+                <span className="block text-primary">
+                  {content.benefits.subtitle}
+                </span>
+              </h2>
+              <p className="text-xl text-muted-foreground leading-relaxed">
+                Discover why thousands of customers choose our eco-friendly
+                products for a healthier lifestyle and a better planet.
+              </p>
+            </div>
 
-      <div className="absolute right-0 top-0 w-64 h-64 lg:w-96 lg:h-96 opacity-40 pointer-events-none">
-        <img
-          src="/images/leaf_2.png"
-          alt=""
-          className="w-full h-full object-contain"
-        />
-      </div>
-
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative">
-        {/* Section Header */}
-        <div className="text-center mb-16 max-w-3xl mx-auto">
-          <div className="flex flex-wrap items-center justify-center gap-2 text-3xl sm:text-4xl lg:text-5xl mb-4">
-            <span className="text-foreground font-eurotypo font-bold">
-              {content.benefits.title}
-            </span>
-            <Smile className="w-10 h-10 text-primary" />
-            <span className="text-primary font-bold font-eurotypo italic">
-              {content.benefits.subtitle}
-            </span>
-          </div>
-        </div>
-
-        {/* Benefits Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          {content.benefits.items.map((benefit, index) => (
-            <div
-              key={index}
-              className="bg-card border border-border rounded-2xl p-6 shadow-soft hover:shadow-eco transition-shadow"
-            >
-              <div className="space-y-4">
-                {/* Icon and Title */}
-                <div className="flex items-start gap-3">
-                  <div className="w-14 h-14 bg-primary rounded-xl flex items-center justify-center flex-shrink-0">
+            {/* Benefits List */}
+            <div className="space-y-6">
+              {content.benefits.items.slice(0, 3).map((benefit, index) => (
+                <div key={index} className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-primary-lighter rounded-xl flex items-center justify-center flex-shrink-0">
                     {typeof benefit.icon === "string" ? (
                       <img
                         src={benefit.icon}
                         alt={benefit.title}
-                        className="w-7 h-7 object-contain"
+                        className="w-6 h-6 object-contain"
                       />
                     ) : (
-                      <benefit.icon className="w-7 h-7 text-primary-foreground" />
+                      <benefit.icon className="w-6 h-6 text-primary" />
                     )}
                   </div>
-
-                  <h3 className="text-xl font-eurotypo font-bold text-primary leading-tight pt-2">
-                    {benefit.title}
-                  </h3>
+                  <div>
+                    <h3 className="text-xl font-bold text-foreground mb-2">
+                      {benefit.title}
+                    </h3>
+                    <p className="text-muted-foreground">
+                      {benefit.description}
+                    </p>
+                  </div>
                 </div>
+              ))}
+            </div>
 
-                {/* Description */}
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {benefit.description}
-                </p>
+            {/* CTA Button */}
+            <button className="bg-primary hover:bg-primary-light text-primary-foreground font-bold py-4 px-8 rounded-xl flex items-center gap-3 transition-all shadow-lg hover:shadow-xl hover:scale-105">
+              <Leaf className="w-6 h-6" />
+              Shop Now
+              <ArrowRight className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Right - Visual */}
+          <div className="relative">
+            <div className="bg-white rounded-3xl p-8 shadow-2xl">
+              <div className="grid grid-cols-2 gap-6">
+                {content.benefits.items.slice(0, 4).map((benefit, index) => (
+                  <div
+                    key={index}
+                    className="text-center p-6 bg-background-cream rounded-2xl"
+                  >
+                    <div className="w-16 h-16 bg-primary-lighter rounded-2xl flex items-center justify-center mx-auto mb-4">
+                      {typeof benefit.icon === "string" ? (
+                        <img
+                          src={benefit.icon}
+                          alt={benefit.title}
+                          className="w-8 h-8 object-contain"
+                        />
+                      ) : (
+                        <benefit.icon className="w-8 h-8 text-primary" />
+                      )}
+                    </div>
+                    <h4 className="font-bold text-foreground mb-2">
+                      {benefit.title}
+                    </h4>
+                    <p className="text-sm text-muted-foreground">
+                      {benefit.description}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
+
+            {/* Floating Elements */}
+            <div className="absolute -top-6 -left-6 bg-green-500 text-white px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2">
+              <Check className="w-4 h-4" />
+              100% Eco-Friendly
+            </div>
+            <div className="absolute -bottom-6 -right-6 bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2">
+              <Shield className="w-4 h-4" />
+              Certified Quality
+            </div>
+          </div>
         </div>
 
-        {/* CTA Card */}
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-primary-lighter border-l-4 border-primary rounded-xl p-8 shadow-soft">
-            <h3 className="text-2xl sm:text-3xl font-eurotypo font-bold text-primary mb-4 text-center">
-              Ready to Make the Switch?
-            </h3>
-            <p className="text-muted-foreground mb-8 text-center text-lg">
-              Join thousands of customers who have chosen a more sustainable way
-              to care for their teeth.
-            </p>
-
-            <div className="flex flex-wrap justify-center gap-8 text-sm text-foreground">
-              <span className="flex items-center gap-2 font-medium">
-                <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                  <Check className="w-4 h-4 text-primary-foreground" />
-                </div>
-                30-day money back guarantee
-              </span>
-              <span className="flex items-center gap-2 font-medium">
-                <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                  <Check className="w-4 h-4 text-primary-foreground" />
-                </div>
-                Free shipping
-              </span>
-              <span className="flex items-center gap-2 font-medium">
-                <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                  <Check className="w-4 h-4 text-primary-foreground" />
-                </div>
-                Eco-certified materials
-              </span>
+        {/* Stats Section */}
+        <div className="bg-white rounded-3xl p-12 shadow-xl">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="text-4xl font-bold text-primary mb-2">50K+</div>
+              <div className="text-muted-foreground">Happy Customers</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-primary mb-2">100%</div>
+              <div className="text-muted-foreground">Eco-Friendly</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-primary mb-2">4.9/5</div>
+              <div className="text-muted-foreground">Customer Rating</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-primary mb-2">
+                30 Days
+              </div>
+              <div className="text-muted-foreground">Money Back</div>
             </div>
           </div>
         </div>
