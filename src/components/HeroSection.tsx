@@ -64,6 +64,13 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
+      <div className="absolute right-0 bottom-0 w-48 h-48 sm:w-64 sm:h-64 lg:w-96 lg:h-96 z-0 pointer-events-none">
+        <img
+          src="/images/leaf_2.png"
+          alt="Decorative leaves"
+          className="w-full h-full object-contain object-right"
+        />
+      </div>
       <motion.div
         className="container mx-auto max-w-5xl px-4 sm:px-6 lg:px-12 py-32 relative z-10"
         variants={containerVariants}

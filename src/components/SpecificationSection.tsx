@@ -7,6 +7,13 @@ const ProductSpecSection: React.FC = () => {
   const { content } = useContent();
   return (
     <section className="relative py-20">
+      <div className="absolute left-0 top-0 w-48 h-48 sm:w-64 sm:h-64 lg:w-96 lg:h-96 z-0 pointer-events-none">
+        <img
+          src="/images/leaf_1.png"
+          alt="Decorative leaves"
+          className="w-full h-full object-contain object-left"
+        />
+      </div>
       <div className="absolute right-0 bottom-0 w-48 h-48 sm:w-64 sm:h-64 lg:w-96 lg:h-96 z-0 pointer-events-none">
         <img
           src="/images/leaf_2.png"

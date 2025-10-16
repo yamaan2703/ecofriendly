@@ -3,19 +3,16 @@ import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { supabase } from "@/lib/supabase";
 import {
-  Clock,
-  User,
-  ArrowLeft,
-  Calendar,
-  Tag,
-  Eye,
-  Share2,
-  BookOpen,
-  TrendingUp,
-} from "lucide-react";
+  FiClock,
+  FiUser,
+  FiArrowLeft,
+  FiCalendar,
+  FiShare2,
+} from "react-icons/fi";
+import { BsBookmarkHeart } from "react-icons/bs";
+import { HiOutlineSparkles } from "react-icons/hi2";
+import { BiBookReader } from "react-icons/bi";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/Navbar";
 import QuillDisplay from "@/components/QuillDisplay";
 
@@ -89,146 +86,193 @@ const BlogDetailPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading blog post...</p>
-        </div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <motion.div
+          className="text-center"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="relative w-16 h-16 mx-auto mb-6">
+            <div className="absolute inset-0 rounded-full border-4 border-primary/20"></div>
+            <div className="absolute inset-0 rounded-full border-4 border-primary border-t-transparent animate-spin"></div>
+          </div>
+          <p className="text-lg text-muted-foreground font-medium">
+            Loading article...
+          </p>
+        </motion.div>
       </div>
     );
   }
 
   if (error || !blogPost) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">
-            Blog Post Not Found
+      <div className="min-h-screen bg-background flex items-center justify-center px-6">
+        <motion.div
+          className="text-center max-w-md"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <BsBookmarkHeart className="w-20 h-20 text-primary mx-auto mb-6" />
+          <h1 className="text-3xl font-bold text-foreground font-eurotypo mb-4">
+            Article Not Found
           </h1>
-          <p className="text-gray-600 mb-6">
-            {error || "The blog post you're looking for doesn't exist."}
+          <p className="text-muted-foreground text-lg mb-8">
+            {error ||
+              "The article you're looking for doesn't exist or has been removed."}
           </p>
-          <Button
+          <motion.button
             onClick={() => navigate("/blog")}
-            className="bg-green-600 hover:bg-green-700"
+            className="inline-flex items-center gap-2 bg-primary text-white font-semibold px-6 py-3 rounded-xl hover:bg-primary-light transition-colors"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            <ArrowLeft className="w-4 h-4 mr-2" />
+            <FiArrowLeft className="w-5 h-5" />
             Back to Blog
-          </Button>
-        </div>
+          </motion.button>
+        </motion.div>
       </div>
     );
   }
 
   return (
-    <div
-      className="min-h-screen bg-gray-50"
-      style={{
-        background:
-          "linear-gradient(to bottom, #FDFDEA 0%, #FDFDEA 60%, #FEFEF5 75%, #FFFFFF 80%)",
-      }}
-    >
+    <div className="min-h-screen bg-background">
       <Navbar />
 
       {/* Main Content */}
-      <div className="mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="">
-          {/* Left Column - Main Content */}
-          <div className="">
-            {/* Blog Header Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className=""
-            >
-              <div className="flex items-start justify-between mb-6">
-                <div className="flex-1">
-                  <h1 className="text-2xl font-bold text-gray-900 mb-4 leading-tight">
-                    {blogPost.blog_title}
-                  </h1>
-                  <div className="flex items-center gap-6 text-sm text-gray-600 mb-4">
-                    <div className="flex items-center gap-2">
-                      <User className="w-4 h-4 text-green-500" />
-                      <span className="font-medium">
-                        {blogPost.author_name}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Clock className="w-4 h-4 text-green-500" />
-                      <span>{blogPost.read_time} min read</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4 text-green-500" />
-                      <span>{formatDate(blogPost.created_at)}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+      <div className="max-w-5xl mx-auto px-6 py-24">
+        {/* Article Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          {/* Title */}
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-foreground font-eurotypo mb-8 leading-tight">
+            {blogPost.blog_title}
+          </h1>
 
-              {/* Featured Image */}
-              <div className="relative h-80 rounded-lg overflow-hidden  mb-6">
-                {blogPost.featured_image ? (
-                  <img
-                    src={getImageUrl(blogPost.featured_image)}
-                    alt={blogPost.blog_title}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      e.currentTarget.style.display = "none";
-                      const nextElement = e.currentTarget
-                        .nextElementSibling as HTMLElement;
-                      if (nextElement) {
-                        nextElement.style.display = "flex";
-                      }
-                    }}
-                  />
-                ) : null}
-                <div
-                  className={`w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 ${
-                    blogPost.featured_image ? "hidden" : "flex"
-                  }`}
-                >
-                  <div className="text-center text-gray-500">
-                    <BookOpen className="w-12 h-12 mx-auto mb-2" />
-                    <p className="text-sm">No Featured Image</p>
-                  </div>
-                </div>
+          {/* Meta Info */}
+          <div className="flex flex-wrap items-center gap-6 mb-8">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                <FiUser className="w-6 h-6 text-white" />
               </div>
-
-              {/* Meta Description */}
-              {blogPost.meta_description && (
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
-                  <h3 className="text-sm font-semibold text-green-800 mb-2 flex items-center gap-2">
-                    <TrendingUp className="w-4 h-4" />
-                    Article Summary
-                  </h3>
-                  <p className="text-green-700 text-sm leading-relaxed">
-                    {blogPost.meta_description}
-                  </p>
-                </div>
-              )}
-            </motion.div>
-
-            {/* Blog Content */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className=""
-            >
-              <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
-                <BookOpen className="w-5 h-5" />
-                Article Content
-              </h3>
-              <div className="quill-content">
-                <QuillDisplay
-                  content={blogPost.content}
-                  className="text-gray-700 leading-relaxed"
-                />
+              <div>
+                <p className="text-sm text-muted-foreground">Written by</p>
+                <p className="font-bold text-foreground">
+                  {blogPost.author_name}
+                </p>
               </div>
-            </motion.div>
+            </div>
+
+            <div className="w-px h-12 bg-border"></div>
+
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <FiCalendar className="w-5 h-5 text-primary" />
+              <span className="font-medium">
+                {formatDate(blogPost.created_at)}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <FiClock className="w-5 h-5 text-primary" />
+              <span className="font-medium">{blogPost.read_time} min read</span>
+            </div>
           </div>
-        </div>
+
+          {/* Featured Badge */}
+          <motion.div
+            className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 px-4 py-2 rounded-full mb-8"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            <HiOutlineSparkles className="w-5 h-5 text-primary" />
+            <span className="text-primary font-bold text-sm">
+              Featured Article
+            </span>
+          </motion.div>
+        </motion.div>
+
+        {/* Featured Image */}
+        <motion.div
+          className="relative h-[500px] rounded-3xl overflow-hidden mb-12 shadow-2xl"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+        >
+          {blogPost.featured_image ? (
+            <img
+              src={getImageUrl(blogPost.featured_image)}
+              alt={blogPost.blog_title}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                e.currentTarget.style.display = "none";
+                const nextElement = e.currentTarget
+                  .nextElementSibling as HTMLElement;
+                if (nextElement) {
+                  nextElement.style.display = "flex";
+                }
+              }}
+            />
+          ) : null}
+          <div
+            className={`w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 to-primary/5 ${
+              blogPost.featured_image ? "hidden" : "flex"
+            }`}
+          >
+            <div className="text-center">
+              <BiBookReader className="w-24 h-24 text-primary mx-auto mb-4" />
+              <p className="text-primary font-bold text-xl">Eco Story</p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Article Content */}
+        <motion.article
+          className=""
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.7 }}
+        >
+          <div className="prose prose-lg max-w-none">
+            <QuillDisplay
+              content={blogPost.content}
+              className="text-foreground leading-relaxed"
+            />
+          </div>
+        </motion.article>
+
+        {/* Bottom Actions */}
+        <motion.div
+          className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-6 bg-[#DCE7C8] rounded-2xl p-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+        >
+          <div className="flex items-center gap-4">
+            <BsBookmarkHeart className="w-8 h-8 text-primary" />
+            <div>
+              <p className="font-bold text-foreground text-lg">
+                Enjoyed this article?
+              </p>
+              <p className="text-muted-foreground text-sm">
+                Share it with your friends!
+              </p>
+            </div>
+          </div>
+          <motion.button
+            onClick={() => navigate("/blog")}
+            className="bg-primary text-white font-semibold px-6 py-3 rounded-xl hover:bg-primary-light transition-colors flex items-center gap-2"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <span>Read More Articles</span>
+            <FiArrowLeft className="w-5 h-5 rotate-180" />
+          </motion.button>
+        </motion.div>
       </div>
     </div>
   );

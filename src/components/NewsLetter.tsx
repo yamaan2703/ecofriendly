@@ -7,7 +7,14 @@ import { SiMinutemailer } from "react-icons/si";
 function NewsLetter() {
   const { content } = useContent();
   return (
-    <section className="py-20 bg-background">
+    <section className="py-20 bg-background relative">
+      <div className="absolute left-0 top-0 w-48 h-48 sm:w-64 sm:h-64 lg:w-96 lg:h-96 z-0 pointer-events-none">
+        <img
+          src="/images/leaf_1.png"
+          alt="Decorative leaves"
+          className="w-full h-full object-contain object-left"
+        />
+      </div>
       <div className="container mx-auto max-w-5xl">
         <div className="max-w-5xl mx-auto">
           <div className="relative bg-[#DCE7C8] rounded-3xl p-6 text-center shadow-2xl overflow-hidden backdrop-blur-md border border-primary/10">

@@ -26,6 +26,20 @@ const ProductShowcaseSection: React.FC = () => {
 
   return (
     <section className="py-20 bg-background relative overflow-hidden">
+      <div className="absolute left-0 top-0 w-48 h-48 sm:w-64 sm:h-64 lg:w-96 lg:h-96 z-0 pointer-events-none">
+        <img
+          src="/images/leaf_1.png"
+          alt="Decorative leaves"
+          className="w-full h-full object-contain object-left"
+        />
+      </div>
+      <div className="absolute right-0 bottom-0 w-48 h-48 sm:w-64 sm:h-64 lg:w-96 lg:h-96 z-0 pointer-events-none">
+        <img
+          src="/images/leaf_2.png"
+          alt="Decorative leaves"
+          className="w-full h-full object-contain object-right"
+        />
+      </div>
       <div className="container mx-auto max-w-5xl relative z-10">
         {/* Product Showcase */}
         <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-16 mb-8">

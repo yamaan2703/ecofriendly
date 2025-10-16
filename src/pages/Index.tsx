@@ -50,7 +50,7 @@ const Index = () => {
         <NewsLetter />
       </main>
       <Footer />
-      {/* <StickyBottomBar /> */}
+      <StickyBottomBar />
     </div>
   );
 };
