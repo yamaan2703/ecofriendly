@@ -144,7 +144,7 @@ const Navbar: React.FC = () => {
               <button
                 key={item.action}
                 onClick={() => handleNavigation(item)}
-                className={`relative px-5 py-2 font-medium transition-colors rounded-lg ${
+                className={`relative px-5 py-2 font-medium transition-colors rounded-lg text-sm ${
                   (isHomePage &&
                     ((item.type === "scroll" &&
                       activeSection === item.action) ||
@@ -152,8 +152,8 @@ const Navbar: React.FC = () => {
                   (item.type === "route" &&
                     isBlogPage &&
                     item.action === "blog")
-                    ? "text-primary-foreground bg-primary"
-                    : "text-primary hover:bg-primary-lighter"
+                    ? "text-primary bg-[#DCE7C8]"
+                    : "text-primary hover:bg-primary hover:text-white"
                 }`}
               >
                 {item.label}
@@ -162,33 +162,33 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Action Icons */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center space-x-1">
             {/* User Icon */}
             <button
               onClick={handleUserClick}
-              className={`p-2 rounded-lg transition-all ${
-                user
-                  ? "text-primary bg-primary-lighter"
-                  : "text-primary hover:bg-primary-lighter"
+              className={`relative p-2 font-medium transition-colors rounded-lg text-sm ${
+                isProfilePage || isLoginPage || isSignupPage
+                  ? "text-primary bg-[#DCE7C8]"
+                  : "text-primary hover:bg-primary hover:text-white"
               }`}
               aria-label={user ? "Profile" : "Login"}
               title={user ? "Profile" : "Login"}
             >
-              <User className="w-5 h-5" />
+              <User className="w-4 h-4" />
             </button>
 
             {/* Cart Icon */}
             <button
               onClick={handleCartClick}
-              className={`p-2 rounded-lg transition-all ${
+              className={`relative p-2 font-medium transition-colors rounded-lg text-sm ${
                 isCartPage
-                  ? "text-primary bg-primary-lighter"
-                  : "text-primary hover:bg-primary-lighter"
+                  ? "text-primary bg-[#DCE7C8]"
+                  : "text-primary hover:bg-primary hover:text-white"
               }`}
               aria-label="Cart"
               title="Cart"
             >
-              <ShoppingBag className="w-5 h-5" />
+              <ShoppingBag className="w-4 h-4" />
             </button>
 
             {/* Mobile Menu Button */}

@@ -70,14 +70,10 @@ const StickyBottomBar: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const homeSection = document.getElementById("home");
-      if (homeSection) {
-        const homeBottom = homeSection.offsetTop + homeSection.offsetHeight;
-        const scrollPosition = window.scrollY + window.innerHeight;
+      const scrollPosition = window.scrollY;
 
-        // Show the bar when user scrolls past the home section
-        setIsVisible(scrollPosition > homeBottom + 100);
-      }
+      // Show the bar when user starts scrolling (any scroll amount)
+      setIsVisible(scrollPosition > 0);
     };
 
     window.addEventListener("scroll", handleScroll);

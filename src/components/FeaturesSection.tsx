@@ -1,18 +1,5 @@
 import React, { useState } from "react";
-import {
-  CheckCircle,
-  ArrowRight,
-  Star,
-  Sparkles,
-  Shield,
-  Feather,
-  Package,
-  Gem,
-  Crown,
-  Gift,
-  Award,
-  ChevronRight,
-} from "lucide-react";
+import { Star, Sparkles, Shield, Feather, Package } from "lucide-react";
 import { useContent } from "@/contexts/ContentContext";
 
 const iconMap = {
@@ -20,10 +7,6 @@ const iconMap = {
   Shield,
   Feather,
   Package,
-  Gem,
-  Crown,
-  Gift,
-  Award,
 };
 
 const FeaturesSection: React.FC = () => {
@@ -31,97 +14,95 @@ const FeaturesSection: React.FC = () => {
   const { content } = useContent();
 
   return (
-    <section
-      id="features"
-      className="py-20 relative overflow-hidden bg-gradient-subtle"
-    >
-      {/* Decorative Background */}
-      <div className="absolute right-0 top-0 w-64 h-64 lg:w-96 lg:h-96 opacity-30 pointer-events-none">
+    <section id="features" className="relative py-20 overflow-hidden">
+      {/* Decorative Leaf in corner */}
+      {/* <div className="absolute top-0 right-0 w-64 h-64 opacity-20 pointer-events-none">
         <img
           src="/images/leaf_2.png"
           alt=""
           className="w-full h-full object-contain"
         />
-      </div>
+      </div> */}
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative">
-        {/* Section Header */}
-        <div className="text-center mb-16 max-w-4xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-foreground font-eurotypo mb-2">
-            {content.features.title}
-            <span className="block sm:inline ml-0 sm:ml-3 text-primary italic">
-              {content.features.subtitle}
-            </span>
+      <div className="container mx-auto max-w-5xl relative">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h2 className="text-4xl lg:text-5xl font-extrabold text-gray-900 font-eurotypo">
+            Why Choose{" "}
+            <span className="text-primary italic">Our Bamboo Brush</span>
           </h2>
+          <p className="text-gray-600 mt-4 max-w-2xl mx-auto text-sm sm:text-base">
+            Thoughtfully designed for sustainability, comfort, and care —
+            because small changes make a big difference.
+          </p>
         </div>
 
-        {/* Features Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        {/* Main Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 items-center">
           {/* Feature List */}
-          <div className="space-y-3">
-            {content.features.items.map((feature, index) => (
-              <div
-                key={index}
-                className={`group cursor-pointer p-5 rounded-xl border-2 transition-all ${
-                  activeFeature === index
-                    ? "border-primary bg-primary-lighter shadow-eco"
-                    : "border-transparent bg-card hover:border-primary-light hover:shadow-soft"
-                }`}
-                onClick={() => setActiveFeature(index)}
-              >
-                <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-lg bg-primary text-primary-foreground flex-shrink-0">
-                    {typeof feature.icon === "string"
-                      ? (() => {
-                          const IconComponent =
-                            iconMap[feature.icon as keyof typeof iconMap];
-                          return IconComponent ? (
-                            <IconComponent className="w-5 h-5" />
-                          ) : (
-                            <Star className="w-5 h-5" />
-                          );
-                        })()
-                      : feature.icon}
-                  </div>
+          <div className="flex flex-col gap-3">
+            {content.features.items.map((feature, index) => {
+              const IconComponent =
+                iconMap[feature.icon as keyof typeof iconMap] || Star;
 
-                  <div className="flex-1">
-                    <h3 className="font-bold text-primary text-lg mb-1">
+              return (
+                <div
+                  key={index}
+                  onClick={() => setActiveFeature(index)}
+                  className={`flex items-center gap-2 p-2 rounded-2xl border transition-all duration-300 cursor-pointer ${
+                    activeFeature === index
+                      ? "bg-[#DCE7C8] border-primary shadow-lg scale-[1.02]"
+                      : " hover:bg-[#DCE7C8] border-primary hover:shadow-md"
+                  }`}
+                >
+                  <div
+                    className={`size-10 flex items-center justify-center rounded-xl transition-all ${
+                      activeFeature === index
+                        ? "bg-primary text-white"
+                        : "bg-primary/10 text-primary"
+                    }`}
+                  >
+                    <IconComponent className="size-5" />
+                  </div>
+                  <div className="">
+                    <h3 className="font-semibold text-lg text-gray-800">
                       {feature.title}
                     </h3>
-
                     {activeFeature === index && (
-                      <p className="text-muted-foreground text-sm leading-relaxed mt-2">
+                      <p className="text-gray-600 text-xs leading-relaxed">
                         {feature.description}
                       </p>
                     )}
-
-                    {activeFeature !== index && (
-                      <div className="flex items-center text-primary text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                        Learn more <ChevronRight className="w-4 h-4 ml-1" />
-                      </div>
-                    )}
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
-          {/* Featured Image */}
-          <div className="flex justify-center lg:justify-end">
-            <div className="relative w-full max-w-md lg:max-w-lg">
-              {/* Decorative Background */}
-              <div className="absolute -bottom-4 -left-4 w-full h-full bg-primary-lighter rounded-3xl opacity-60"></div>
+          {/* Image Section */}
+          <div className="relative flex justify-center lg:justify-end">
+            <div className="relative w-full max-w-sm">
+              {/* Multiple Decorative Backgrounds */}
+              <div className="absolute -bottom-4 -left-4 w-full h-full bg-[#84B350] rounded-[2rem] opacity-20"></div>
+              <div className="absolute -bottom-2 -left-2 w-full h-full bg-[#DCE7C8] rounded-[1.5rem] opacity-40"></div>
 
               {/* Main Image Container */}
-              <div className="relative bg-background-cream rounded-3xl p-8 shadow-eco">
-                <img
-                  src={content.features.items[activeFeature].image}
-                  alt={content.features.items[activeFeature].title}
-                  width={800}
-                  height={800}
-                  className="w-full h-auto object-contain rounded-2xl transition-opacity duration-300"
-                  key={`feature-${activeFeature}`}
-                />
+              <div className="relative bg-background-cream rounded-[1.5rem] p-6 shadow-2xl border border-primary/10">
+                <div className="w-full h-80 flex items-center justify-center">
+                  <img
+                    src={content.features.items[activeFeature].image}
+                    alt={content.features.items[activeFeature].title}
+                    className="max-w-full max-h-full object-contain transition-all duration-500"
+                  />
+                </div>
+
+                {/* Floating Badge */}
+                <div className="absolute -top-3 -right-3 bg-primary text-white px-3 py-1.5 rounded-full shadow-lg">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
+                    <span className="text-xs font-bold">Premium</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

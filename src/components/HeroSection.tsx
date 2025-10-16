@@ -65,7 +65,7 @@ const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
       <motion.div
-        className="container mx-auto px-4 sm:px-6 lg:px-12 py-32 relative z-10"
+        className="container mx-auto max-w-5xl px-4 sm:px-6 lg:px-12 py-32 relative z-10"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -131,7 +131,7 @@ const HeroSection = () => {
               >
                 <Leaf className="w-4 h-4 text-primary" />
               </motion.div>
-              <span className="text-sm font-bold text-primary">
+              <span className="text-xs font-bold text-primary">
                 {content.hero.badge}
               </span>
             </motion.div>
@@ -139,14 +139,14 @@ const HeroSection = () => {
             {/* Heading */}
             <motion.div className="" variants={itemVariants}>
               <motion.h1
-                className="text-5xl sm:text-6xl lg:text-7xl font-notulen font-black text-foreground leading-none"
+                className="text-4xl sm:text-5xl font-notulen font-black text-foreground leading-none"
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
               >
                 {content.hero.title}
               </motion.h1>
               <motion.h2
-                className="text-3xl sm:text-4xl lg:text-5xl font-eurotypo italic text-primary"
+                className="text-3xl sm:text-4xl font-eurotypo italic text-primary"
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
               >
@@ -156,7 +156,7 @@ const HeroSection = () => {
 
             {/* Description */}
             <motion.p
-              className="text-lg text-muted-foreground leading-relaxed"
+              className="text-md text-muted-foreground leading-relaxed"
               variants={itemVariants}
             >
               {content.hero.description}
@@ -168,7 +168,7 @@ const HeroSection = () => {
               variants={itemVariants}
             >
               <motion.button
-                className="group bg-primary text-primary-foreground px-8 py-3 rounded-xl font-bold shadow-eco hover:shadow-xl transition-all flex items-center gap-2"
+                className="group bg-primary text-primary-foreground px-6 py-2 rounded-xl font-bold shadow-eco hover:shadow-xl transition-all flex items-center gap-2 text-sm"
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ duration: 0.2 }}

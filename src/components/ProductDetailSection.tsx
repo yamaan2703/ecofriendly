@@ -1,62 +1,84 @@
 import React from "react";
 import { useContent } from "@/contexts/ContentContext";
+import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 
 const ProductDetailingSection: React.FC = () => {
   const { content } = useContent();
+
+  const leftFeatures = content.features2.slice(
+    0,
+    Math.ceil(content.features2.length / 2)
+  );
+  const rightFeatures = content.features2.slice(
+    Math.ceil(content.features2.length / 2)
+  );
+
   return (
     <section id="products" className="py-20 relative overflow-hidden">
-      {/* Decorative Background */}
-      <div className="absolute left-0 top-0 w-64 h-64 lg:w-96 lg:h-96 opacity-30 pointer-events-none">
-        <img
-          src="/images/leaves_1.png"
-          alt=""
-          className="w-full h-full object-contain"
-        />
-      </div>
-
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative">
+      <div className="container mx-auto max-w-5xl relative">
         {/* Section Header */}
-        <div className="text-center mb-16 max-w-3xl mx-auto">
+        <div className="text-center mb-3 max-w-3xl mx-auto">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-foreground font-eurotypo">
             Premium Product{" "}
             <span className="text-primary italic">Features</span>
           </h2>
         </div>
 
-        {/* Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Feature Cards */}
-          <div className="space-y-4 lg:order-1">
-            {content.features2.map((feature, index) => (
+        {/* Custom Flex Layout instead of equal grid */}
+        <div className="flex flex-col lg:flex-row items-center justify-center">
+          {/* Left Features */}
+          <div className="flex-1 max-w-sm w-full space-y-2 text-right">
+            {leftFeatures.map((feature, index) => (
               <div
                 key={index}
-                className="bg-background-cream border border-primary-light rounded-xl p-5 shadow-soft hover:shadow-eco transition-shadow"
+                className="flex items-center justify-end gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all group cursor-pointer"
               >
-                <h3 className="font-bold text-primary text-lg mb-2">
-                  {feature.title}
-                </h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">
-                  {feature.description}
-                </p>
+                <div>
+                  <h3 className="text-sm font-semibold text-primary mb-0.5">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600 text-xs leading-relaxed ml-auto">
+                    {feature.description ||
+                      "Eco-friendly, reliable, and designed for your comfort."}
+                  </p>
+                </div>
+                <div className=" text-primary rounded-full p-2 group-hover:bg-primary group-hover:text-white transition-all">
+                  <FaArrowLeft className="w-3 h-3" />
+                </div>
               </div>
             ))}
           </div>
 
-          {/* Product Image */}
-          <div className="flex justify-center lg:justify-end lg:order-2">
-            <div className="relative w-full max-w-md lg:max-w-lg">
-              {/* Decorative Background */}
-              <div className="absolute -top-4 -right-4 w-full h-full bg-primary-lighter rounded-3xl opacity-50"></div>
+          {/* Center Image (Larger Width) */}
+          <div className="flex-[1.6] flex justify-center relative">
+            <img
+              src="/images/brush_rock.png"
+              alt="Product Showcase"
+              className="relative z-10 w-full max-w-[950px] h-auto object-contain drop-shadow-2xl"
+            />
+          </div>
 
-              {/* Main Image Container */}
-              <div className="relative bg-background-cream rounded-3xl p-8 shadow-eco">
-                <img
-                  src="/images/brush_rock.png"
-                  alt="Bamboo toothbrush with rock formation"
-                  className="w-full h-auto object-contain rounded-2xl"
-                />
+          {/* Right Features */}
+          <div className="flex-1 max-w-sm w-full space-y-2 text-left">
+            {rightFeatures.map((feature, index) => (
+              <div
+                key={index}
+                className="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-all group cursor-pointer"
+              >
+                <div className=" text-primary rounded-full p-2 group-hover:bg-primary group-hover:text-white transition-all">
+                  <FaArrowRight className="w-3 h-3" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-primary mb-0.5">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600 text-xs leading-relaxed">
+                    {feature.description ||
+                      "Experience the best build quality and sustainability."}
+                  </p>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>

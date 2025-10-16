@@ -36,7 +36,7 @@ export const home1Content = {
     items: [
       {
         icon: Leaf,
-        title: "Eco-Friendly & Biodegradable",
+        title: "Planet-Friendly",
         description: "Made from sustainable bamboo that naturally decomposes"
       },
       {

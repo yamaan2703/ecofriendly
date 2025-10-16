@@ -529,13 +529,13 @@ const ProductSection = () => {
   }
 
   return (
-    <div className="min-h-screen py-12 px-4">
-      <div className="container mx-auto max-w-6xl">
+    <div className="min-h-screen py-10">
+      <div className="container mx-auto max-w-5xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Left - Image */}
           <div className="space-y-6">
             {/* Main Image */}
-            <div className="border-4 border-primary rounded-2xl shadow-lg">
+            <div className="border-2 border-primary rounded-2xl shadow-lg">
               <div className="w-full h-96 flex items-center justify-center">
                 <img
                   src={getImageUrl(productImages[selectedImageIndex])}
@@ -574,10 +574,10 @@ const ProductSection = () => {
           </div>
 
           {/* Right - Product Info */}
-          <div className="space-y-6">
+          <div className="space-y-3">
             {/* Title */}
             <div>
-              <h1 className="text-3xl font-bold text-foreground mb-2">
+              <h1 className="text-2xl font-bold text-foreground mb-2">
                 {product.product_name}
               </h1>
             </div>
@@ -598,32 +598,32 @@ const ProductSection = () => {
 
             {/* Quantity */}
             <div>
-              <label className="block text-foreground font-medium mb-2">
+              <label className="block text-foreground font-medium">
                 Quantity
               </label>
               <div className="flex items-center gap-3">
                 <button
                   onClick={decrementQuantity}
                   disabled={quantity <= 1}
-                  className="w-10 h-10 border border-border rounded-lg flex items-center justify-center hover:bg-primary-lighter disabled:opacity-50"
+                  className="size-8 border border-primary rounded-lg flex items-center justify-center hover:bg-primary-lighter disabled:opacity-50"
                 >
-                  <Minus className="w-4 h-4" />
+                  <Minus className="size-4" />
                 </button>
-                <span className="w-16 text-center font-semibold text-lg">
+                <span className="w-12 text-center font-semibold text-lg">
                   {quantity}
                 </span>
                 <button
                   onClick={incrementQuantity}
-                  className="w-10 h-10 border border-border rounded-lg flex items-center justify-center hover:bg-primary-lighter"
+                  className="size-10 border border-primary rounded-lg flex items-center justify-center hover:bg-primary-lighter"
                 >
-                  <Plus className="w-4 h-4" />
+                  <Plus className="size-4" />
                 </button>
 
                 {/* Add to Cart */}
                 <div>
                   <button
                     onClick={handleAddToCart}
-                    className="w-full bg-primary hover:bg-primary-light text-primary-foreground font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors"
+                    className="w-full bg-primary hover:bg-primary-light text-primary-foreground font-semibold py-2 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors"
                   >
                     <ShoppingCart className="w-5 h-5" />
                     {isAuthenticated ? "Add to Cart" : "Login to Add to Cart"}
@@ -633,7 +633,7 @@ const ProductSection = () => {
             </div>
 
             {/* Features */}
-            <div className="space-y-3 flex justify-between">
+            <div className="space-y-2 flex justify-between">
               <div className="flex items-center gap-3">
                 <Truck className="w-5 h-5 text-primary" />
                 <span className="text-foreground">Free Shipping</span>
@@ -653,7 +653,7 @@ const ProductSection = () => {
               <h3 className="text-xl font-semibold text-foreground mb-3">
                 Description
               </h3>
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed text-sm">
                 {product.product_description}
               </p>
             </div>

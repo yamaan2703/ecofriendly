@@ -1,52 +1,76 @@
 import React from "react";
-import { Mail } from "lucide-react";
+import { Mail, CheckCircle, Leaf, Sparkles } from "lucide-react";
 import Button from "./Button/Button";
 import { useContent } from "@/contexts/ContentContext";
+import { SiMinutemailer } from "react-icons/si";
 
 function NewsLetter() {
   const { content } = useContent();
   return (
-    <section className="py-20">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12">
-        <div className="max-w-4xl mx-auto bg-primary-lighter rounded-3xl p-8 lg:p-12 shadow-soft">
-          <div className="text-center space-y-6">
-            {/* Header */}
-            <div className="space-y-4">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-foreground font-eurotypo">
-                Subscribe Our{" "}
-                <span className="text-primary italic">Newsletter</span>
-              </h2>
+    <section className="py-20 bg-background">
+      <div className="container mx-auto max-w-5xl">
+        <div className="max-w-5xl mx-auto">
+          <div className="relative bg-[#DCE7C8] rounded-3xl p-6 text-center shadow-2xl overflow-hidden backdrop-blur-md border border-primary/10">
+            {/* Subtle background decorative blur */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent opacity-70 pointer-events-none" />
 
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Be the first to know about new arrivals, exclusive deals, and
-                sustainable living tips.{" "}
-                <span className="font-semibold text-primary">
-                  Join 10,000+ eco-warriors!
-                </span>
-              </p>
-            </div>
+            {/* Heading */}
+            <h3 className="text-4xl font-extrabold text-primary-dark mb-4 font-eurotypo italic drop-shadow-sm flex items-center justify-center gap-5">
+              Subscribe Our{" "}
+              <span className="text-primary italic">Newsletter</span>{" "}
+              <SiMinutemailer className="size-10 mt-2 text-primary" />
+            </h3>
+
+            {/* Subtitle */}
+            <p className="text-gray-600 mb-10 text-lg max-w-2xl mx-auto leading-relaxed">
+              Be the first to know about new arrivals, exclusive deals, and
+              sustainable living tips.{" "}
+              <span className="font-bold text-primary">
+                Join 10,000+ eco-warriors!
+              </span>
+            </p>
 
             {/* Newsletter Form */}
-            <form className="max-w-lg mx-auto">
+            <form className="max-w-lg mx-auto mb-10">
               <div className="flex flex-col sm:flex-row gap-3">
                 <div className="flex-1 relative">
                   <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <input
                     type="email"
                     placeholder="Enter your email address"
-                    className="w-full pl-12 pr-4 py-3 rounded-lg text-foreground placeholder-muted-foreground bg-card border-2 border-border focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+                    className="w-full pl-12 pr-4 py-2 rounded-lg text-foreground placeholder-muted-foreground bg-white border-2 border-border focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all shadow-lg"
                     required
                   />
                 </div>
                 <Button
                   variant="solid"
                   size="sm"
-                  className="text-base py-3 px-6 whitespace-nowrap"
+                  className="text-base py-2 px-8 whitespace-nowrap shadow-lg hover:shadow-xl transition-all flex items-center gap-2"
                 >
+                  <Sparkles className="w-4 h-4" />
                   {content.newsletter.buttonText}
                 </Button>
               </div>
             </form>
+
+            {/* Features List */}
+            <div className="flex flex-wrap justify-center gap-3 mb-10">
+              {["Weekly Updates", "Exclusive Offers", "Eco Tips"].map(
+                (feature, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center gap-3 bg-white/70 px-8 py-2 rounded-full shadow-sm border border-primary/20 backdrop-blur-sm transition-all hover:bg-primary-light/30"
+                  >
+                    <div className="w-7 h-7 bg-primary flex items-center justify-center rounded-full shadow-md">
+                      <CheckCircle className="w-4 h-4 text-white" />
+                    </div>
+                    <span className="font-medium text-gray-700 text-sm">
+                      {feature}
+                    </span>
+                  </div>
+                )
+              )}
+            </div>
           </div>
         </div>
       </div>
