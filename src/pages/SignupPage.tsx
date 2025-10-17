@@ -12,6 +12,7 @@ const SignupPage: React.FC = () => {
     name: "",
     email: "",
     password: "",
+    is_newsletter: false,
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -50,7 +51,12 @@ const SignupPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      await signup(formData.name, formData.email, formData.password);
+      await signup(
+        formData.name,
+        formData.email,
+        formData.password,
+        formData.is_newsletter
+      );
     } catch (error) {
       console.error("Signup error:", error);
       // Error handling is done in the AuthContext with toast notifications
@@ -60,8 +66,11 @@ const SignupPage: React.FC = () => {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
 
     // Clear error when user starts typing
     if (errors[name]) {
@@ -216,6 +225,27 @@ const SignupPage: React.FC = () => {
                   {errors.password}
                 </motion.p>
               )}
+            </div>
+
+            {/* Newsletter Checkbox */}
+            <div className="flex items-start">
+              <div className="flex items-center h-5">
+                <input
+                  type="checkbox"
+                  id="is_newsletter"
+                  name="is_newsletter"
+                  checked={formData.is_newsletter}
+                  onChange={handleInputChange}
+                  className="w-4 h-4 border-gray-300 rounded text-[#005655] focus:ring-[#005655] focus:ring-2"
+                />
+              </div>
+              <label
+                htmlFor="is_newsletter"
+                className="ml-2 text-sm text-gray-600"
+              >
+                Subscribe to our newsletter for eco-friendly tips and exclusive
+                offers
+              </label>
             </div>
 
             {/* Submit Button */}

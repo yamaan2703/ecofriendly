@@ -25,7 +25,12 @@ interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  signup: (name: string, email: string, password: string) => Promise<void>;
+  signup: (
+    name: string,
+    email: string,
+    password: string,
+    is_newsletter?: boolean
+  ) => Promise<void>;
   logout: () => Promise<void>;
   updateProfile: (
     updates: Partial<User>
@@ -191,7 +196,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const signup = async (name: string, email: string, password: string) => {
+  const signup = async (
+    name: string,
+    email: string,
+    password: string,
+    is_newsletter: boolean = false
+  ) => {
     setIsLoading(true);
     setToastShown(false);
 
@@ -228,6 +238,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           updated_at: currentTime,
           status: true,
           is_admin: false,
+          is_newsletter: is_newsletter,
         })
         .select("id, name, email")
         .single();

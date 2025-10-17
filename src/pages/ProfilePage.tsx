@@ -15,6 +15,7 @@ import {
   FiX,
   FiSave,
   FiCalendar,
+  FiMail,
 } from "react-icons/fi";
 import { BsBoxSeam } from "react-icons/bs";
 import { HiOutlineSparkles } from "react-icons/hi2";
@@ -23,6 +24,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
 import { pdf } from "@react-pdf/renderer";
 import OrderPDF from "@/components/OrderPDF";
+import toast from "react-hot-toast";
 
 interface Order {
   id: number;
@@ -65,6 +67,8 @@ const ProfilePage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const [isNewsletterSubscribed, setIsNewsletterSubscribed] = useState(false);
+  const [isNewsletterLoading, setIsNewsletterLoading] = useState(false);
 
   const handleEditClick = () => {
     setIsEditModalOpen(true);
@@ -111,6 +115,64 @@ const ProfilePage: React.FC = () => {
   const handleLogoutCancel = () => {
     setIsLogoutModalOpen(false);
   };
+
+  const handleNewsletterToggle = async () => {
+    if (!user?.id) return;
+
+    setIsNewsletterLoading(true);
+
+    try {
+      const newStatus = !isNewsletterSubscribed;
+
+      const { error } = await supabase
+        .from("users")
+        .update({ is_newsletter: newStatus })
+        .eq("id", user.id);
+
+      if (error) {
+        toast.error("Failed to update newsletter subscription");
+        return;
+      }
+
+      setIsNewsletterSubscribed(newStatus);
+      toast.success(
+        newStatus
+          ? "Successfully subscribed to newsletter!"
+          : "Successfully unsubscribed from newsletter"
+      );
+    } catch (error) {
+      console.error("Newsletter update error:", error);
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setIsNewsletterLoading(false);
+    }
+  };
+
+  // Fetch newsletter subscription status
+  useEffect(() => {
+    const fetchNewsletterStatus = async () => {
+      if (!user?.id) return;
+
+      try {
+        const { data, error } = await supabase
+          .from("users")
+          .select("is_newsletter")
+          .eq("id", user.id)
+          .single();
+
+        if (error) {
+          console.error("Error fetching newsletter status:", error);
+          return;
+        }
+
+        setIsNewsletterSubscribed(data?.is_newsletter || false);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchNewsletterStatus();
+  }, [user?.id]);
 
   const handleDownloadInvoice = async (order: Order) => {
     try {
@@ -250,70 +312,248 @@ const ProfilePage: React.FC = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      <div className="max-w-7xl mx-auto px-6 py-24">
+      <div className="max-w-7xl mx-auto py-20">
         {/* Page Header */}
-        <motion.div
-          className="text-center mb-12"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <motion.div
-            className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 px-6 py-2 rounded-full mb-4"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <HiOutlineSparkles className="w-5 h-5 text-primary" />
-            <span className="text-primary font-bold text-sm">My Account</span>
-          </motion.div>
-          <h1 className="text-4xl md:text-5xl font-black text-foreground font-eurotypo mb-3">
-            Welcome Back,{" "}
-            <span className="text-primary italic">
-              {user?.name?.split(" ")[0] || "User"}
-            </span>
+        <div className="mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 font-eurotypo mb-2">
+            My <span className="text-[#005655] italic">Profile</span>
           </h1>
-          <p className="text-muted-foreground text-lg">
-            Manage your profile and track your eco-friendly journey
+          <p className="text-gray-600">
+            Manage your account and track your orders
           </p>
-        </motion.div>
+        </div>
 
-        {/* Profile Card */}
-        <motion.div
-          className="bg-white rounded-3xl shadow-xl p-8 mb-8 border-2 border-primary/10"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-        >
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
-            {/* Avatar */}
-            <motion.div
-              className="relative"
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="w-32 h-32 bg-gradient-to-br from-primary/20 to-primary/5 rounded-3xl flex items-center justify-center border-4 border-white shadow-lg">
-                <FiUser className="w-16 h-16 text-primary" />
+        <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
+          {/* Order History Section - 70% */}
+          <div className="lg:col-span-7 order-2 lg:order-1">
+            {/* <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-800 font-eurotypo">
+                  Order <span className="text-[#005655] italic">History</span>
+                </h2>
+                <p className="text-gray-600 text-sm">
+                  Track and manage all your purchases
+                </p>
               </div>
-              <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-primary rounded-full flex items-center justify-center border-4 border-white">
-                <HiOutlineSparkles className="w-5 h-5 text-white" />
+            </div> */}
+
+            {/* Orders List */}
+            {loadingOrders ? (
+              <div className="flex items-center justify-center py-20 bg-[#DCE7C8] rounded-2xl border border-primary">
+                <div className="text-center">
+                  <div className="w-12 h-12 mx-auto mb-4 border-4 border-[#005655] border-t-transparent rounded-full animate-spin"></div>
+                  <p className="text-gray-600 font-medium">Loading orders...</p>
+                </div>
               </div>
-            </motion.div>
+            ) : orders.length === 0 ? (
+              <div className="text-center py-20 bg-[#DCE7C8] rounded-2xl border border-dashed border-primary">
+                <BsBoxSeam className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                  No Orders Yet
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Start shopping to see your orders here!
+                </p>
+                <button
+                  onClick={() => (window.location.href = "/")}
+                  className="bg-[#005655] text-white px-6 py-3 rounded-xl font-medium hover:bg-[#004444] transition-colors"
+                >
+                  Start Shopping
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {orders.map((order, index) => (
+                  <div
+                    key={order.id}
+                    className="bg-[#DCE7C8] rounded-2xl shadow-sm border border-primary overflow-hidden hover:shadow-md transition-shadow"
+                  >
+                    {/* Order Header */}
+                    <div className="bg-[#DCE7C8] px-6 py-4 border-b border-primary">
+                      <div className="flex flex-wrap items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-[#005655] rounded-lg flex items-center justify-center">
+                            <FiPackage className="w-5 h-5 text-white" />
+                          </div>
+                          <div>
+                            <p className="text-base font-bold text-gray-800">
+                              Order #{order.id}
+                            </p>
+                            <div className="flex items-center gap-2 text-xs text-gray-600">
+                              <FiCalendar className="w-3 h-3" />
+                              <span>
+                                {new Date(order.created_at).toLocaleDateString(
+                                  "en-US",
+                                  {
+                                    year: "numeric",
+                                    month: "short",
+                                    day: "numeric",
+                                  }
+                                )}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div
+                            className={`flex items-center gap-2 ${getStatusColor(
+                              order.status
+                            )} text-white px-3 py-1.5 rounded-lg font-medium text-xs`}
+                          >
+                            {getStatusIcon(order.status)}
+                            {order.status.charAt(0).toUpperCase() +
+                              order.status.slice(1)}
+                          </div>
+                          <button
+                            onClick={() => handleDownloadInvoice(order)}
+                            className="bg-[#005655] hover:bg-[#004444] text-white p-2 rounded-lg transition-colors"
+                            title="Download Invoice"
+                          >
+                            <FiDownload className="w-4 h-4" />
+                          </button>
+                          <div className="text-right">
+                            <p className="text-xs text-gray-600">Total</p>
+                            <p className="text-lg font-bold text-[#005655]">
+                              ${order.total_price.toFixed(2)}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
-            {/* Profile Info */}
-            <div className="flex-1 text-center md:text-left">
-              <h2 className="text-3xl font-bold text-foreground font-eurotypo mb-2">
-                {user?.name || "Loading..."}
-              </h2>
-              <p className="text-muted-foreground mb-4">
-                {user?.email || "Loading..."}
-              </p>
+                    {/* Order Products */}
+                    <div className="p-6 space-y-3">
+                      {Array.isArray(order.product_id) &&
+                        order.product_id.map((productId, idx) => {
+                          const product = productsMap.get(productId);
+                          const quantity = Array.isArray(order.quantity)
+                            ? order.quantity[idx]
+                            : 1;
 
-              <div className="flex flex-wrap gap-4 justify-center md:justify-start mb-6">
-                <div className="flex items-center gap-2 bg-[#DCE7C8] px-4 py-2 rounded-full">
-                  <FiCalendar className="w-4 h-4 text-primary" />
-                  <span className="text-sm font-medium text-foreground">
-                    Joined{" "}
+                          return (
+                            <div
+                              key={`${order.id}-${productId}-${idx}`}
+                              className="flex items-center gap-4 p-3 bg-gray-50 rounded-xl"
+                            >
+                              {/* Product Image */}
+                              <div className="w-16 h-16 bg-white rounded-lg overflow-hidden flex-shrink-0 border border-gray-200">
+                                {product?.product_images?.[0] ? (
+                                  <img
+                                    src={getImageUrl(product.product_images[0])}
+                                    alt={product.product_name}
+                                    className="w-full h-full object-cover"
+                                    onError={(e) => {
+                                      e.currentTarget.src = "/placeholder.svg";
+                                    }}
+                                  />
+                                ) : (
+                                  <div className="w-full h-full flex items-center justify-center">
+                                    <BsBoxSeam className="w-6 h-6 text-gray-400" />
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Product Details */}
+                              <div className="flex-1 min-w-0">
+                                <h4 className="font-semibold text-gray-800 mb-1 truncate">
+                                  {product?.product_name ||
+                                    `Product #${productId}`}
+                                </h4>
+                                <div className="flex flex-wrap items-center gap-4 text-sm">
+                                  <div className="flex items-center gap-1">
+                                    <span className="text-gray-600">Qty:</span>
+                                    <span className="font-semibold text-gray-800">
+                                      {quantity}
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center gap-1">
+                                    <span className="text-gray-600">
+                                      Price:
+                                    </span>
+                                    {product?.actual_price &&
+                                    product?.discounted_price &&
+                                    product.actual_price >
+                                      product.discounted_price ? (
+                                      <>
+                                        <span className="text-gray-500 line-through text-xs">
+                                          ${product.actual_price}
+                                        </span>
+                                        <span className="font-semibold text-[#005655]">
+                                          ${product.discounted_price}
+                                        </span>
+                                      </>
+                                    ) : (
+                                      <span className="font-semibold text-gray-800">
+                                        ${product?.discounted_price || 0}
+                                      </span>
+                                    )}
+                                  </div>
+                                  <div className="flex items-center gap-1 ml-auto">
+                                    <span className="text-gray-600">
+                                      Subtotal:
+                                    </span>
+                                    <span className="font-bold text-[#005655]">
+                                      $
+                                      {(
+                                        (product?.discounted_price || 0) *
+                                        quantity
+                                      ).toFixed(2)}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+
+                      {/* Shipping Address */}
+                      <div className="mt-4 pt-4 border-t border-primary">
+                        <div className="flex items-start gap-3">
+                          <div className="w-8 h-8 bg-[#DCE7C8] rounded-lg flex items-center justify-center flex-shrink-0">
+                            <FiTruck className="w-4 h-4 text-[#005655]" />
+                          </div>
+                          <div>
+                            <p className="font-semibold text-gray-800 mb-1 text-sm">
+                              Shipping Address
+                            </p>
+                            <p className="text-gray-600 text-sm">
+                              {order.street_address}, {order.city},{" "}
+                              {order.state}, {order.country}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Profile & Newsletter Card - 30% */}
+          <div className="lg:col-span-3 order-1 lg:order-2">
+            <div className="bg-[#DCE7C8] rounded-2xl shadow-sm p-6 border border-primary sticky top-24">
+              {/* Avatar */}
+              <div className="flex flex-col items-center mb-6">
+                <div className="w-24 h-24 bg-[#005655] rounded-full flex items-center justify-center mb-4">
+                  <FiUser className="w-12 h-12 text-white" />
+                </div>
+                <h2 className="text-xl font-bold text-gray-800 text-center">
+                  {user?.name || "Loading..."}
+                </h2>
+                <p className="text-sm text-gray-600 text-center mt-1">
+                  {user?.email || "Loading..."}
+                </p>
+              </div>
+
+              {/* Stats */}
+              <div className="space-y-3 mb-6">
+                <div className="flex items-center justify-between py-3 px-4 bg-[#DCE7C8] border border-primary rounded-xl">
+                  <div className="flex items-center gap-2">
+                    <FiCalendar className="w-4 h-4 text-[#005655]" />
+                    <span className="text-sm text-gray-700">Member Since</span>
+                  </div>
+                  <span className="text-sm font-semibold text-gray-800">
                     {user?.created_at
                       ? new Date(user.created_at).toLocaleDateString("en-US", {
                           month: "short",
@@ -322,406 +562,189 @@ const ProfilePage: React.FC = () => {
                       : "..."}
                   </span>
                 </div>
-                <div className="flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full">
-                  <FiCheck className="w-4 h-4 text-primary" />
-                  <span className="text-sm font-bold text-primary">Active</span>
+
+                <div className="flex items-center justify-between py-3 px-4 bg-[#DCE7C8] border border-primary rounded-xl">
+                  <div className="flex items-center gap-2">
+                    <FiShoppingBag className="w-4 h-4 text-[#005655]" />
+                    <span className="text-sm text-gray-700">Total Orders</span>
+                  </div>
+                  <span className="text-sm font-semibold text-gray-800">
+                    {orders.length}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between py-3 px-4 bg-green-50 rounded-xl border border-green-200">
+                  <div className="flex items-center gap-2">
+                    <FiCheck className="w-4 h-4 text-green-600" />
+                    <span className="text-sm text-gray-700">Status</span>
+                  </div>
+                  <span className="text-sm font-semibold text-green-600">
+                    Active
+                  </span>
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-3 justify-center md:justify-start">
-                <motion.button
+              {/* Newsletter Section */}
+              <div className="mb-6 pb-6 border-b border-primary">
+                <div className="flex items-start gap-3 mb-4 border border-primary rounded-lg p-2">
+                  <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
+                    <FiMail className="w-4 h-4 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-sm font-bold text-gray-800 mb-1">
+                      Newsletter
+                    </h3>
+                    <p className="text-xs text-gray-600">
+                      {isNewsletterSubscribed
+                        ? "You're subscribed"
+                        : "Get exclusive deals"}
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={handleNewsletterToggle}
+                  disabled={isNewsletterLoading}
+                  className={`w-full px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${
+                    isNewsletterSubscribed
+                      ? "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      : "bg-[#005655] text-white hover:bg-[#004444]"
+                  } disabled:opacity-50 disabled:cursor-not-allowed`}
+                >
+                  {isNewsletterLoading ? (
+                    <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+                  ) : isNewsletterSubscribed ? (
+                    <>
+                      <FiX className="w-4 h-4" />
+                      <span>Unsubscribe</span>
+                    </>
+                  ) : (
+                    <>
+                      <FiCheck className="w-4 h-4" />
+                      <span>Subscribe</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="space-y-3">
+                <button
                   onClick={handleEditClick}
-                  className="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-xl font-semibold hover:bg-primary-light transition-colors"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  className="w-full flex items-center justify-center gap-2 bg-[#005655] text-white px-4 py-3 rounded-xl font-medium hover:bg-[#004444] transition-colors"
                 >
                   <FiEdit2 className="w-4 h-4" />
                   <span>Edit Profile</span>
-                </motion.button>
-                <motion.button
+                </button>
+                <button
                   onClick={handleLogoutClick}
-                  className="flex items-center gap-2 bg-red-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-red-600 transition-colors"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  className="w-full flex items-center justify-center gap-2 bg-gray-100 text-gray-700 px-4 py-3 rounded-xl font-medium hover:bg-gray-200 transition-colors"
                 >
                   <FiLogOut className="w-4 h-4" />
                   <span>Logout</span>
-                </motion.button>
+                </button>
               </div>
             </div>
           </div>
-        </motion.div>
-
-        {/* Order History Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-        >
-          {/* Header */}
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h2 className="text-3xl font-bold text-foreground font-eurotypo mb-2">
-                Order <span className="text-primary italic">History</span>
-              </h2>
-              <p className="text-muted-foreground">
-                Track and manage all your purchases
-              </p>
-            </div>
-            <div className="flex items-center gap-2 bg-[#DCE7C8] px-4 py-2 rounded-full">
-              <FiShoppingBag className="w-5 h-5 text-primary" />
-              <span className="font-bold text-foreground">
-                {orders.length} Orders
-              </span>
-            </div>
-          </div>
-
-          {/* Orders List */}
-          {loadingOrders ? (
-            <div className="flex items-center justify-center py-20">
-              <motion.div className="text-center">
-                <div className="relative w-16 h-16 mx-auto mb-6">
-                  <div className="absolute inset-0 rounded-full border-4 border-primary/20"></div>
-                  <div className="absolute inset-0 rounded-full border-4 border-primary border-t-transparent animate-spin"></div>
-                </div>
-                <p className="text-muted-foreground font-medium">
-                  Loading orders...
-                </p>
-              </motion.div>
-            </div>
-          ) : orders.length === 0 ? (
-            <motion.div
-              className="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-primary/20"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-            >
-              <BsBoxSeam className="w-20 h-20 text-primary mx-auto mb-6" />
-              <h3 className="text-2xl font-bold text-foreground font-eurotypo mb-3">
-                No Orders Yet
-              </h3>
-              <p className="text-muted-foreground text-lg mb-6">
-                Start shopping to see your orders here!
-              </p>
-              <motion.button
-                onClick={() => (window.location.href = "/")}
-                className="bg-primary text-white px-8 py-3 rounded-xl font-semibold hover:bg-primary-light transition-colors"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Start Shopping
-              </motion.button>
-            </motion.div>
-          ) : (
-            <div className="space-y-6">
-              {orders.map((order, index) => (
-                <motion.div
-                  key={order.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="bg-white rounded-3xl shadow-lg border-2 border-primary/10 overflow-hidden hover:shadow-xl transition-all"
-                  whileHover={{ y: -5 }}
-                >
-                  {/* Order Header */}
-                  <div className="bg-[#DCE7C8] p-6">
-                    <div className="flex flex-wrap items-center justify-between gap-4">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center">
-                          <FiPackage className="w-6 h-6 text-white" />
-                        </div>
-                        <div>
-                          <p className="text-lg font-bold text-foreground font-eurotypo">
-                            Order #{order.id}
-                          </p>
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <FiCalendar className="w-4 h-4" />
-                            <span>
-                              {new Date(order.created_at).toLocaleDateString(
-                                "en-US",
-                                {
-                                  year: "numeric",
-                                  month: "long",
-                                  day: "numeric",
-                                }
-                              )}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <div
-                          className={`flex items-center gap-2 ${getStatusColor(
-                            order.status
-                          )} text-white px-4 py-2 rounded-xl font-bold text-sm`}
-                        >
-                          {getStatusIcon(order.status)}
-                          {order.status.charAt(0).toUpperCase() +
-                            order.status.slice(1)}
-                        </div>
-                        <motion.button
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          onClick={() => handleDownloadInvoice(order)}
-                          className="bg-primary hover:bg-primary-light text-white p-3 rounded-xl transition-colors"
-                          title="Download Invoice"
-                        >
-                          <FiDownload className="w-5 h-5" />
-                        </motion.button>
-                        <div className="text-right bg-white px-4 py-2 rounded-xl">
-                          <p className="text-xs text-muted-foreground">Total</p>
-                          <p className="text-xl font-bold text-primary">
-                            ${order.total_price.toFixed(2)}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Order Products */}
-                  <div className="p-6 space-y-4">
-                    {Array.isArray(order.product_id) &&
-                      order.product_id.map((productId, idx) => {
-                        const product = productsMap.get(productId);
-                        const quantity = Array.isArray(order.quantity)
-                          ? order.quantity[idx]
-                          : 1;
-
-                        return (
-                          <div
-                            key={`${order.id}-${productId}-${idx}`}
-                            className="flex items-center gap-4 p-4 bg-background-cream rounded-2xl hover:bg-[#DCE7C8]/30 transition-colors"
-                          >
-                            {/* Product Image */}
-                            <div className="w-20 h-20 bg-white rounded-2xl overflow-hidden flex-shrink-0 border-2 border-primary/10">
-                              {product?.product_images?.[0] ? (
-                                <img
-                                  src={getImageUrl(product.product_images[0])}
-                                  alt={product.product_name}
-                                  className="w-full h-full object-cover"
-                                  onError={(e) => {
-                                    e.currentTarget.src = "/placeholder.svg";
-                                  }}
-                                />
-                              ) : (
-                                <div className="w-full h-full flex items-center justify-center">
-                                  <BsBoxSeam className="w-8 h-8 text-primary" />
-                                </div>
-                              )}
-                            </div>
-
-                            {/* Product Details */}
-                            <div className="flex-1">
-                              <h4 className="font-bold text-foreground font-eurotypo mb-1">
-                                {product?.product_name ||
-                                  `Product #${productId}`}
-                              </h4>
-                              <div className="flex flex-wrap items-center gap-4">
-                                <div className="flex items-center gap-2 text-sm">
-                                  <span className="text-muted-foreground">
-                                    Qty:
-                                  </span>
-                                  <span className="font-bold text-foreground">
-                                    {quantity}
-                                  </span>
-                                </div>
-                                <div className="flex items-center gap-2 text-sm">
-                                  <span className="text-muted-foreground">
-                                    Price:
-                                  </span>
-                                  {product?.actual_price &&
-                                  product?.discounted_price &&
-                                  product.actual_price >
-                                    product.discounted_price ? (
-                                    <>
-                                      <span className="text-muted-foreground line-through">
-                                        ${product.actual_price}
-                                      </span>
-                                      <span className="font-bold text-primary">
-                                        ${product.discounted_price}
-                                      </span>
-                                    </>
-                                  ) : (
-                                    <span className="font-bold text-foreground">
-                                      ${product?.discounted_price || 0}
-                                    </span>
-                                  )}
-                                </div>
-                                <div className="flex items-center gap-2 text-sm ml-auto">
-                                  <span className="text-muted-foreground">
-                                    Subtotal:
-                                  </span>
-                                  <span className="font-bold text-primary text-lg">
-                                    $
-                                    {(
-                                      (product?.discounted_price || 0) *
-                                      quantity
-                                    ).toFixed(2)}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      })}
-
-                    {/* Shipping Address */}
-                    <div className="mt-4 pt-4 border-t-2 border-primary/10">
-                      <div className="flex items-start gap-3">
-                        <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                          <FiTruck className="w-5 h-5 text-primary" />
-                        </div>
-                        <div>
-                          <p className="font-bold text-foreground mb-1">
-                            Shipping Address
-                          </p>
-                          <p className="text-muted-foreground text-sm">
-                            {order.street_address}, {order.city}, {order.state},{" "}
-                            {order.country}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          )}
-        </motion.div>
+        </div>
 
         {/* Edit Modal */}
         <AnimatePresence>
           {isEditModalOpen && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
-            >
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
-                className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl"
-              >
+            <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+              <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-xl">
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center">
-                      <FiEdit2 className="w-6 h-6 text-white" />
+                    <div className="w-10 h-10 bg-[#005655] rounded-lg flex items-center justify-center">
+                      <FiEdit2 className="w-5 h-5 text-white" />
                     </div>
-                    <h3 className="text-2xl font-bold text-foreground font-eurotypo">
+                    <h3 className="text-xl font-bold text-gray-800">
                       Edit Profile
                     </h3>
                   </div>
-                  <motion.button
+                  <button
                     onClick={handleCloseModal}
-                    className="text-muted-foreground hover:text-foreground transition-colors p-2"
-                    whileHover={{ scale: 1.1, rotate: 90 }}
-                    whileTap={{ scale: 0.9 }}
+                    className="text-gray-400 hover:text-gray-600 transition-colors p-2"
                   >
-                    <FiX className="w-6 h-6" />
-                  </motion.button>
+                    <FiX className="w-5 h-5" />
+                  </button>
                 </div>
 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-bold text-foreground mb-2">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Full Name
                     </label>
                     <input
                       type="text"
                       value={editName}
                       onChange={(e) => setEditName(e.target.value)}
-                      className="w-full px-4 py-3 border-2 border-primary/20 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-300"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#005655] focus:border-[#005655] transition-all outline-none"
                       placeholder="Enter your name"
                     />
                   </div>
 
-                  <div className="flex gap-3 pt-4">
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                  <div className="flex gap-3 pt-2">
+                    <button
                       onClick={handleSaveName}
                       disabled={isLoading}
-                      className="flex-1 bg-primary text-white py-3 px-6 rounded-xl font-semibold hover:bg-primary-light disabled:opacity-50 flex items-center justify-center gap-2"
+                      className="flex-1 bg-[#005655] text-white py-3 px-6 rounded-xl font-medium hover:bg-[#004444] disabled:opacity-50 flex items-center justify-center gap-2 transition-colors"
                     >
                       {isLoading ? (
-                        <div className="relative w-5 h-5">
-                          <div className="absolute inset-0 rounded-full border-2 border-white border-t-transparent animate-spin"></div>
-                        </div>
+                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                       ) : (
                         <FiSave className="w-5 h-5" />
                       )}
                       <span>{isLoading ? "Saving..." : "Save Changes"}</span>
-                    </motion.button>
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                    </button>
+                    <button
                       onClick={handleCloseModal}
-                      className="px-6 py-3 border-2 border-primary/20 text-foreground rounded-xl font-semibold hover:bg-primary/5"
+                      className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-medium hover:bg-gray-50 transition-colors"
                     >
                       Cancel
-                    </motion.button>
+                    </button>
                   </div>
                 </div>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           )}
         </AnimatePresence>
 
         {/* Logout Confirmation Modal */}
         <AnimatePresence>
           {isLogoutModalOpen && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
-            >
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
-                className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl"
-              >
+            <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+              <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-xl">
                 <div className="text-center mb-6">
-                  <motion.div
-                    className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-4"
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  >
-                    <FiLogOut className="w-8 h-8 text-red-600" />
-                  </motion.div>
-                  <h3 className="text-2xl font-bold text-foreground font-eurotypo mb-2">
+                  <div className="w-14 h-14 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-red-100">
+                    <FiLogOut className="w-7 h-7 text-red-600" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-2">
                     Confirm Logout
                   </h3>
-                  <p className="text-muted-foreground">
+                  <p className="text-gray-600 text-sm">
                     Are you sure you want to logout? You will need to sign in
                     again to access your account.
                   </p>
                 </div>
 
                 <div className="flex gap-3">
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                  <button
                     onClick={handleLogoutConfirm}
-                    className="flex-1 bg-red-500 text-white py-3 px-6 rounded-xl font-semibold hover:bg-red-600 flex items-center justify-center gap-2"
+                    className="flex-1 bg-red-500 text-white py-3 px-6 rounded-xl font-medium hover:bg-red-600 flex items-center justify-center gap-2 transition-colors"
                   >
                     <FiLogOut className="w-5 h-5" />
                     <span>Yes, Logout</span>
-                  </motion.button>
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                  </button>
+                  <button
                     onClick={handleLogoutCancel}
-                    className="px-6 py-3 border-2 border-primary/20 text-foreground rounded-xl font-semibold hover:bg-primary/5"
+                    className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-medium hover:bg-gray-50 transition-colors"
                   >
                     Cancel
-                  </motion.button>
+                  </button>
                 </div>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           )}
         </AnimatePresence>
       </div>
